@@ -72,7 +72,7 @@ Below are a series of examples which progress in complexity and cover both the c
 ---
 
 **[Simple Voice AI Client](./simple-voice-client/)**
-Takes uid, channel, and token as params to connect to an Agora channel. Agents can come and go. Useful for testing.
+Simple HTML/Javascript client for connecting to an Agora RTC Channel with 2-way audio. Agora AI voice agents can come and go. Useful for testing agents without needing to refresh or reconnect client.
 
 **[Simple Backend](./simple-backend/)**
 AWS Lambda (Python) function that receives params via HTTPS, generates token, uid, and channel, then calls the Agent REST API.

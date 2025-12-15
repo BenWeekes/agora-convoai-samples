@@ -1,6 +1,6 @@
 # Simple Voice AI Client
 
-Simple HTML client for connecting to an Agora AI voice agent. Agents can come and go. Useful for testing.
+Simple HTML/Javascript client for connecting to an Agora RTC Channel with 2-way audio. Agora AI voice agents can come and go. Useful for testing agents without needing to refresh or reconnect client.
 
 ## Usage
 
