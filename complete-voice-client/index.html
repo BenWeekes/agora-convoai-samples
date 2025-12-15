@@ -376,7 +376,7 @@
 
   <script>
     // Configuration
-    let backendUrl = 'http://localhost:8081'
+    let backendUrl = 'http://localhost:8082'
     let channel = ''
     let sessionTitle = 'Voice AI Agent'
     let agentId = null
@@ -852,7 +852,7 @@
       // Event handlers
       joinForm.addEventListener('submit', async (e) => {
         e.preventDefault()
-        backendUrl = document.getElementById('backendUrl').value.trim() || 'http://localhost:8081'
+        backendUrl = document.getElementById('backendUrl').value.trim() || 'http://localhost:8082'
         channel = document.getElementById('channel').value.trim()
         sessionTitle = document.getElementById('title').value.trim() || 'Voice AI Agent'
 
@@ -864,7 +864,7 @@
         try {
           // Update URL with parameters
           const urlParams = new URLSearchParams()
-          if (backendUrl !== 'http://localhost:8081') urlParams.set('backend', backendUrl)
+          if (backendUrl !== 'http://localhost:8082') urlParams.set('backend', backendUrl)
           urlParams.set('channel', channel)
           if (sessionTitle && sessionTitle !== 'Voice AI Agent') urlParams.set('title', sessionTitle)
 
@@ -910,8 +910,8 @@
             <input
               type="text"
               id="backendUrl"
-              placeholder="http://localhost:8081"
-              value="http://localhost:8081"
+              placeholder="http://localhost:8082"
+              value="http://localhost:8082"
             />
           </div>
 

@@ -20,12 +20,12 @@ Open `index.html` in a browser. Configure via form or URL parameters:
 
 **URL Parameters:**
 ```
-index.html?channel=test&backend=http://localhost:8081&title=My%20Agent
+index.html?channel=test&backend=http://localhost:8082&title=My%20Agent
 ```
 
 **Parameters:**
 - `channel` (required) - Channel name
-- `backend` (optional) - Backend URL (defaults to http://localhost:8081)
+- `backend` (optional) - Backend URL (defaults to http://localhost:8082)
 - `title` (optional) - Session title (defaults to "Voice AI Agent")
 
 ## Local Testing
@@ -34,15 +34,15 @@ Run a local web server in this directory:
 
 **Python:**
 ```bash
-python3 -m http.server 8000
+python3 -m http.server 8003
 ```
 
 **Node.js:**
 ```bash
-npx http-server -p 8000
+npx http-server -p 8003
 ```
 
-Then open http://localhost:8000 in your browser.
+Then open http://localhost:8003 in your browser.
 
 ## Backend Required
 
@@ -51,27 +51,27 @@ This client requires a running backend. See [../simple-backend/](../simple-backe
 **Quick backend start:**
 ```bash
 cd ../simple-backend
-python3 local_server.py
+PORT=8082 python3 local_server.py
 ```
 
-Backend should be running on http://localhost:8081
+Backend should be running on http://localhost:8082
 
 ## Complete Flow Example
 
 1. **Start backend:**
    ```bash
    cd ../simple-backend
-   python3 local_server.py
-   # Running on http://localhost:8081
+   PORT=8082 python3 local_server.py
+   # Running on http://localhost:8082
    ```
 
 2. **Open client:**
    ```
-   http://localhost:8000/index.html?channel=test
+   http://localhost:8003/index.html?channel=test
    ```
 
 3. **Client actions:**
-   - Calls `http://localhost:8081/start-agent?channel=test`
+   - Calls `http://localhost:8082/start-agent?channel=test`
    - Receives credentials from backend
    - Joins channel with those credentials
    - Agent is already in channel
