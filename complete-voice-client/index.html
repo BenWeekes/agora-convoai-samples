@@ -491,7 +491,9 @@
           updateAgentState('ambient')
         })
 
-        await agoraClient.join(config.appId, config.channel, config.token, config.uid)
+        // Convert empty token to null for Agora SDK
+        const token = config.token || null
+        await agoraClient.join(config.appId, config.channel, token, config.uid)
 
         localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack({
           encoderConfig: 'high_quality_stereo',
