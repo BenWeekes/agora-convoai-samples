@@ -22,12 +22,12 @@ A quick-start guide to understanding how the components connect
               │  Voice AI Client   │      │  AI Agent Instance │
               └──────────┬─────────┘      └─────────┬──────────┘
                          │                          │
-                         │  Audio, Video, Data      │
-                         ├─────────────────────────→│
-                         │←─────────────────────────┤
                          │                          │
                          │     ┌──────────────┐     │
                          └────→│ Agora SD-RTN │←────┘
+                               │              │
+                               │ Audio, Video,│
+                               │     Data     │
                                └──────────────┘
 ```
 
