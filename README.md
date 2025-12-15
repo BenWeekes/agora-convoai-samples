@@ -5,45 +5,44 @@ A quick-start guide to understanding how the components connect
 ## System Architecture Diagram
 
 ```
-┌─────────────────────────────────────┐
-│    Your Backend Services (You)     │
-└────────┬─────────────────┬──────────┘
-         │                 │
-         │ 1. Serves       │ 3. Agent REST API
-         │    client app   │    (token, uid, channel,
-         │ 2. Provides     │     agent properties)
-         │    token, uid,  │
-         │    channel      │
-         │                 │
-         ↓                 ↓
-┌────────────────┐   ┌─────────────────────┐
-│  Voice AI      │   │  AI Agent Instance  │
-│  Client (You)  │   │  (Agora)           │
-└────────┬───────┘   └──────────┬──────────┘
-         │                      │
-         │  Audio, Video, Data  │
-         │ ←──────────────────→ │
-         │                      │
-         └──────────┬───────────┘
-                    │
-         ┌──────────▼──────────┐
-         │  Agora SD-RTN       │
-         │  (Agora Network)    │
-         └─────────────────────┘
+                    ┌───────────────────────────┐
+                    │  Your Backend Services    │
+                    └──────┬──────────────┬─────┘
+                           │              │
+                           │              │
+        1. Serves app      │              │      3. Agent REST API
+        2. Provides token, │              │         (token, uid, channel,
+           uid, channel    │              │          agent properties)
+                           │              │
+                          ╱                ╲
+                         ╱                  ╲
+                        ↓                    ↓
+            ┌──────────────────┐    ┌──────────────────┐
+            │  Voice AI Client │    │ AI Agent Instance│
+            │      (You)       │    │     (Agora)      │
+            └─────────┬────────┘    └────────┬─────────┘
+                      │                      │
+                      │  Audio, Video, Data  │
+                      │ ←──────────────────→ │
+                      │                      │
+                      │  ┌────────────────┐  │
+                      └─→│  Agora SD-RTN  │←─┘
+                         │   (Network)    │
+                         └────────────────┘
 ```
 
 ## Component Overview
 
-### 🔧 Your Backend Services (You Build)
+### Your Backend Services (You Build)
 Your server-side application that authenticates users, generates Agora tokens, and orchestrates the AI agent. It serves the client app and calls the Agora REST API to start/stop agent instances.
 
-### 🔧 Voice AI Client (You Build)
+### Voice AI Client (You Build)
 Your front-end application (web, mobile, or desktop) that captures user audio/video and plays back the AI agent's responses. Built using the Agora SDK.
 
-### ⚡ Agora SD-RTN (Agora)
+### Agora SD-RTN (Agora)
 Agora's Software-Defined Real-Time Network. A global low-latency network that routes audio, video, and data streams between participants in real-time.
 
-### 🤖 AI Agent Instance (Agora)
+### AI Agent Instance (Agora)
 A managed AI agent that joins the channel as a participant. It listens to user audio, processes it through STT → LLM → TTS, and streams the response back.
 
 ## How It Works
@@ -64,7 +63,7 @@ Both the client and AI agent join the same channel via SD-RTN. Audio, video, and
 
 Below are a series of examples which progress in complexity and cover both the client and server components you will need.
 
-### 🎯 For Vibe Coders
+### For Vibe Coders
 Share this link with your AI and simply ask it for the client or backend you desire.
 [View Quickstart Repository](./convo-ai-quickstart/)
 
