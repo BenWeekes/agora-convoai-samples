@@ -51,9 +51,9 @@ def initialize_constants(profile=None):
         "AGENT_API_BASE_URL": "https://api.agora.io/api/conversational-ai-agent/v2/projects",
 
         # Fixed UIDs
-        "AGENT_UID": 100,
-        "USER_UID": 101,
-        "AGENT_VIDEO_UID": 102,
+        "AGENT_UID": "100",
+        "USER_UID": "101",
+        "AGENT_VIDEO_UID": "102",
 
         # Token expiration (in seconds)
         "TOKEN_EXPIRE": 24 * 3600,  # 24 hours

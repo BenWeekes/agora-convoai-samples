@@ -493,7 +493,9 @@
 
         // Convert empty token to null for Agora SDK
         const token = config.token || null
-        await agoraClient.join(config.appId, config.channel, token, config.uid)
+        // Convert UID to integer (Agora SDK requires int when enable_string_uid is false)
+        const uid = parseInt(config.uid)
+        await agoraClient.join(config.appId, config.channel, token, uid)
 
         localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack({
           encoderConfig: 'high_quality_stereo',
