@@ -30,7 +30,7 @@ index.html?appid=YOUR_APP_ID&channel=YOUR_CHANNEL&token=YOUR_TOKEN&uid=123&title
 **Parameters:**
 - `appid` (required) - Agora App ID
 - `channel` (required) - Channel name
-- `token` (optional) - Authentication token
+- `token` (optional) - Authentication token (leave blank if your project doesn't have App Certificate enabled)
 - `uid` (optional) - User ID (auto-generated if not provided)
 - `title` (optional) - Session title (defaults to "Voice AI Agent")
 
