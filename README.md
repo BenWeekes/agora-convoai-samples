@@ -78,7 +78,7 @@ Simple HTML/Javascript client for connecting to an Agora RTC Channel with 2-way 
 AWS Lambda (Python) function that receives params via HTTPS, generates token, uid, and channel, then calls the Agent REST API.
 
 **[Complete Voice AI Client](./complete-voice-client/)**
-Full client that calls the server-side function to connect users to an AI agent.
+Complete HTML/Javascript client that calls a backend to start an Agora AI voice agent and get RTC credentials, then joins the channel to talk with the agent.
 
 **[React JS Voice AI Client](./react-voice-client/)**
 React implementation of the Voice AI Client with hooks and component-based architecture.

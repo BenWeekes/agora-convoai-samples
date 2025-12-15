@@ -1,63 +1,96 @@
 # Complete Voice AI Client
 
-## Overview
+Complete HTML/Javascript client that calls a backend to start an Agora AI voice agent and get RTC credentials, then joins the channel to talk with the agent.
 
-Full client that calls the server-side function to connect users to an AI agent. This is a production-ready implementation with proper authentication flow.
+## How It Works
+
+1. User enters channel name and backend URL (optional)
+2. Client calls backend `/start-agent` endpoint
+3. Backend starts AI agent and returns:
+   - Agora App ID
+   - RTC token
+   - Channel name
+   - User ID
+4. Client automatically joins the channel with those credentials
+5. Agent is already waiting in the channel
+
+## Usage
+
+Open `index.html` in a browser. Configure via form or URL parameters:
+
+**URL Parameters:**
+```
+index.html?channel=test&backend=http://localhost:8081&title=My%20Agent
+```
+
+**Parameters:**
+- `channel` (required) - Channel name
+- `backend` (optional) - Backend URL (defaults to http://localhost:8081)
+- `title` (optional) - Session title (defaults to "Voice AI Agent")
+
+## Local Testing
+
+Run a local web server in this directory:
+
+**Python:**
+```bash
+python3 -m http.server 8000
+```
+
+**Node.js:**
+```bash
+npx http-server -p 8000
+```
+
+Then open http://localhost:8000 in your browser.
+
+## Backend Required
+
+This client requires a running backend. See [../simple-backend/](../simple-backend/) for setup instructions.
+
+**Quick backend start:**
+```bash
+cd ../simple-backend
+python3 local_server.py
+```
+
+Backend should be running on http://localhost:8081
+
+## Complete Flow Example
+
+1. **Start backend:**
+   ```bash
+   cd ../simple-backend
+   python3 local_server.py
+   # Running on http://localhost:8081
+   ```
+
+2. **Open client:**
+   ```
+   http://localhost:8000/index.html?channel=test
+   ```
+
+3. **Client actions:**
+   - Calls `http://localhost:8081/start-agent?channel=test`
+   - Receives credentials from backend
+   - Joins channel with those credentials
+   - Agent is already in channel
+
+4. **Talk with the AI agent!**
 
 ## Features
 
-- Complete authentication flow with backend
-- Automatic token management
-- Real-time audio streaming
-- Connection state management
-- Error handling and reconnection logic
-- Production-ready code structure
+- Automatic backend integration
+- Real-time audio visualization
+- Microphone selection
+- Mute/unmute controls
+- No manual token/appid entry needed
 
-## Coming Soon
+## Differences from Simple Voice Client
 
-Sample code and implementation details will be added here.
-
-## Quick Links
-
-- [Back to Main Repository](../)
-- [Agora Voice SDK Documentation](https://docs.agora.io/en/voice-calling/overview/product-overview)
-
-## Prerequisites
-
-- Node.js (v14 or higher recommended)
-- Backend service running (see [Simple Backend](../simple-backend/))
-- Agora Account and API credentials
-
-## Architecture
-
-```
-User → Complete Voice Client → Backend Service → Agora AI Agent
-                ↓                      ↓
-         Token Request          Token Generation
-                ↓                      ↓
-         Join Channel ←────── Return Credentials
-                ↓
-         AI Conversation
-```
-
-## Getting Started
-
-1. Clone this repository
-2. Install dependencies (instructions coming soon)
-3. Configure backend endpoint
-4. Run the client
-5. Start a conversation with the AI agent
-
-## Configuration
-
-```javascript
-// Configuration example (coming soon)
-const config = {
-  backendUrl: 'YOUR_BACKEND_URL',
-  // Additional config options
-};
-```
-
-## Support
-
-For questions and support, please visit the [Agora Developer Community](https://www.agora.io/en/community/).
+| Feature | Simple Voice Client | Complete Voice Client |
+|---------|-------------------|---------------------|
+| Manual credentials | ✅ Enter appid, token, uid | ❌ Not needed |
+| Backend integration | ❌ No backend needed | ✅ Calls backend |
+| Agent management | ❌ Manual | ✅ Automatic |
+| Use case | Testing with existing agent | Production-ready flow |
