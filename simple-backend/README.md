@@ -8,14 +8,40 @@ Python backend for starting/stopping Agora AI voice agents. Supports both local 
 
 **1. Install dependencies:**
 ```bash
-pip install -r requirements-local.txt
+pip3 install -r requirements-local.txt
 ```
 
 **2. Configure environment:**
+
+Create `.env` file with your credentials:
+
 ```bash
-cp .env.example .env
-# Edit .env with your credentials
+# Agora settings
+APP_ID=YOUR_AGORA_APP_ID
+APP_CERTIFICATE=
+AGENT_AUTH_HEADER=YOUR_AGORA_AUTH_HEADER
+
+# LLM settings
+LLM_API_KEY=YOUR_OPENAI_API_KEY
+LLM_MODEL=gpt-4o
+LLM_URL=https://api.openai.com/v1/chat/completions
+
+# TTS settings - Rime
+TTS_VENDOR=rime
+RIME_API_KEY=YOUR_RIME_API_KEY
+
+# ASR settings - Ares (default, no key needed)
+ASR_VENDOR=ares
+
+# AIVAD settings
+ENABLE_AIVAD=false
+
+# Prompts and messages
+DEFAULT_GREETING=Hey there, I am Quiz Master Bella, would you like me to quiz you on capital cities?
+DEFAULT_PROMPT=You are Bella, a quiz master who asks capital city questions. Keep responses under 30 words and immediately ask the next question after announcing the result.
 ```
+
+See `.env.example` for all available configuration options.
 
 **3. Run server:**
 ```bash
@@ -24,26 +50,45 @@ python3 local_server.py
 PORT=8082 python3 local_server.py
 ```
 
-Server runs on http://localhost:8081 (default) or custom port via `PORT` env var
+Server runs on http://localhost:8081 (default) or custom port via `PORT` env var.
 
-**Endpoints:**
-- `GET /start-agent?channel=test` - Start agent in channel
-- `GET /hangup-agent?agent_id=xxx` - Stop agent
-- `GET /health` - Health check
+**4. Test the endpoints:**
 
-**Examples:**
+**Start agent in channel:**
 ```bash
-# Start agent in channel "test"
 curl "http://localhost:8081/start-agent?channel=test"
+```
 
-# Token-only mode (no agent)
+Response includes `agent_id` needed for stopping the agent:
+```json
+{
+  "channel": "test",
+  "appid": "YOUR_APP_ID",
+  "token": "...",
+  "uid": "101",
+  "agent_response": {
+    "status_code": 200,
+    "response": "{\"agent_id\":\"abc123...\"}"
+  }
+}
+```
+
+**Stop agent:**
+```bash
+# Use agent_id from start response
+curl "http://localhost:8081/hangup-agent?agent_id=abc123"
+```
+
+**Other examples:**
+```bash
+# Token-only mode (no agent started)
 curl "http://localhost:8081/start-agent?channel=test&connect=false"
 
 # With profile override
 curl "http://localhost:8081/start-agent?channel=test&profile=sales"
 
-# Stop agent
-curl "http://localhost:8081/hangup-agent?agent_id=AGENT_ID"
+# Health check
+curl "http://localhost:8081/health"
 ```
 
 ### AWS Lambda Deployment
