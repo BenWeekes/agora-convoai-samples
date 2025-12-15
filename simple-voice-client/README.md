@@ -2,6 +2,22 @@
 
 Simple HTML/Javascript client for connecting to an Agora RTC Channel with 2-way audio. Agora AI voice agents can come and go. Useful for testing agents without needing to refresh or reconnect client.
 
+## Local Testing
+
+Run a local web server in this directory:
+
+**Python:**
+```bash
+python3 -m http.server 8000
+```
+
+**Node.js:**
+```bash
+npx http-server -p 8000
+```
+
+Then open http://localhost:8000 in your browser.
+
 ## Usage
 
 Open `index.html` in a browser. Configure via form or URL parameters:
