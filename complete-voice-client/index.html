@@ -386,7 +386,6 @@
     let currentAgentState = 'not-joined'
     let localAnalyzer = null
     let remoteAnalyzer = null
-    let isJoining = false
 
     // DOM elements (initialized after DOM loads)
     let landingView, inCallView, joinForm, micButton, deviceSelector, leaveButton
@@ -863,13 +862,6 @@
       // Event handlers
       joinForm.addEventListener('submit', async (e) => {
         e.preventDefault()
-
-        // Prevent multiple simultaneous submissions
-        if (isJoining) {
-          console.log('Already joining, ignoring duplicate submit')
-          return
-        }
-
         backendUrl = document.getElementById('backendUrl').value.trim() || 'http://localhost:8082'
         channel = document.getElementById('channel').value.trim()
         sessionTitle = document.getElementById('title').value.trim() || 'Voice AI Agent'
@@ -879,7 +871,6 @@
           return
         }
 
-        isJoining = true
         try {
           // Update URL with parameters
           const urlParams = new URLSearchParams()
@@ -904,8 +895,6 @@
           })
         } catch (error) {
           showError(`Failed to start: ${error.message}`)
-        } finally {
-          isJoining = false
         }
       })
 
