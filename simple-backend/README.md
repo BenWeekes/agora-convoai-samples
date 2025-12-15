@@ -1,57 +1,118 @@
 # Simple Backend
 
-## Overview
+Python backend for starting/stopping Agora AI voice agents. Supports both local development and AWS Lambda deployment.
 
-AWS Lambda (Python) function that receives params via HTTPS, generates token, uid, and channel, then calls the Agent REST API.
+## Usage
 
-## Features
+### Local Development
 
-- Token generation for Agora channels
-- User ID and channel management
-- REST API integration with Agora AI Agent
-- Serverless deployment with AWS Lambda
+**1. Install dependencies:**
+```bash
+pip install -r requirements-local.txt
+```
 
-## Coming Soon
+**2. Configure environment:**
+```bash
+cp .env.example .env
+# Edit .env with your credentials
+```
 
-Sample code and implementation details will be added here.
+**3. Run server:**
+```bash
+python3 local_server.py
+# Or specify custom port:
+PORT=8082 python3 local_server.py
+```
 
-## Quick Links
+Server runs on http://localhost:8081 (default) or custom port via `PORT` env var
 
-- [Back to Main Repository](../)
-- [Agora Server-side Documentation](https://docs.agora.io/en/video-calling/develop/authentication-workflow)
-- [AWS Lambda Documentation](https://docs.aws.amazon.com/lambda/)
+**Endpoints:**
+- `GET /start-agent?channel=test` - Start agent in channel
+- `GET /hangup-agent?agent_id=xxx` - Stop agent
+- `GET /health` - Health check
 
-## Prerequisites
+**Examples:**
+```bash
+# Start agent in channel "test"
+curl "http://localhost:8081/start-agent?channel=test"
 
-- AWS Account
-- Python 3.8 or higher
-- Agora Account with API Key and Secret
-- Agora AI Agent credentials
+# Token-only mode (no agent)
+curl "http://localhost:8081/start-agent?channel=test&connect=false"
+
+# With profile override
+curl "http://localhost:8081/start-agent?channel=test&profile=sales"
+
+# Stop agent
+curl "http://localhost:8081/hangup-agent?agent_id=AGENT_ID"
+```
+
+### AWS Lambda Deployment
+
+**1. Package for Lambda:**
+```bash
+zip -r lambda.zip lambda_handler.py core/
+```
+
+**2. Upload to AWS Lambda**
+
+**3. Set environment variables in Lambda console:**
+- `APP_ID`
+- `APP_CERTIFICATE`
+- `AGENT_AUTH_HEADER`
+- `LLM_API_KEY`
+- `TTS_VENDOR`
+- `RIME_API_KEY` (if using Rime)
+- See `.env.example` for all options
+
+**4. Configure API Gateway trigger**
+
+## Configuration
+
+All configuration via environment variables. See `.env.example` for complete list.
+
+**Required:**
+- `APP_ID` - Agora App ID
+- `AGENT_AUTH_HEADER` - Agora API authorization
+- `LLM_API_KEY` - OpenAI or LLM API key
+- `TTS_VENDOR` - TTS provider (rime, elevenlabs, openai, cartesia)
+- Vendor-specific keys (e.g., `RIME_API_KEY`)
+
+**Optional:**
+- `APP_CERTIFICATE` - For token security (leave blank for testing)
+- `ASR_VENDOR` - Speech recognition (default: ares, no key needed)
+- `ENABLE_AIVAD` - AI voice activity detection (default: true)
+- Profile overrides: Suffix any var with `_profilename`
 
 ## Architecture
 
 ```
-Client Request → API Gateway → Lambda Function → Agora API
-                                      ↓
-                              Token Generation
-                                      ↓
-                              Return Credentials
+simple-backend/
+├── core/              # Shared business logic
+│   ├── config.py     # Environment variables
+│   ├── tokens.py     # v007 token generation
+│   ├── agent.py      # Agent API calls
+│   └── utils.py      # Utilities
+├── lambda_handler.py # AWS Lambda wrapper
+├── local_server.py   # Flask development server
+└── .env              # Local config (gitignored)
 ```
 
-## Environment Variables
+Core modules work identically in both Lambda and local environments.
 
-- `AGORA_APP_ID`: Your Agora App ID
-- `AGORA_APP_CERTIFICATE`: Your Agora App Certificate
-- `AGORA_AGENT_API_KEY`: Agora AI Agent API Key
+## Profile Support
 
-## Getting Started
+Override config per use case:
 
-1. Clone this repository
-2. Install Python dependencies
-3. Configure environment variables
-4. Deploy to AWS Lambda
-5. Set up API Gateway endpoint
+```bash
+# Set profile-specific env vars
+TTS_VOICE_ID_sales=voice123
+DEFAULT_PROMPT_sales=You are a sales assistant...
 
-## Support
+# Use profile
+curl "http://localhost:8081/start-agent?channel=test&profile=sales"
+```
 
-For questions and support, please visit the [Agora Developer Community](https://www.agora.io/en/community/).
+Variables checked in order:
+1. `VAR_NAME_profile` (if profile specified)
+2. `VAR_NAME` (base variable)
+3. Default value (hardcoded)
