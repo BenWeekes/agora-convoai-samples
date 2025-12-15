@@ -1,6 +1,6 @@
 # Simple Backend
 
-Python backend for starting/stopping Agora AI voice agents. Supports both local development and AWS Lambda deployment.
+Python backend for starting/stopping Agora AI voice agents and returning an Agora RTC token for the client to join the same channel. Supports both local development and AWS Lambda deployment.
 
 ## Usage
 
