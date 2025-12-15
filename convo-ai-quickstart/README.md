@@ -5,17 +5,30 @@ This guide helps AI coding assistants implement Agora Conversational AI voice ag
 ## Architecture Overview
 
 ```
-┌─────────────────┐         ┌──────────────────┐         ┌─────────────────┐
-│  Your Backend   │────────→│  Agora SD-RTN    │←────────│  AI Agent       │
-│  (You Build)    │         │  (Real-time Net) │         │  (Agora hosted) │
-└────────┬────────┘         └──────────────────┘         └─────────────────┘
-         │                           ↑
-         │ token, uid, channel       │
-         ↓                           │
-┌─────────────────┐                  │
-│  Voice Client   │──────────────────┘
-│  (You Build)    │    Audio/Video/Data
-└─────────────────┘
+                          ┌─────────────────────────┐
+                          │  Your Backend Services  │
+                          └───────┬───────────┬─────┘
+                                 ╱             ╲
+                                ╱               ╲
+                               ╱                 ╲
+                              ╱                   ╲
+         1. Serves client app│                     │3. Agent REST API
+         2. Provides token,  │                     │   (token, uid, channel,
+            uid, channel     │                     │    agent properties)
+                            ╱                       ╲
+                           ╱                         ╲
+                          ↓                           ↓
+              ┌────────────────────┐      ┌────────────────────┐
+              │  Voice AI Client   │      │  AI Agent Instance │
+              └──────────┬─────────┘      └─────────┬──────────┘
+                         │                          │
+                         │                          │
+                         │     ┌──────────────┐     │
+                         └────→│ Agora SD-RTN │←────┘
+                               │              │
+                               │ Audio, Video,│
+                               │     Data     │
+                               └──────────────┘
 ```
 
 ## Implementation Steps
