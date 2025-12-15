@@ -828,6 +828,17 @@
         sessionTitle = document.getElementById('title').value.trim() || 'Voice AI Agent'
 
         if (appId && channel) {
+          // Update URL with parameters
+          const urlParams = new URLSearchParams()
+          urlParams.set('appid', appId)
+          urlParams.set('channel', channel)
+          if (token) urlParams.set('token', token)
+          if (uid) urlParams.set('uid', uid)
+          if (sessionTitle && sessionTitle !== 'Voice AI Agent') urlParams.set('title', sessionTitle)
+
+          const newUrl = `${window.location.pathname}?${urlParams.toString()}`
+          window.history.replaceState({}, '', newUrl)
+
           joinCall({ appId, channel, token, uid, sessionTitle })
         }
       })
