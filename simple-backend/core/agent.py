@@ -287,6 +287,8 @@ def send_agent_to_channel(channel, agent_payload, constants):
 
     print(f"Sending agent to Agora ConvoAI:")
     print(f"URL: {agent_api_url}")
+    print(f"🔧 enable_rtm: {agent_payload['properties']['advanced_features']['enable_rtm']}")
+    print(f"🔧 enable_bhvs: {agent_payload['properties']['advanced_features']['enable_bhvs']}")
     print(f"Payload: {payload_json}")
 
     conn.request("POST", path, payload_json, headers)

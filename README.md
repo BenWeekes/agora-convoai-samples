@@ -81,7 +81,7 @@ AWS Lambda (Python) function that receives params via HTTPS, generates token, ui
 Complete HTML/Javascript client that calls a backend to start an Agora AI voice agent and get RTC credentials, then joins the channel to talk with the agent.
 
 **[React JS Voice AI Client](./react-voice-client/)**
-React implementation of the Voice AI Client with hooks and component-based architecture.
+React/Next.js implementation using Agora AI UIKit components. Features TypeScript, shadcn/ui, custom hooks, agent visualizer, and conversation history display.
 
 **[Voice AI Client with Chat](./voice-client-chat/)**
 Voice client with integrated text chat alongside real-time audio conversation.
