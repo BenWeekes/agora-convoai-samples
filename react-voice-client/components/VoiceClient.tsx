@@ -204,10 +204,10 @@ export function VoiceClient() {
             </div>
 
             {/* Desktop: Left Column (visualizer, controls, status) */}
-            <div className="hidden md:flex md:w-96 flex-col gap-6">
+            <div className="hidden md:flex md:w-96 flex-col gap-6 min-h-0">
               {/* Agent Visualizer */}
-              <div className="rounded-lg border bg-card p-6 shadow-lg">
-                <AgentVisualizer state={getAgentState()} size="md" />
+              <div className="rounded-lg border bg-card p-6 shadow-lg flex-shrink">
+                <AgentVisualizer state={getAgentState()} size="sm" />
                 <p className="mt-2 text-xs text-center text-muted-foreground">
                   State: {getAgentState()}
                 </p>
@@ -315,15 +315,15 @@ export function VoiceClient() {
                 </Conversation>
               </div>
 
-              {/* Input Box - Desktop only */}
-              <div className="hidden md:block border-t p-4 flex-shrink-0">
+              {/* Input Box */}
+              <div className="border-t p-3 md:p-4 flex-shrink-0">
                 <div className="flex gap-2">
                   <input
                     type="text"
                     value={chatMessage}
                     onChange={(e) => setChatMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Type a message to send to the agent..."
+                    placeholder="Type a message..."
                     disabled={!isConnected}
                     className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50"
                   />
@@ -335,9 +335,6 @@ export function VoiceClient() {
                     Send
                   </button>
                 </div>
-                <p className="mt-2 text-xs text-muted-foreground">
-                  {isConnected ? "Send text messages or speak to interact" : "Connect to start chatting"}
-                </p>
               </div>
             </div>
 
