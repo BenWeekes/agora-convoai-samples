@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
+import { Mic, MicOff } from "lucide-react"
 import { useAgoraVoiceClient } from "@/hooks/useAgoraVoiceClient"
 import { useAudioVisualization } from "@/hooks/useAudioVisualization"
 import { MicButton } from "@/components/agora-ui/mic-button"
@@ -58,8 +59,8 @@ export function VoiceClient() {
     sendMessage,
   } = useAgoraVoiceClient()
 
-  // Get audio visualization data
-  const frequencyData = useAudioVisualization(localAudioTrack, isConnected && !isMuted)
+  // Get audio visualization data (always enabled when connected, even when muted)
+  const frequencyData = useAudioVisualization(localAudioTrack, isConnected)
 
   const handleStart = async () => {
     if (!channel.trim()) {
@@ -215,18 +216,17 @@ export function VoiceClient() {
 
               {/* Controls */}
               <div className="rounded-lg border bg-card p-6 shadow-lg">
-                <div className="space-y-4">
-                  <div className="flex justify-center">
-                    <MicButton
-                      state={micState}
-                      audioData={frequencyData}
-                      onClick={toggleMute}
-                    />
-                  </div>
-
+                <div className="flex gap-3">
+                  <MicButton
+                    state={micState}
+                    icon={isMuted ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                    audioData={frequencyData}
+                    onClick={toggleMute}
+                    className="flex-1"
+                  />
                   <button
                     onClick={handleStop}
-                    className="w-full rounded-lg border border-destructive bg-destructive/10 px-4 py-2 text-sm font-medium text-destructive hover:bg-destructive/20"
+                    className="flex-1 rounded-lg border border-destructive bg-destructive/10 px-4 py-2 text-sm font-medium text-destructive hover:bg-destructive/20"
                   >
                     End Call
                   </button>
@@ -340,17 +340,13 @@ export function VoiceClient() {
 
             {/* Mobile: Fixed Bottom Controls */}
             <div className="flex md:hidden gap-3 p-4 border-t bg-card">
-              <button
+              <MicButton
+                state={micState}
+                icon={isMuted ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                audioData={frequencyData}
                 onClick={toggleMute}
-                className={cn(
-                  "flex-1 rounded-lg px-4 py-3 text-sm font-medium transition-colors min-h-[48px]",
-                  isMuted
-                    ? "bg-muted text-muted-foreground border border-input"
-                    : "bg-primary text-primary-foreground"
-                )}
-              >
-                {isMuted ? "Unmute" : "Mute"}
-              </button>
+                className="flex-1 min-h-[48px]"
+              />
               <button
                 onClick={handleStop}
                 className="flex-1 rounded-lg border border-destructive bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive hover:bg-destructive/20 min-h-[48px]"

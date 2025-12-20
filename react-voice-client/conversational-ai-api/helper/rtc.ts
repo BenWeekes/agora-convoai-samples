@@ -120,11 +120,13 @@ export class RTCHelper extends EventHelper<RTCHelperEventMap> {
 
   async setMuted(muted: boolean): Promise<void> {
     if (!this.localAudioTrack) return
-    await this.localAudioTrack.setEnabled(!muted)
+    // Use setMuted to keep track enabled locally for visualization
+    // but stop transmission to network
+    this.localAudioTrack.setMuted(muted)
   }
 
   getMuted(): boolean {
-    return !this.localAudioTrack?.enabled ?? true
+    return this.localAudioTrack?.muted ?? true
   }
 
   getRemoteUsers(): RemoteUser[] {

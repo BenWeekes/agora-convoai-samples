@@ -58,7 +58,7 @@ export const MicButton = React.forwardRef<HTMLButtonElement, MicButtonProps>(
         ref={ref}
         disabled={disabled || isError}
         className={cn(
-          "relative inline-flex items-center justify-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-medium transition-colors",
+          "relative inline-flex items-center justify-center rounded-lg border px-3 py-2 text-sm font-medium transition-colors",
           // Idle and active states
           !isError &&
             "border-input bg-background hover:bg-accent focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
@@ -71,13 +71,15 @@ export const MicButton = React.forwardRef<HTMLButtonElement, MicButtonProps>(
         )}
         {...props}
       >
-        {isError ? <MicOff className="h-4 w-4" /> : icon}
-        {isActive && audioData && audioData.length > 0 && (
-          <SimpleVisualizer
-            data={audioData}
-            className={isProcessing ? "text-slate-400" : "text-blue-500"}
-          />
-        )}
+        <div className="flex items-center gap-1.5">
+          {isError ? <MicOff className="h-4 w-4" /> : icon}
+          {audioData && audioData.length > 0 && (
+            <SimpleVisualizer
+              data={audioData}
+              className={isProcessing ? "text-slate-400" : "text-blue-500"}
+            />
+          )}
+        </div>
 
         {/* Error badge - orange circle with exclamation */}
         {isError && showErrorBadge && (
