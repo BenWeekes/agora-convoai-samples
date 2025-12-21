@@ -1,68 +1,66 @@
-// Core Components
-export { AgentVisualizer } from "./agent-visualizer"
+// Voice Components
+export { AgentVisualizer } from "./components/agent-visualizer"
 export type {
   AgentVisualizerProps,
   AgentVisualizerSize,
   AgentVisualizerState,
-} from "./agent-visualizer"
+} from "./components/agent-visualizer"
 
-export { MicButton } from "./mic-button"
-export type { MicButtonProps, MicButtonState } from "./mic-button"
+export { MicButton } from "./components/mic-button"
+export type { MicButtonProps, MicButtonState } from "./components/mic-button"
 
-export { Avatar } from "./avatar"
-export type { AvatarProps, AvatarSize } from "./avatar"
+export { AudioVisualizer } from "./components/audio-visualizer"
+export type { AudioVisualizerProps } from "./components/audio-visualizer"
 
-export { Conversation, ConversationContent } from "./conversation"
-export type { ConversationProps, ConversationContentProps } from "./conversation"
+export { SimpleVisualizer } from "./components/simple-visualizer"
+export type { SimpleVisualizerProps } from "./components/simple-visualizer"
 
-export { Message, MessageContent } from "./message"
-export type { MessageProps, MessageContentProps } from "./message"
+export { LiveWaveform } from "./components/live-waveform"
+export type { LiveWaveformProps } from "./components/live-waveform"
 
-export { Response } from "./response"
-export type { ResponseProps } from "./response"
+export { MicButtonWithVisualizer } from "./components/mic-button-with-visualizer"
+export type { MicButtonWithVisualizerProps } from "./components/mic-button-with-visualizer"
 
-// Visualizers
-export { AudioVisualizer } from "./audio-visualizer"
-export type { AudioVisualizerProps } from "./audio-visualizer"
+export { MicSelector } from "./components/mic-selector"
+export type { MicSelectorProps } from "./components/mic-selector"
 
-export { SimpleVisualizer } from "./simple-visualizer"
-export type { SimpleVisualizerProps } from "./simple-visualizer"
+// Chat Components
+export { Conversation, ConversationContent } from "./components/conversation"
+export type { ConversationProps, ConversationContentProps } from "./components/conversation"
 
-export { LiveWaveform } from "./live-waveform"
-export type { LiveWaveformProps } from "./live-waveform"
+export { Message, MessageContent } from "./components/message"
+export type { MessageProps, MessageContentProps } from "./components/message"
 
-export { MicButtonWithVisualizer } from "./mic-button-with-visualizer"
-export type { MicButtonWithVisualizerProps } from "./mic-button-with-visualizer"
+export { Response } from "./components/response"
+export type { ResponseProps } from "./components/response"
 
-// Text Components
-export { ConvoTextStream } from "./convo-text-stream"
-export type { ConvoTextStreamProps } from "./convo-text-stream"
+export { ConvoTextStream } from "./components/convo-text-stream"
+export type { ConvoTextStreamProps } from "./components/convo-text-stream"
+
+// Video Components
+export { Avatar } from "./components/avatar"
+export type { AvatarProps, AvatarSize } from "./components/avatar"
 
 // UI Primitives
-export { Button } from "./button"
-export type { ButtonProps } from "./button"
+export { Button } from "./components/button"
+export type { ButtonProps } from "./components/button"
 
-export { IconButton } from "./icon-button"
-export type { IconButtonProps } from "./icon-button"
+export { IconButton } from "./components/icon-button"
+export type { IconButtonProps } from "./components/icon-button"
 
-export { Card } from "./card"
-export type { CardProps } from "./card"
+export { Card } from "./components/card"
+export type { CardProps } from "./components/card"
 
-export { Chip } from "./chip"
-export type { ChipProps } from "./chip"
+export { Chip } from "./components/chip"
+export type { ChipProps } from "./components/chip"
 
-// Form Components
-export { ValuePicker } from "./value-picker"
-export type { ValuePickerProps } from "./value-picker"
+export { ValuePicker } from "./components/value-picker"
+export type { ValuePickerProps } from "./components/value-picker"
 
-export { MicSelector } from "./mic-selector"
-export type { MicSelectorProps } from "./mic-selector"
-
-// Dropdown & Command
-export { DropdownMenu } from "./dropdown-menu"
-export { Command } from "./command"
-export { Popover } from "./popover"
+export { DropdownMenu } from "./components/dropdown-menu"
+export { Command } from "./components/command"
+export { Popover } from "./components/popover"
 
 // Demo
-export { HelloWorld } from "./hello-world"
-export type { HelloWorldProps } from "./hello-world"
+export { HelloWorld } from "./components/hello-world"
+export type { HelloWorldProps } from "./components/hello-world"

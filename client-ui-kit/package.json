@@ -1,0 +1,25 @@
+{
+  "name": "@agora/ui-kit",
+  "version": "1.0.0",
+  "description": "React component library for building voice AI user interfaces with Agora",
+  "main": "index.ts",
+  "types": "index.ts",
+  "sideEffects": false,
+  "keywords": [
+    "agora",
+    "voice-ai",
+    "react",
+    "ui-components",
+    "conversational-ai",
+    "chat",
+    "audio-visualization"
+  ],
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "lucide-react": ">=0.263.0",
+    "class-variance-authority": ">=0.7.0",
+    "clsx": ">=2.0.0",
+    "tailwind-merge": ">=2.0.0"
+  },
+  "license": "MIT"
+}

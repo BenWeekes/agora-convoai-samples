@@ -2,7 +2,41 @@
 
 React component library for building voice AI user interfaces with Agora.
 
-**Status**: ✅ Production-Ready | 📦 Ready for Packaging
+---
+
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Architecture](#architecture)
+- [Voice Components](#voice-components)
+  - [MicButton](#micbutton)
+  - [AgentVisualizer](#agentvisualizer)
+  - [AudioVisualizer](#audiovisualizer)
+  - [SimpleVisualizer](#simplevisualizer)
+  - [LiveWaveform](#livewaveform)
+  - [MicButtonWithVisualizer](#micbuttonwithvisualizer)
+  - [MicSelector](#micselector)
+- [Chat Components](#chat-components)
+  - [Conversation](#conversation)
+  - [Message](#message)
+  - [Response](#response)
+  - [ConvoTextStream](#convotextstream)
+- [Video Components](#video-components)
+  - [Avatar](#avatar)
+- [UI Primitives](#ui-primitives)
+  - [Button](#button)
+  - [IconButton](#iconbutton)
+  - [Card](#card)
+  - [Chip](#chip)
+  - [ValuePicker](#valuepicker)
+- [Usage Patterns](#usage-patterns)
+  - [Voice Chat Interface](#voice-chat-interface)
+  - [Mobile-Responsive Layout](#mobile-responsive-layout)
+  - [Audio Visualization](#audio-visualization)
+- [Theming](#theming)
+- [Accessibility](#accessibility)
+- [Performance](#performance)
 
 ---
 
@@ -11,7 +45,7 @@ React component library for building voice AI user interfaces with Agora.
 - **Voice AI Components** - MicButton, AgentVisualizer, audio visualizations
 - **Conversation UI** - Message bubbles, avatars, streaming text
 - **Audio Visualizations** - Waveforms, frequency bars, PTS-synced animations
-- **Tailwind CSS** - Full Tailwind support with customization via `cn()` utility
+- **Tailwind CSS** - Full Tailwind support with customization via cn() utility
 - **TypeScript** - Comprehensive type definitions
 - **Accessible** - ARIA attributes and keyboard navigation
 - **Mobile-Responsive** - Touch-friendly sizing and layouts
@@ -20,23 +54,80 @@ React component library for building voice AI user interfaces with Agora.
 
 ## Installation
 
+**Dependencies:**
+
 ```bash
 npm install lucide-react class-variance-authority clsx tailwind-merge
 ```
 
-Copy the `client-ui-kit` folder into your project and import components:
+**Using as Local Package (Development):**
+
+Add to your `package.json`:
+
+```json
+{
+  "dependencies": {
+    "@agora/ui-kit": "file:../client-ui-kit"
+  }
+}
+```
+
+Then run:
+
+```bash
+npm install
+```
+
+**Import components:**
 
 ```typescript
-import { MicButton, AgentVisualizer, Conversation } from './client-ui-kit'
+import { MicButton, AgentVisualizer, Conversation } from '@agora/ui-kit'
 ```
 
 ---
 
-## Components
+## Architecture
 
-### Core Components
+```
+/client-ui-kit
+├── index.ts                         # Main exports
+├── README.md                        # This file
+└── /components                      # All UI components
+    ├── mic-button.tsx               # Microphone button
+    ├── agent-visualizer.tsx         # Agent state visualizer
+    ├── audio-visualizer.tsx         # Full audio visualizer
+    ├── simple-visualizer.tsx        # Compact visualizer
+    ├── live-waveform.tsx            # Waveform visualizer
+    ├── mic-button-with-visualizer.tsx
+    ├── mic-selector.tsx             # Mic device selector
+    ├── conversation.tsx             # Conversation container
+    ├── message.tsx                  # Message bubble
+    ├── response.tsx                 # Response text
+    ├── convo-text-stream.tsx        # Streaming text
+    ├── avatar.tsx                   # Avatar component
+    ├── button.tsx                   # Button primitive
+    ├── icon-button.tsx              # Icon button
+    ├── card.tsx                     # Card container
+    ├── chip.tsx                     # Chip/tag
+    ├── value-picker.tsx             # Value selector
+    ├── dropdown-menu.tsx            # Dropdown menu
+    ├── command.tsx                  # Command palette
+    ├── popover.tsx                  # Popover/tooltip
+    └── hello-world.tsx              # Demo component
+```
 
-#### MicButton
+**Component Organization:**
+
+- **Voice Components** - Audio controls, visualizations, agent state
+- **Chat Components** - Conversation, messages, text streaming
+- **Video Components** - Avatar (local/remote video components coming in future)
+- **UI Primitives** - Buttons, cards, form controls
+
+---
+
+## Voice Components
+
+### MicButton
 
 Microphone button with built-in audio visualization and state management.
 
@@ -44,17 +135,17 @@ Microphone button with built-in audio visualization and state management.
 
 ```typescript
 interface MicButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  state?: 'idle' | 'listening' | 'processing' | 'error'  // default: 'idle'
-  icon?: React.ReactNode                                  // Custom icon
-  showErrorBadge?: boolean                                // Show error indicator
-  audioData?: number[]                                    // 0-1 normalized frequency data
+  state?: 'idle' | 'listening' | 'processing' | 'error'
+  icon?: React.ReactNode
+  showErrorBadge?: boolean
+  audioData?: number[]  // 0-1 normalized frequency data
 }
 ```
 
 **Usage:**
 
 ```typescript
-import { MicButton } from './client-ui-kit'
+import { MicButton } from '@agora/ui-kit'
 import { Mic, MicOff } from 'lucide-react'
 
 <MicButton
@@ -66,15 +157,23 @@ import { Mic, MicOff } from 'lucide-react'
 />
 ```
 
+**States:**
+
+- `idle` - Default state
+- `listening` - Actively listening
+- `processing` - Processing audio
+- `error` - Error state (permission denied, etc.)
+
 **Features:**
-- Automatic state styling (idle/listening/processing/error)
+
+- Automatic state styling
 - Integrated audio visualization (SimpleVisualizer)
-- Error badge support for permission issues
+- Error badge support
 - Keeps visualizer visible when muted (icon changes only)
 
 ---
 
-#### AgentVisualizer
+### AgentVisualizer
 
 Animated agent state visualizer with pulsing circles.
 
@@ -83,46 +182,6 @@ Animated agent state visualizer with pulsing circles.
 ```typescript
 interface AgentVisualizerProps {
   state: 'not-joined' | 'listening' | 'talking' | 'thinking'
-  size?: 'sm' | 'md' | 'lg'  // default: 'md'
-  className?: string
-}
-```
-
-**Usage:**
-
-```typescript
-import { AgentVisualizer } from './client-ui-kit'
-
-<AgentVisualizer
-  state={isAgentSpeaking ? 'talking' : 'listening'}
-  size="sm"
-/>
-```
-
-**States:**
-- `not-joined` - Gray, no animation
-- `listening` - Blue, gentle pulse
-- `talking` - Green, active animation
-- `thinking` - Purple, processing animation
-
-**Sizes:**
-- `sm` - 128px (mobile/compact)
-- `md` - 192px (default)
-- `lg` - 256px (full screen)
-
----
-
-#### Avatar
-
-User/agent avatar with customizable size and colors.
-
-**Props:**
-
-```typescript
-interface AvatarProps {
-  src?: string           // Image URL
-  alt?: string           // Alt text
-  initials?: string      // Fallback initials (e.g., "JD")
   size?: 'sm' | 'md' | 'lg'
   className?: string
 }
@@ -131,24 +190,219 @@ interface AvatarProps {
 **Usage:**
 
 ```typescript
-import { Avatar } from './client-ui-kit'
+import { AgentVisualizer } from '@agora/ui-kit'
 
-{/* Image avatar */}
-<Avatar src="/avatar.jpg" alt="User" size="sm" />
-
-{/* Initials fallback */}
-<Avatar initials="A" size="sm" />  {/* Agent */}
-<Avatar initials="U" size="sm" />  {/* User */}
+<AgentVisualizer
+  state={isAgentSpeaking ? 'talking' : 'listening'}
+  size="sm"
+/>
 ```
 
+**States:**
+
+- `not-joined` - Gray, no animation
+- `listening` - Blue, gentle pulse
+- `talking` - Green, active animation
+- `thinking` - Purple, processing animation
+
 **Sizes:**
-- `sm` - 32px
-- `md` - 40px
-- `lg` - 48px
+
+- `sm` - 128px (mobile/compact)
+- `md` - 192px (default)
+- `lg` - 256px (full screen)
 
 ---
 
-#### Conversation
+### AudioVisualizer
+
+Full-featured frequency bar visualizer.
+
+**Props:**
+
+```typescript
+interface AudioVisualizerProps {
+  data: number[]         // 0-1 normalized frequency data
+  barCount?: number      // Number of bars (default: 32)
+  barWidth?: number      // Bar width in px (default: 4)
+  barGap?: number        // Gap between bars (default: 2)
+  height?: number        // Height in px (default: 100)
+  color?: string         // Bar color (default: 'rgb(59, 130, 246)')
+  className?: string
+}
+```
+
+**Usage:**
+
+```typescript
+import { AudioVisualizer } from '@agora/ui-kit'
+
+<AudioVisualizer
+  data={frequencyData}
+  barCount={64}
+  barWidth={3}
+  barGap={1}
+  height={120}
+  color="rgb(34, 197, 94)"
+/>
+```
+
+**Features:**
+
+- Configurable bar count and sizing
+- Custom colors
+- Canvas-based rendering
+- High-performance animations
+
+---
+
+### SimpleVisualizer
+
+Compact horizontal bar visualizer for MicButton.
+
+**Props:**
+
+```typescript
+interface SimpleVisualizerProps {
+  data: number[]
+  className?: string
+}
+```
+
+**Usage:**
+
+```typescript
+import { SimpleVisualizer } from '@agora/ui-kit'
+
+<SimpleVisualizer
+  data={frequencyData}
+  className="text-blue-500"
+/>
+```
+
+**Features:**
+
+- 8 vertical bars
+- Smooth animations
+- Customizable color via className
+- Fixed width (64px)
+
+---
+
+### LiveWaveform
+
+Animated waveform with PTS synchronization support.
+
+**Props:**
+
+```typescript
+interface LiveWaveformProps {
+  audioData: number[]
+  isActive?: boolean
+  color?: string
+  height?: number
+  className?: string
+}
+```
+
+**Usage:**
+
+```typescript
+import { LiveWaveform } from '@agora/ui-kit'
+
+<LiveWaveform
+  audioData={waveformData}
+  isActive={isAgentSpeaking}
+  color="#10b981"
+  height={80}
+/>
+```
+
+**Features:**
+
+- Smooth waveform rendering
+- Active/inactive states
+- SVG-based for scalability
+- Supports PTS-based timing
+
+---
+
+### MicButtonWithVisualizer
+
+Combined mic button and full audio visualizer (alternative to MicButton).
+
+**Props:**
+
+```typescript
+interface MicButtonWithVisualizerProps {
+  isActive: boolean
+  isMuted: boolean
+  onClick: () => void
+  audioData?: number[]
+  className?: string
+}
+```
+
+**Usage:**
+
+```typescript
+import { MicButtonWithVisualizer } from '@agora/ui-kit'
+
+<MicButtonWithVisualizer
+  isActive={isConnected}
+  isMuted={isMuted}
+  onClick={toggleMute}
+  audioData={frequencyData}
+/>
+```
+
+**Features:**
+
+- Large mic icon with surrounding visualizer
+- Active/inactive states
+- Mute indicator
+- Integrated frequency bars
+
+---
+
+### MicSelector
+
+Microphone device selector dropdown.
+
+**Props:**
+
+```typescript
+interface MicSelectorProps {
+  devices: MediaDeviceInfo[]
+  selectedDeviceId: string
+  onDeviceChange: (deviceId: string) => void
+  className?: string
+}
+```
+
+**Usage:**
+
+```typescript
+import { MicSelector } from '@agora/ui-kit'
+
+<MicSelector
+  devices={microphoneDevices}
+  selectedDeviceId={currentMicId}
+  onDeviceChange={handleMicChange}
+/>
+```
+
+**Features:**
+
+- Lists available microphones
+- Shows current selection
+- Device switching
+- Integrated with Agora audio track API
+
+---
+
+## Chat Components
+
+### Conversation
 
 Container for chat messages with auto-scroll and styling.
 
@@ -157,7 +411,7 @@ Container for chat messages with auto-scroll and styling.
 ```typescript
 interface ConversationProps {
   children: React.ReactNode
-  height?: string        // CSS height value (default: '100%')
+  height?: string
   className?: string
 }
 
@@ -170,7 +424,7 @@ interface ConversationContentProps {
 **Usage:**
 
 ```typescript
-import { Conversation, ConversationContent } from './client-ui-kit'
+import { Conversation, ConversationContent } from '@agora/ui-kit'
 
 <Conversation height="500px" className="flex-1">
   <ConversationContent>
@@ -180,6 +434,7 @@ import { Conversation, ConversationContent } from './client-ui-kit'
 ```
 
 **Features:**
+
 - Auto-scrolls to bottom on new messages
 - Smooth scroll behavior
 - Styled scrollbar
@@ -187,7 +442,7 @@ import { Conversation, ConversationContent } from './client-ui-kit'
 
 ---
 
-#### Message
+### Message
 
 Individual message bubble for user or agent.
 
@@ -210,7 +465,7 @@ interface MessageContentProps {
 **Usage:**
 
 ```typescript
-import { Message, MessageContent, Response, Avatar } from './client-ui-kit'
+import { Message, MessageContent, Response, Avatar } from '@agora/ui-kit'
 
 <Message
   from="assistant"
@@ -232,13 +487,14 @@ import { Message, MessageContent, Response, Avatar } from './client-ui-kit'
 ```
 
 **Layout:**
+
 - `from="assistant"` - Avatar on left, message on right
 - `from="user"` - Avatar on right, message on left
 - Responsive flex layout
 
 ---
 
-#### Response
+### Response
 
 Text content wrapper for messages.
 
@@ -254,170 +510,20 @@ interface ResponseProps {
 **Usage:**
 
 ```typescript
-import { Response } from './client-ui-kit'
+import { Response } from '@agora/ui-kit'
 
 <Response>This is the message text</Response>
 ```
 
 **Features:**
+
 - Pre-styled text formatting
 - Supports markdown-style text
 - Proper spacing and line height
 
 ---
 
-### Audio Visualizers
-
-#### SimpleVisualizer
-
-Compact horizontal bar visualizer for MicButton.
-
-**Props:**
-
-```typescript
-interface SimpleVisualizerProps {
-  data: number[]         // 0-1 normalized frequency data
-  className?: string
-}
-```
-
-**Usage:**
-
-```typescript
-import { SimpleVisualizer } from './client-ui-kit'
-
-<SimpleVisualizer
-  data={frequencyData}
-  className="text-blue-500"
-/>
-```
-
-**Features:**
-- 8 vertical bars
-- Smooth animations
-- Customizable color via className
-- Fixed width (64px)
-
----
-
-#### AudioVisualizer
-
-Full-featured frequency bar visualizer.
-
-**Props:**
-
-```typescript
-interface AudioVisualizerProps {
-  data: number[]         // 0-1 normalized frequency data
-  barCount?: number      // Number of bars (default: 32)
-  barWidth?: number      // Bar width in px (default: 4)
-  barGap?: number        // Gap between bars (default: 2)
-  height?: number        // Height in px (default: 100)
-  color?: string         // Bar color (default: 'rgb(59, 130, 246)')
-  className?: string
-}
-```
-
-**Usage:**
-
-```typescript
-import { AudioVisualizer } from './client-ui-kit'
-
-<AudioVisualizer
-  data={frequencyData}
-  barCount={64}
-  barWidth={3}
-  barGap={1}
-  height={120}
-  color="rgb(34, 197, 94)"
-/>
-```
-
-**Features:**
-- Configurable bar count and sizing
-- Custom colors
-- Canvas-based rendering
-- High-performance animations
-
----
-
-#### LiveWaveform
-
-Animated waveform with PTS synchronization support.
-
-**Props:**
-
-```typescript
-interface LiveWaveformProps {
-  audioData: number[]    // 0-1 normalized audio data
-  isActive?: boolean     // Enable animation
-  color?: string         // Waveform color
-  height?: number        // Height in px (default: 60)
-  className?: string
-}
-```
-
-**Usage:**
-
-```typescript
-import { LiveWaveform } from './client-ui-kit'
-
-<LiveWaveform
-  audioData={waveformData}
-  isActive={isAgentSpeaking}
-  color="#10b981"
-  height={80}
-/>
-```
-
-**Features:**
-- Smooth waveform rendering
-- Active/inactive states
-- SVG-based for scalability
-- Supports PTS-based timing
-
----
-
-#### MicButtonWithVisualizer
-
-Combined mic button and full audio visualizer (alternative to MicButton).
-
-**Props:**
-
-```typescript
-interface MicButtonWithVisualizerProps {
-  isActive: boolean
-  isMuted: boolean
-  onClick: () => void
-  audioData?: number[]
-  className?: string
-}
-```
-
-**Usage:**
-
-```typescript
-import { MicButtonWithVisualizer } from './client-ui-kit'
-
-<MicButtonWithVisualizer
-  isActive={isConnected}
-  isMuted={isMuted}
-  onClick={toggleMute}
-  audioData={frequencyData}
-/>
-```
-
-**Features:**
-- Large mic icon with surrounding visualizer
-- Active/inactive states
-- Mute indicator
-- Integrated frequency bars
-
----
-
-### Text Components
-
-#### ConvoTextStream
+### ConvoTextStream
 
 Streaming text component with typewriter effect.
 
@@ -426,7 +532,7 @@ Streaming text component with typewriter effect.
 ```typescript
 interface ConvoTextStreamProps {
   text: string
-  speed?: number         // Characters per second (default: 20)
+  speed?: number
   onComplete?: () => void
   className?: string
 }
@@ -435,7 +541,7 @@ interface ConvoTextStreamProps {
 **Usage:**
 
 ```typescript
-import { ConvoTextStream } from './client-ui-kit'
+import { ConvoTextStream } from '@agora/ui-kit'
 
 <ConvoTextStream
   text="This text will stream in character by character"
@@ -445,6 +551,7 @@ import { ConvoTextStream } from './client-ui-kit'
 ```
 
 **Features:**
+
 - Smooth character-by-character streaming
 - Configurable speed
 - Completion callback
@@ -452,9 +559,50 @@ import { ConvoTextStream } from './client-ui-kit'
 
 ---
 
-### UI Primitives
+## Video Components
 
-#### Button
+### Avatar
+
+User/agent avatar with customizable size and colors.
+
+**Props:**
+
+```typescript
+interface AvatarProps {
+  src?: string
+  alt?: string
+  initials?: string
+  size?: 'sm' | 'md' | 'lg'
+  className?: string
+}
+```
+
+**Usage:**
+
+```typescript
+import { Avatar } from '@agora/ui-kit'
+
+{/* Image avatar */}
+<Avatar src="/avatar.jpg" alt="User" size="sm" />
+
+{/* Initials fallback */}
+<Avatar initials="A" size="sm" />
+<Avatar initials="U" size="sm" />
+```
+
+**Sizes:**
+
+- `sm` - 32px
+- `md` - 40px
+- `lg` - 48px
+
+**Note:** Future video components will include LocalVideoDisplay and RemoteVideoDisplay for rendering video streams from Agora RTC.
+
+---
+
+## UI Primitives
+
+### Button
 
 Standard button with variant support.
 
@@ -471,7 +619,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 **Usage:**
 
 ```typescript
-import { Button } from './client-ui-kit'
+import { Button } from '@agora/ui-kit'
 
 <Button variant="default" size="md" onClick={handleClick}>
   Click Me
@@ -483,6 +631,7 @@ import { Button } from './client-ui-kit'
 ```
 
 **Variants:**
+
 - `default` - Primary blue background
 - `outline` - Border only, transparent background
 - `ghost` - No border, hover background
@@ -490,7 +639,7 @@ import { Button } from './client-ui-kit'
 
 ---
 
-#### IconButton
+### IconButton
 
 Circular icon button for actions.
 
@@ -508,7 +657,7 @@ interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> 
 **Usage:**
 
 ```typescript
-import { IconButton } from './client-ui-kit'
+import { IconButton } from '@agora/ui-kit'
 import { Settings } from 'lucide-react'
 
 <IconButton
@@ -519,13 +668,14 @@ import { Settings } from 'lucide-react'
 ```
 
 **Sizes:**
+
 - `sm` - 32px
 - `md` - 40px
 - `lg` - 48px
 
 ---
 
-#### Card
+### Card
 
 Simple card container.
 
@@ -541,7 +691,7 @@ interface CardProps {
 **Usage:**
 
 ```typescript
-import { Card } from './client-ui-kit'
+import { Card } from '@agora/ui-kit'
 
 <Card className="p-6">
   <h3>Card Title</h3>
@@ -551,7 +701,7 @@ import { Card } from './client-ui-kit'
 
 ---
 
-#### Chip
+### Chip
 
 Small label/tag component.
 
@@ -568,7 +718,7 @@ interface ChipProps {
 **Usage:**
 
 ```typescript
-import { Chip } from './client-ui-kit'
+import { Chip } from '@agora/ui-kit'
 
 <Chip variant="success">Active</Chip>
 <Chip variant="error">Offline</Chip>
@@ -576,9 +726,7 @@ import { Chip } from './client-ui-kit'
 
 ---
 
-### Form Components
-
-#### ValuePicker
+### ValuePicker
 
 Value selector with increment/decrement buttons.
 
@@ -599,7 +747,7 @@ interface ValuePickerProps {
 **Usage:**
 
 ```typescript
-import { ValuePicker } from './client-ui-kit'
+import { ValuePicker } from '@agora/ui-kit'
 
 <ValuePicker
   value={volume}
@@ -609,85 +757,6 @@ import { ValuePicker } from './client-ui-kit'
   step={5}
   label="Volume"
 />
-```
-
----
-
-#### MicSelector
-
-Microphone device selector dropdown.
-
-**Props:**
-
-```typescript
-interface MicSelectorProps {
-  devices: MediaDeviceInfo[]
-  selectedDeviceId: string
-  onDeviceChange: (deviceId: string) => void
-  className?: string
-}
-```
-
-**Usage:**
-
-```typescript
-import { MicSelector } from './client-ui-kit'
-
-<MicSelector
-  devices={microphoneDevices}
-  selectedDeviceId={currentMicId}
-  onDeviceChange={handleMicChange}
-/>
-```
-
-**Features:**
-- Lists available microphones
-- Shows current selection
-- Device switching
-- Integrated with Agora audio track API
-
----
-
-### Layout Components
-
-#### DropdownMenu
-
-Dropdown menu component (uses Radix UI pattern).
-
-**Usage:**
-
-```typescript
-import { DropdownMenu } from './client-ui-kit'
-
-{/* See component file for full API */}
-```
-
----
-
-#### Command
-
-Command palette component (keyboard shortcuts).
-
-**Usage:**
-
-```typescript
-import { Command } from './client-ui-kit'
-
-{/* See component file for full API */}
-```
-
----
-
-#### Popover
-
-Popover/tooltip component.
-
-**Usage:**
-
-```typescript
-import { Popover } from './client-ui-kit'
-
-{/* See component file for full API */}
 ```
 
 ---
@@ -706,7 +775,7 @@ import {
   MessageContent,
   Response,
   Avatar
-} from './client-ui-kit'
+} from '@agora/ui-kit'
 
 function VoiceChat() {
   const { transcript, isAgentSpeaking, isMuted, toggleMute } = useVoiceAI()
@@ -801,7 +870,7 @@ function MobileVoiceChat() {
 ### Audio Visualization
 
 ```typescript
-import { AudioVisualizer, SimpleVisualizer, LiveWaveform } from './client-ui-kit'
+import { AudioVisualizer, SimpleVisualizer, LiveWaveform } from '@agora/ui-kit'
 
 function AudioViz() {
   const frequencyData = useAudioVisualization(audioTrack, isConnected)
@@ -847,11 +916,11 @@ import { cn } from '@/lib/utils'
 />
 ```
 
-### Custom Colors
+**Custom Colors:**
 
 Override default colors via Tailwind config or inline styles:
 
-```typescript
+```javascript
 // tailwind.config.js
 module.exports = {
   theme: {
@@ -898,64 +967,6 @@ const MemoizedMessage = React.memo(Message)
   <MemoizedMessage key={msg.turn_id} {...msg} />
 ))}
 ```
-
----
-
-## Dependencies
-
-**Required:**
-- React ≥18.0.0
-- Tailwind CSS ≥3.0.0
-- lucide-react (for icons)
-- clsx (for className merging)
-- tailwind-merge (for Tailwind class deduplication)
-
-**Optional:**
-- class-variance-authority (for variant-based styling)
-
----
-
-## File Structure
-
-```
-/client-ui-kit
-├── index.ts                         # Main exports
-├── README.md                        # This file
-│
-├── mic-button.tsx                   # Microphone button
-├── agent-visualizer.tsx             # Agent state visualizer
-├── avatar.tsx                       # Avatar component
-├── conversation.tsx                 # Conversation container
-├── message.tsx                      # Message bubble
-├── response.tsx                     # Response text
-│
-├── audio-visualizer.tsx             # Full audio visualizer
-├── simple-visualizer.tsx            # Compact visualizer
-├── live-waveform.tsx                # Waveform visualizer
-├── mic-button-with-visualizer.tsx   # Combined mic+viz
-│
-├── convo-text-stream.tsx            # Streaming text
-│
-├── button.tsx                       # Button primitive
-├── icon-button.tsx                  # Icon button
-├── card.tsx                         # Card container
-├── chip.tsx                         # Chip/tag
-│
-├── value-picker.tsx                 # Value selector
-├── mic-selector.tsx                 # Mic device selector
-│
-├── dropdown-menu.tsx                # Dropdown menu
-├── command.tsx                      # Command palette
-├── popover.tsx                      # Popover/tooltip
-│
-└── hello-world.tsx                  # Demo component
-```
-
----
-
-## Examples
-
-See `react-voice-client/components/VoiceClient.tsx` for a complete production example using these components.
 
 ---
 
