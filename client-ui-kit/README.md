@@ -98,36 +98,40 @@ pnpm add lucide-react class-variance-authority clsx tailwind-merge @lottiefiles/
 /client-ui-kit
 ├── index.ts                         # Main exports
 ├── README.md                        # This file
-└── /components                      # All UI components
-    ├── mic-button.tsx               # Microphone button
-    ├── agent-visualizer.tsx         # Agent state visualizer
-    ├── audio-visualizer.tsx         # Full audio visualizer
-    ├── simple-visualizer.tsx        # Compact visualizer
-    ├── live-waveform.tsx            # Waveform visualizer
+├── lib/
+│   └── utils.ts                     # cn() utility
+└── components/                      # All components (flat structure)
+    ├── mic-button.tsx
+    ├── agent-visualizer.tsx
+    ├── audio-visualizer.tsx
+    ├── simple-visualizer.tsx
+    ├── live-waveform.tsx
     ├── mic-button-with-visualizer.tsx
-    ├── mic-selector.tsx             # Mic device selector
-    ├── conversation.tsx             # Conversation container
-    ├── message.tsx                  # Message bubble
-    ├── response.tsx                 # Response text
-    ├── convo-text-stream.tsx        # Streaming text
-    ├── avatar.tsx                   # Avatar component
-    ├── button.tsx                   # Button primitive
-    ├── icon-button.tsx              # Icon button
-    ├── card.tsx                     # Card container
-    ├── chip.tsx                     # Chip/tag
-    ├── value-picker.tsx             # Value selector
-    ├── dropdown-menu.tsx            # Dropdown menu
-    ├── command.tsx                  # Command palette
-    ├── popover.tsx                  # Popover/tooltip
-    └── hello-world.tsx              # Demo component
+    ├── mic-selector.tsx
+    ├── conversation.tsx
+    ├── message.tsx
+    ├── response.tsx
+    ├── convo-text-stream.tsx
+    ├── avatar.tsx
+    ├── button.tsx
+    ├── icon-button.tsx
+    ├── card.tsx
+    ├── chip.tsx
+    ├── value-picker.tsx
+    ├── dropdown-menu.tsx
+    ├── command.tsx
+    ├── popover.tsx
+    └── hello-world.tsx
 ```
 
-**Component Organization:**
+**Component Categories:**
 
-- **Voice Components** - Audio controls, visualizations, agent state
-- **Chat Components** - Conversation, messages, text streaming
+All components live in a flat `components/` directory and are organized by purpose:
+
+- **Voice Components** - Audio controls, visualizations, agent state (MicButton, AgentVisualizer, AudioVisualizer, SimpleVisualizer, LiveWaveform, MicSelector)
+- **Chat Components** - Conversation, messages, text streaming (Conversation, Message, Response, ConvoTextStream)
 - **Video Components** - Avatar (local/remote video components coming in future)
-- **UI Primitives** - Buttons, cards, form controls
+- **UI Primitives** - Buttons, cards, form controls (Button, IconButton, Card, Chip, ValuePicker, DropdownMenu, Command, Popover)
 
 ---
 
