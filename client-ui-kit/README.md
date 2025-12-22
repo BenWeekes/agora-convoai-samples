@@ -100,38 +100,42 @@ pnpm add lucide-react class-variance-authority clsx tailwind-merge @lottiefiles/
 ├── README.md                        # This file
 ├── lib/
 │   └── utils.ts                     # cn() utility
-└── components/                      # All components (flat structure)
-    ├── mic-button.tsx
-    ├── agent-visualizer.tsx
-    ├── audio-visualizer.tsx
-    ├── simple-visualizer.tsx
-    ├── live-waveform.tsx
-    ├── mic-button-with-visualizer.tsx
-    ├── mic-selector.tsx
-    ├── conversation.tsx
-    ├── message.tsx
-    ├── response.tsx
-    ├── convo-text-stream.tsx
-    ├── avatar.tsx
-    ├── button.tsx
-    ├── icon-button.tsx
-    ├── card.tsx
-    ├── chip.tsx
-    ├── value-picker.tsx
-    ├── dropdown-menu.tsx
-    ├── command.tsx
-    ├── popover.tsx
-    └── hello-world.tsx
+└── components/
+    ├── voice/                       # Voice AI components
+    │   ├── mic-button.tsx
+    │   ├── agent-visualizer.tsx
+    │   ├── audio-visualizer.tsx
+    │   ├── simple-visualizer.tsx
+    │   ├── live-waveform.tsx
+    │   ├── mic-button-with-visualizer.tsx
+    │   └── mic-selector.tsx
+    ├── chat/                        # Chat components
+    │   ├── conversation.tsx
+    │   ├── message.tsx
+    │   ├── response.tsx
+    │   └── convo-text-stream.tsx
+    ├── video/                       # Video components
+    │   └── avatar.tsx
+    └── primitives/                  # UI primitives
+        ├── button.tsx
+        ├── icon-button.tsx
+        ├── card.tsx
+        ├── chip.tsx
+        ├── value-picker.tsx
+        ├── dropdown-menu.tsx
+        ├── command.tsx
+        ├── popover.tsx
+        └── hello-world.tsx
 ```
 
-**Component Categories:**
+**Component Organization:**
 
-All components live in a flat `components/` directory and are organized by purpose:
+Components are organized into category subfolders:
 
-- **Voice Components** - Audio controls, visualizations, agent state (MicButton, AgentVisualizer, AudioVisualizer, SimpleVisualizer, LiveWaveform, MicSelector)
-- **Chat Components** - Conversation, messages, text streaming (Conversation, Message, Response, ConvoTextStream)
-- **Video Components** - Avatar (local/remote video components coming in future)
-- **UI Primitives** - Buttons, cards, form controls (Button, IconButton, Card, Chip, ValuePicker, DropdownMenu, Command, Popover)
+- **voice/** - Audio controls, visualizations, agent state
+- **chat/** - Conversation, messages, text streaming
+- **video/** - Avatar (local/remote video components coming in future)
+- **primitives/** - Buttons, cards, form controls
 
 ---
 
