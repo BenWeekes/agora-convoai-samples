@@ -2,12 +2,12 @@
 
 import { useState, useCallback, useEffect, useRef } from "react"
 import { IMicrophoneAudioTrack } from "agora-rtc-sdk-ng"
-import { RTCHelper } from "@/conversational-ai-api/helper/rtc"
-import { SubRenderController } from "@/conversational-ai-api/utils/sub-render"
-import { ConversationalAIAPI } from "@/conversational-ai-api"
-import type { TranscriptItem, TranscriptHelperMode } from "@/conversational-ai-api/type"
-import { TurnStatus, RTCHelperEvents } from "@/conversational-ai-api/type"
-import { MicButtonState } from "@/components/agora-ui/mic-button"
+import { RTCHelper } from "@agora/conversational-ai/helper/rtc"
+import { SubRenderController } from "@agora/conversational-ai/utils/sub-render"
+import { ConversationalAIAPI } from "@agora/conversational-ai"
+import type { TranscriptItem, TranscriptHelperMode } from "@agora/conversational-ai/type"
+import { TurnStatus, RTCHelperEvents } from "@agora/conversational-ai/type"
+import { MicButtonState } from "@agora/ui-kit"
 
 export type VoiceClientConfig = {
   appId: string

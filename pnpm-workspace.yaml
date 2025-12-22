@@ -1,0 +1,5 @@
+packages:
+  - 'client-sdk/conversational-ai-api'
+  - 'client-sdk/react'
+  - 'client-ui-kit'
+  - 'react-voice-client'

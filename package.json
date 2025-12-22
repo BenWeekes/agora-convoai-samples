@@ -1,0 +1,14 @@
+{
+  "name": "agora-convoai-samples",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Agora Conversational AI samples and packages",
+  "scripts": {
+    "dev": "pnpm --filter react-voice-client dev",
+    "build": "pnpm --filter react-voice-client build",
+    "clean": "pnpm -r exec rm -rf node_modules && rm -rf node_modules"
+  },
+  "keywords": ["agora", "conversational-ai", "voice", "ai"],
+  "author": "Agora",
+  "license": "MIT"
+}
