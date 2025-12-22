@@ -14,7 +14,7 @@ Lightweight, framework-agnostic TypeScript SDK for building voice AI application
   - [React](#react)
 - [SDK API](#sdk-api)
   - [ConversationalAIAPI](#conversationalapiapi)
-    - [init()](#static-initconfig-conversationalapiconfig-conversationalapiapi)
+    - [init()](#static-init-config-conversationalapiconfig-conversationalapiapi)
     - [getInstance()](#static-getinstance-conversationalapiapi)
     - [sendMessage()](#sendmessagemessage-string-agentuid-string-priority-append--replace-promisevoid-1)
     - [getTranscript()](#gettranscript-transcriptitem)
