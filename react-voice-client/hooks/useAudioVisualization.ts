@@ -44,7 +44,8 @@ export function useAudioVisualization(
     attackRate = 0.3,
     updateInterval = 33
   } = options
-  const [frequencyData, setFrequencyData] = useState<number[]>([])
+  // Initialize with empty bars (all 0s) to show gray bars immediately
+  const [frequencyData, setFrequencyData] = useState<number[]>(Array(barCount).fill(0))
   const audioContextRef = useRef<AudioContext | null>(null)
   const analyserRef = useRef<AnalyserNode | null>(null)
   const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null)
@@ -68,7 +69,7 @@ export function useAudioVisualization(
         audioContextRef.current.close()
         audioContextRef.current = null
       }
-      setFrequencyData([])
+      setFrequencyData(Array(barCount).fill(0))
       currentLitCountRef.current = 0
       smoothedVolumeRef.current = 0
       return
@@ -191,7 +192,7 @@ export function useAudioVisualization(
         audioContextRef.current.close()
       }
     }
-  }, [track, enabled])
+  }, [track, enabled, barCount, threshold, amplification, volumeDecay, attackRate, updateInterval])
 
   return frequencyData
 }

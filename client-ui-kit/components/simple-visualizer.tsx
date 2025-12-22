@@ -2,7 +2,7 @@
 
 import { cn } from "../lib/utils"
 
-interface SimpleVisualizerProps {
+export interface SimpleVisualizerProps {
   data: number[]
   className?: string
   /** Color for active/lit bars */
@@ -34,14 +34,12 @@ export function SimpleVisualizer({
       {data.map((value, i) => (
         <div
           key={i}
-          className={cn(
-            "rounded-full transition-colors duration-75",
-            value > 0 ? activeColor : inactiveColor
-          )}
           style={{
             width: `${barWidth}px`,
             height: `${barHeight}px`,
-            transitionProperty: "background-color",
+            backgroundColor: value > 0 ? '#374151' : '#d1d5db',
+            borderRadius: '9999px',
+            transition: 'background-color 75ms',
             willChange: "background-color"
           }}
         />

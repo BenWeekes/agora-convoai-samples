@@ -14,13 +14,13 @@
 ### Frontend
 - **Port:** 8083
 - **URL:** http://localhost:8083
-- **Status:** Running (bash_id: 37b1d8)
-- **Location:** `/Users/benweekes/work/agora-convoai-samples/react-voice-client`
-- **Command:** `npm run dev`
+- **Status:** Running (bash_id: 498e28)
+- **Location:** `/Users/benweekes/work/agora-convoai-samples`
+- **Command:** `pnpm dev`
 
 ## Project Architecture
 
-The project uses a **copy-based architecture** where the SDK and UI Kit are reference implementations that sample applications copy into their project.
+The project uses a **pnpm workspace monorepo** where the SDK and UI Kit are proper packages consumed by sample applications.
 
 ### Repository Structure
 
@@ -59,44 +59,65 @@ agora-convoai-samples/
     └── package.json               # npm dependencies only
 ```
 
-### How Samples Work
+### Workspace Packages
 
-Sample applications copy the SDK and UI Kit code:
+Packages are linked via pnpm workspace protocol:
 
-```bash
-# From react-voice-client directory
-cp -r ../client-sdk/conversational-ai-api ./
-cp -r ../client-sdk/react ./
-mkdir -p components/agora-ui
-cp ../client-ui-kit/components/* components/agora-ui/
+```json
+{
+  "dependencies": {
+    "@agora/conversational-ai": "workspace:*",
+    "@agora/conversational-ai-react": "workspace:*",
+    "@agora/ui-kit": "workspace:*"
+  }
+}
 ```
 
-This allows samples to run standalone without package resolution issues.
+Benefits:
+- **Single source of truth** - Update SDK/UI Kit once, reflects everywhere
+- **Proper package development** - Packages can be published to npm
+- **External consumption** - Apps outside this repo can use published packages
+- **Dependency hoisting** - pnpm correctly resolves peer dependencies
 
 ## Recent Changes
 
-### 1. Copy-based Architecture (2025-12-22)
-- Switched from package-based to copy-based architecture for sample apps
-- Copied SDK code into `react-voice-client`:
-  - Copied `/client-sdk/conversational-ai-api` directory
-  - Copied `/client-sdk/react` directory
-- Copied UI Kit components into `react-voice-client`:
-  - Copied `/client-ui-kit/components` to `/components/agora-ui`
-- Updated all imports to use local paths:
-  - Uses `@/conversational-ai-api` (local)
-  - Uses `@/components/agora-ui` (local)
-- Fixed component imports to use `@/lib/utils` instead of relative paths
-- Updated README documentation in all 3 directories to explain copy-based approach
-- Application now builds successfully without module resolution errors
+### 1. pnpm Workspace Implementation (2025-12-22)
+- Implemented pnpm workspace monorepo for proper package development
+- Added `pnpm-workspace.yaml` to configure workspace
+- Added root `package.json` with workspace scripts (`pnpm dev`, `pnpm build`)
+- Updated `react-voice-client` to use `workspace:*` protocol for package references
+- Updated all imports to use package names (`@agora/conversational-ai`, `@agora/ui-kit`)
+- Removed copied code - packages now properly linked via workspace
+- Benefits: Single source of truth, publishable packages, external consumption ready
+- Installation: `pnpm install` from repo root
+- Development: `pnpm dev` from repo root
 
-### 2. SDK README Improvements
+### 2. Audio Visualizer Fixes (2025-12-22)
+- **Problem:** Visualizer bars disappeared after moving components to ui-kit package
+- **Root cause:** Tailwind CSS v4 wasn't scanning workspace packages for class names
+- **Solutions applied:**
+  - Added `@source "../client-ui-kit/**/*.{ts,tsx}"` to `react-voice-client/app/globals.css:4`
+  - Switched SimpleVisualizer to inline styles (backgroundColor) instead of Tailwind classes
+  - Fixed mute/unmute freeze by passing `isConnected && !isMuted` to useAudioVisualization
+  - Centered visualizer content with `justify-center` in mic-button.tsx:74
+- **Files changed:**
+  - `/react-voice-client/app/globals.css` - Added @source directive
+  - `/client-ui-kit/components/simple-visualizer.tsx` - Inline styles for bars
+  - `/client-ui-kit/components/mic-button.tsx` - Center content
+  - `/react-voice-client/components/VoiceClient.tsx` - Fix mute/unmute restart
+
+### 3. Copy-based Architecture (2025-12-22) - SUPERSEDED
+- Initial attempt at copy-based architecture
+- Replaced by pnpm workspaces (above)
+
+### 4. SDK README Improvements
 - Removed emojis, ticks, and icons
 - Added detailed Table of Contents with method/event names
 - Moved Architecture section near start
 - Removed Status and Credits sections
 - Removed Bundle Size and Performance sections (moved to UI Kit)
 
-### 3. UI Kit README Improvements
+### 5. UI Kit README Improvements
 - Put all components into `components/` subfolder
 - Removed emojis, ticks, and icons
 - Added comprehensive TOC grouped by category:
@@ -109,16 +130,21 @@ This allows samples to run standalone without package resolution issues.
 
 ### First Time Setup
 
-1. **Install Backend Dependencies:**
+1. **Install pnpm (if not already installed):**
+   ```bash
+   npm install -g pnpm
+   ```
+
+2. **Install All Workspace Dependencies:**
+   ```bash
+   cd /Users/benweekes/work/agora-convoai-samples
+   pnpm install
+   ```
+
+3. **Install Backend Dependencies:**
    ```bash
    cd /Users/benweekes/work/agora-convoai-samples/simple-backend
    pip install -r requirements.txt  # (if exists)
-   ```
-
-2. **Install Frontend Dependencies:**
-   ```bash
-   cd /Users/benweekes/work/agora-convoai-samples/react-voice-client
-   npm install --legacy-peer-deps
    ```
 
 ### Starting Services
@@ -131,8 +157,8 @@ This allows samples to run standalone without package resolution issues.
 
 2. **Start Frontend:**
    ```bash
-   cd /Users/benweekes/work/agora-convoai-samples/react-voice-client
-   npm run dev
+   cd /Users/benweekes/work/agora-convoai-samples
+   pnpm dev
    ```
 
 3. **Access Application:**

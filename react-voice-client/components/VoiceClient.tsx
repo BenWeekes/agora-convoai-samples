@@ -59,8 +59,8 @@ export function VoiceClient() {
     sendMessage,
   } = useAgoraVoiceClient()
 
-  // Get audio visualization data (always enabled when connected, even when muted)
-  const frequencyData = useAudioVisualization(localAudioTrack, isConnected)
+  // Get audio visualization data (restart on mute/unmute to fix Web Audio API connection)
+  const frequencyData = useAudioVisualization(localAudioTrack, isConnected && !isMuted)
 
   const handleStart = async () => {
     if (!channel.trim()) {

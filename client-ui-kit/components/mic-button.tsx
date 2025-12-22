@@ -71,12 +71,12 @@ export const MicButton = React.forwardRef<HTMLButtonElement, MicButtonProps>(
         )}
         {...props}
       >
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center justify-center gap-1.5">
           {isError ? <MicOff className="h-4 w-4" /> : icon}
           {audioData && audioData.length > 0 && (
             <SimpleVisualizer
               data={audioData}
-              className={isProcessing ? "text-slate-400" : "text-blue-500"}
+              className={isProcessing ? "text-slate-400" : ""}
             />
           )}
         </div>
