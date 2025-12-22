@@ -3,7 +3,7 @@
 import * as React from "react"
 import { DotLottieReact } from "@lottiefiles/dotlottie-react"
 
-import { cn } from "@/lib/utils"
+import { cn } from "../lib/utils"
 
 export type AgentVisualizerState =
   | "not-joined"

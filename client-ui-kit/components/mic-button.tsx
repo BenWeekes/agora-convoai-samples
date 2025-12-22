@@ -3,7 +3,7 @@
 import * as React from "react"
 import { Mic, MicOff } from "lucide-react"
 
-import { cn } from "@/lib/utils"
+import { cn } from "../lib/utils"
 import { SimpleVisualizer } from "./simple-visualizer"
 
 export type MicButtonState = "idle" | "listening" | "processing" | "error"

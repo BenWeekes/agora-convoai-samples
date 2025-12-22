@@ -52,36 +52,41 @@ React component library for building voice AI user interfaces with Agora.
 
 ---
 
+## Usage in Sample Projects
+
+This is a reference UI component library for the agora-convoai-samples repository. Sample applications like `../react-voice-client` copy these components directly into their project:
+
+```bash
+# From your sample app directory (e.g., react-voice-client)
+mkdir -p components/agora-ui
+cp ../client-ui-kit/components/* components/agora-ui/
+```
+
+Then import using TypeScript path aliases:
+
+```typescript
+import { MicButton } from "@/components/agora-ui/mic-button"
+import { AgentVisualizer } from "@/components/agora-ui/agent-visualizer"
+import { Conversation } from "@/components/agora-ui/conversation"
+```
+
+This copy-based approach allows samples to work standalone without package resolution issues.
+
+---
+
 ## Installation
 
 **Dependencies:**
 
 ```bash
-npm install lucide-react class-variance-authority clsx tailwind-merge
+npm install lucide-react class-variance-authority clsx tailwind-merge @lottiefiles/dotlottie-react
 ```
 
-**Using as Local Package (Development):**
-
-Add to your `package.json`:
-
-```json
-{
-  "dependencies": {
-    "@agora/ui-kit": "file:../client-ui-kit"
-  }
-}
-```
-
-Then run:
-
-```bash
-npm install
-```
-
-**Import components:**
+**Import components (when using copied files):**
 
 ```typescript
-import { MicButton, AgentVisualizer, Conversation } from '@agora/ui-kit'
+import { MicButton } from "@/components/agora-ui/mic-button"
+import { AgentVisualizer } from "@/components/agora-ui/agent-visualizer"
 ```
 
 ---

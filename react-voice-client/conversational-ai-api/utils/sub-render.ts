@@ -57,6 +57,7 @@ export class SubRenderController {
     // Message ID deduplication (Trulience pattern)
     const messageId = (message as any).message_id
     if (messageId && this.processedMessageIds.has(messageId)) {
+      console.log(`🔄 [SubRender] Skipping duplicate user message: ${messageId}`)
       return
     }
     if (messageId) {

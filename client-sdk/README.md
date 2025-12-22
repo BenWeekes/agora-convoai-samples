@@ -14,16 +14,73 @@ Lightweight, framework-agnostic TypeScript SDK for building voice AI application
   - [React](#react)
 - [SDK API](#sdk-api)
   - [ConversationalAIAPI](#conversationalapiapi)
-    - [Methods](#conversationalapiapi-methods)
-    - [Events](#conversationalapiapi-events)
+    - [init()](#static-initconfig-conversationalapiconfig-conversationalapiapi)
+    - [getInstance()](#static-getinstance-conversationalapiapi)
+    - [sendMessage()](#sendmessagemessage-string-agentuid-string-priority-append--replace-promisevoid)
+    - [getTranscript()](#gettranscript-transcriptitem)
+    - [clearTranscript()](#cleartranscript-void)
+    - [getRTCHelper()](#getrtchelper-rtchelper)
+    - [getSubRenderController()](#getsubrendercontroller-subrendercontroller--null)
+    - [on()](#onk-event-k-handler-eventhandler-this)
+    - [off()](#offk-event-k-handler-eventhandler-this)
+    - [destroy()](#destroy-void)
+    - [transcript-updated event](#transcript-updated)
+    - [connection-state-changed event](#connection-state-changed)
+    - [agent-state-changed event](#agent-state-changed)
+    - [agent-interrupted event](#agent-interrupted)
+    - [agent-error event](#agent-error)
+    - [agent-metrics event](#agent-metrics)
+    - [message-error event](#message-error)
+    - [debug-log event](#debug-log)
   - [RTCHelper](#rtchelper)
-    - [Methods](#rtchelper-methods)
-    - [Events](#rtchelper-events)
+    - [getInstance()](#static-getinstance-rtchelper)
+    - [init()](#initconfig-promisevoid)
+    - [createAudioTrack()](#createaudiotrackconfig-promiseimicrophoneaudiotrack)
+    - [join()](#join-promisevoid)
+    - [leave()](#leave-promisevoid)
+    - [publish()](#publish-promisevoid)
+    - [unpublish()](#unpublish-promisevoid)
+    - [setMuted()](#setmutedmuted-boolean-promisevoid)
+    - [getMuted()](#getmuted-boolean)
+    - [getRemoteUsers()](#getremoteusers-remoteuser)
+    - [getConnectionState()](#getconnectionstate-connectionstate)
+    - [destroy()](#destroy-void-1)
+    - [user-joined event](#user-joined)
+    - [user-left event](#user-left)
+    - [user-published event](#user-published)
+    - [user-unpublished event](#user-unpublished)
+    - [volume-indicator event](#volume-indicator)
+    - [network-quality event](#network-quality)
+    - [connection-state-changed event](#connection-state-changed-1)
+    - [audio-pts event](#audio-pts)
+    - [stream-message event](#stream-message)
+    - [error event](#error)
   - [RTMHelper](#rtmhelper)
-    - [Methods](#rtmhelper-methods)
-    - [Events](#rtmhelper-events)
+    - [getInstance()](#static-getinstance-rtmhelper)
+    - [init()](#initconfig-promisevoid-1)
+    - [login()](#login-promisevoid)
+    - [subscribe()](#subscribechannel-string-promisevoid)
+    - [unsubscribe()](#unsubscribe-promisevoid)
+    - [logout()](#logout-promisevoid)
+    - [sendMessage()](#sendmessagemessage-string-agentuid-string-priority-append--replace-promisevoid-1)
+    - [getConnectionState()](#getconnectionstate-connectionstate-1)
+    - [destroy()](#destroy-void-2)
+    - [message event](#message)
+    - [presence event](#presence)
+    - [status event](#status)
+    - [connection-state-changed event](#connection-state-changed-2)
+    - [error event](#error-1)
   - [SubRenderController](#subrendercontroller)
-    - [Methods](#subrendercontroller-methods)
+    - [constructor()](#constructorconfig-subrendercontrollerconfig)
+    - [handleUserTranscription()](#handleusertranscriptionmessage-usertranscription-void)
+    - [handleAgentTranscription()](#handleagenttranscriptionmessage-agenttranscription-void)
+    - [handleMessageInterrupt()](#handlemessageinterruptmessage-messageinterrupt-void)
+    - [setPTS()](#setptspts-number-void)
+    - [setRenderMode()](#setrendermodemode-transcripthelpermode-void)
+    - [getMessages()](#getmessages-transcriptitem)
+    - [clearMessages()](#clearmessages-void)
+    - [cleanup()](#cleanup-void)
+    - [destroy()](#destroy-void-3)
 - [Types](#types)
 - [Advanced Usage](#advanced-usage)
   - [Message Deduplication](#message-deduplication)
@@ -33,8 +90,27 @@ Lightweight, framework-agnostic TypeScript SDK for building voice AI application
   - [Volume Monitoring](#volume-monitoring)
   - [Network Quality Monitoring](#network-quality-monitoring)
 - [React Hook](#react-hook)
-- [Performance](#performance)
-- [Bundle Size](#bundle-size)
+
+---
+
+## Usage in Sample Projects
+
+This is reference SDK code for the agora-convoai-samples repository. Sample applications like `../react-voice-client` copy this code directly into their project:
+
+```bash
+# From your sample app directory (e.g., react-voice-client)
+cp -r ../client-sdk/conversational-ai-api ./
+cp -r ../client-sdk/react ./
+```
+
+Then import using TypeScript path aliases:
+
+```typescript
+import { ConversationalAIAPI } from "@/conversational-ai-api"
+import { RTCHelper } from "@/conversational-ai-api/helper/rtc"
+```
+
+This copy-based approach allows samples to work standalone without package resolution issues.
 
 ---
 
@@ -1685,39 +1761,6 @@ function VoiceChat() {
   )
 }
 ```
-
----
-
-## Performance
-
-**Optimization Tips:**
-
-1. **Audio Visualization** - Throttle updates to 100ms for smooth 10fps rendering
-2. **Conversation Scrolling** - Use `will-change: scroll-position` for smooth scroll
-3. **Message List** - Use `key` prop with unique IDs for efficient React reconciliation
-4. **Memoization** - Wrap expensive components in `React.memo()` when needed
-
-**Example:**
-
-```typescript
-const MemoizedMessage = React.memo(Message)
-
-{transcript.map((msg) => (
-  <MemoizedMessage key={msg.turn_id} {...msg} />
-))}
-```
-
----
-
-## Bundle Size
-
-| Package | Raw | Minified | Gzipped |
-|---------|-----|----------|---------|
-| Core SDK | ~30KB | ~15KB | ~8KB |
-| React bindings | ~5KB | ~3KB | ~2KB |
-| **Total** | ~35KB | ~18KB | ~10KB |
-
-**vs. Alternative SDKs:** 93% smaller (120KB → 10KB gzipped)
 
 ---
 

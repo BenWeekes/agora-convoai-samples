@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react"
 import { Check, ChevronDown, Mic, MicIcon, MicOff } from "lucide-react"
 
 import { useAudioDevices } from "@/hooks/use-audio-devices"
-import { cn } from "@/lib/utils"
+import { cn } from "../lib/utils"
 import { Button } from "./button"
 import { Chip } from "./chip"
 import {

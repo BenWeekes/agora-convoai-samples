@@ -42,7 +42,10 @@ export class ConversationalAIAPI extends EventHelper<ConversationalAIAPIEventMap
 
     // Initialize RTM if config provided
     if (this.rtmConfig) {
+      console.log("💬 [API] RTM config provided, will initialize RTM")
       this.initRTM(this.rtmConfig)
+    } else {
+      console.log("💬 [API] No RTM config, using RTC stream-messages only")
     }
   }
 
@@ -217,8 +220,10 @@ export class ConversationalAIAPI extends EventHelper<ConversationalAIAPIEventMap
       await this.rtmHelper.subscribe(config.channel)
 
       this.setupRTMEventListeners()
+
+      console.log("💬 [API] RTM initialized and subscribed to channel:", config.channel)
     } catch (error) {
-      console.error("RTM initialization failed:", error)
+      console.error("💬 [API] RTM initialization failed:", error)
       this.emit(ConversationalAIAPIEvents.AGENT_ERROR, error as Error)
     }
   }
@@ -228,7 +233,10 @@ export class ConversationalAIAPI extends EventHelper<ConversationalAIAPIEventMap
 
     this.rtmHelper.on(RTMHelperEvents.MESSAGE, (event: any) => {
       try {
+        console.log("💬 [API] RTM Message event:", event)
+
         const messageData = event.message
+
         let parsedMessage: any
 
         // Handle both string and Uint8Array
@@ -239,17 +247,24 @@ export class ConversationalAIAPI extends EventHelper<ConversationalAIAPIEventMap
           const text = decoder.decode(messageData)
           parsedMessage = JSON.parse(text)
         } else {
+          console.warn("💬 [API] Unknown RTM message type:", typeof messageData)
           return
         }
 
+        console.log("💬 [API] Parsed RTM message:", parsedMessage)
+
         // Route to SubRenderController based on message type
         if (parsedMessage.object === 'user.transcription') {
+          console.log("💬 [API] Routing to handleUserTranscription")
           this.subRenderController?.handleUserTranscription(parsedMessage)
         } else if (parsedMessage.object === 'assistant.transcription') {
+          console.log("💬 [API] Routing to handleAgentTranscription")
           this.subRenderController?.handleAgentTranscription(parsedMessage)
+        } else {
+          console.log("💬 [API] Unknown message.object:", parsedMessage.object)
         }
       } catch (error) {
-        console.error("Error processing RTM message:", error)
+        console.error("💬 [API] Error processing RTM message:", error)
       }
     })
   }

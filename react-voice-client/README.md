@@ -1,12 +1,12 @@
 # React Voice AI Client
 
-React/Next.js implementation of a Voice AI Client using Agora AI UIKit components from the **package branch**.
+React/Next.js implementation demonstrating the Agora Conversational AI SDK and UI Kit integration.
 
 ## Features
 
-- ✅ **MessageEngine Integration** - Real-time transcript rendering with word-level and text-level modes
-- ✅ **ConvoTextStream Component** - Fixed-position chat UI with auto-scroll and streaming message support
-- ✅ **AgentVisualizer** - Lottie-based agent state visualization
+- ✅ **Copy-based Architecture** - SDK and UI Kit code copied from `../client-sdk` and `../client-ui-kit`
+- ✅ **Real-time Transcription** - Live transcription rendering with word-level and text-level modes
+- ✅ **UI Components** - Pre-built components for chat, audio visualization, and agent state
 - ✅ **MicButton** - Microphone control with visual feedback
 - ✅ **RTC Audio** - High-quality stereo audio with echo cancellation, noise suppression, and auto gain control
 - ✅ **TypeScript** - Full type safety with Agora SDK and UIKit types
@@ -14,14 +14,20 @@ React/Next.js implementation of a Voice AI Client using Agora AI UIKit component
 
 ## Architecture
 
-This implementation uses components from the [**agora-ai-uikit package branch**](https://github.com/AgoraIO-Community/agora-ai-uikit/tree/package), which provides:
+This sample application contains copies of the SDK and UI Kit code, making it easy to run as a standalone example:
 
-1. **MessageEngine** (`lib/message-engine.ts`) - Processes RTC stream messages and manages transcription state
-2. **ConvoTextStream** - Chat UI component with markdown rendering and message streaming
-3. **AgentVisualizer** - Visual representation of agent states (not-joined, joining, listening, talking, etc.)
-4. **UI Components** - Pre-built components for buttons, conversation display, etc.
+**Code Structure:**
+- `/conversational-ai-api` - Core SDK (copied from `../client-sdk/conversational-ai-api`)
+- `/react` - React hooks (copied from `../client-sdk/react`)
+- `/components/agora-ui` - UI components (copied from `../client-ui-kit/components`)
 
-For a detailed comparison between agora-ai-uikit and Conversational-AI-Demo, see [COMPARISON.md](./COMPARISON.md).
+**Key Components:**
+1. **ConversationalAIAPI** - Main SDK for managing voice AI connections
+2. **RTCHelper** - Handles Agora RTC audio connections
+3. **SubRenderController** - Manages real-time transcription rendering
+4. **UI Components** - Pre-built components for chat, audio visualization, buttons, and agent state
+
+For a detailed comparison with other implementations, see [COMPARISON.md](./COMPARISON.md).
 
 ## Prerequisites
 
@@ -39,9 +45,23 @@ The agora-convoai-samples repository uses the following port sequence:
 
 ## Quick Start
 
+**Initial Setup (First Time):**
+
+This project contains copies of code from `../client-sdk` and `../client-ui-kit`. To get the latest versions:
+
+```bash
+# Copy SDK code
+cp -r ../client-sdk/conversational-ai-api ./
+cp -r ../client-sdk/react ./
+
+# Copy UI Kit components
+mkdir -p components/agora-ui
+cp ../client-ui-kit/components/* components/agora-ui/
+```
+
 **Install dependencies:**
 ```bash
-npm install
+npm install --legacy-peer-deps
 ```
 
 **Run development server:**
@@ -93,46 +113,39 @@ PORT=8082 python3 local_server.py
 ```
 react-voice-client/
 ├── app/
-│   ├── layout.tsx          # Root layout
-│   ├── page.tsx             # Main page with dynamic import
-│   └── globals.css          # Tailwind CSS
+│   ├── layout.tsx               # Root layout
+│   ├── page.tsx                 # Main page with dynamic import
+│   └── globals.css              # Tailwind CSS
 ├── components/
-│   ├── agora-ui/            # UIKit components from package branch
-│   │   ├── agent-visualizer.tsx
-│   │   ├── mic-button.tsx
-│   │   ├── convo-text-stream.tsx
-│   │   ├── conversation.tsx
-│   │   ├── live-waveform.tsx
-│   │   ├── message.tsx
-│   │   ├── button.tsx
-│   │   └── ... (other components)
-│   └── VoiceClient.tsx      # Main voice client component
+│   ├── VoiceClient.tsx          # Main voice client component
+│   └── agora-ui/                # UI components (copied from ../client-ui-kit)
+│       ├── mic-button.tsx
+│       ├── agent-visualizer.tsx
+│       ├── conversation.tsx
+│       ├── message.tsx
+│       └── ...
+├── conversational-ai-api/       # SDK code (copied from ../client-sdk)
+│   ├── helper/
+│   │   ├── rtc.ts
+│   │   └── rtm.ts
+│   ├── utils/
+│   │   └── sub-render.ts
+│   ├── type.ts
+│   └── index.ts
+├── react/                       # React hooks (copied from ../client-sdk)
+│   └── use-conversational-ai.ts
 ├── hooks/
 │   ├── use-audio-devices.ts
 │   ├── use-is-mobile.ts
-│   └── useAgoraVoiceClient.ts  # Custom hook for Agora integration
+│   └── useAgoraVoiceClient.ts   # Custom hook for Agora integration
 ├── lib/
-│   ├── message-engine.ts    # MessageEngine class for transcript handling
-│   ├── utils.ts             # Utility functions (cn, markdown renderer)
-│   └── theme/               # Theme utilities
+│   ├── utils.ts                 # Utility functions (cn, markdown renderer)
+│   └── theme/                   # Theme utilities
 ├── icons/
-│   └── PhoneReceiver.tsx    # Custom icons
-├── client-ui-kit/           # 🆕 Enhanced audio visualization components
-│   ├── components/
-│   │   ├── simple-visualizer.tsx  # CSS-based visualizer (no flicker)
-│   │   └── live-waveform.tsx      # Enhanced canvas visualizer
-│   ├── hooks/
-│   │   └── useAudioVisualization.ts  # Volume-based visualization hook
-│   ├── index.ts             # Barrel export
-│   └── README.md            # Detailed API documentation
-├── conversational-ai-api/   # Client SDK for Conversational AI
-│   ├── helper/
-│   ├── utils/
-│   ├── type.ts
-│   └── index.ts
-├── COMPARISON.md            # Comparison between agora-ai-uikit and Conversational-AI-Demo
-├── package.json
-└── README.md                # This file
+│   └── PhoneReceiver.tsx        # Custom icons
+├── COMPARISON.md                # Comparison with other implementations
+├── package.json                 # Dependencies
+└── README.md                    # This file
 ```
 
 ## Key Implementation Details
