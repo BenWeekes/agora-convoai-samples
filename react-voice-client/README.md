@@ -4,30 +4,28 @@ React/Next.js implementation demonstrating the Agora Conversational AI SDK and U
 
 ## Features
 
-- ✅ **Copy-based Architecture** - SDK and UI Kit code copied from `../client-sdk` and `../client-ui-kit`
-- ✅ **Real-time Transcription** - Live transcription rendering with word-level and text-level modes
-- ✅ **UI Components** - Pre-built components for chat, audio visualization, and agent state
-- ✅ **MicButton** - Microphone control with visual feedback
-- ✅ **RTC Audio** - High-quality stereo audio with echo cancellation, noise suppression, and auto gain control
-- ✅ **TypeScript** - Full type safety with Agora SDK and UIKit types
-- ✅ **React 19 & Next.js 16** - Latest React features and patterns
+- **Workspace Architecture** - Uses pnpm workspace packages for SDK and UI Kit
+- **Real-time Transcription** - Live transcription rendering with word-level and text-level modes
+- **UI Components** - Pre-built components for chat, audio visualization, and agent state
+- **MicButton** - Microphone control with visual feedback
+- **RTC Audio** - High-quality stereo audio with echo cancellation, noise suppression, and auto gain control
+- **TypeScript** - Full type safety with Agora SDK and UIKit types
+- **React 19 & Next.js 16** - Latest React features and patterns
 
 ## Architecture
 
-This sample application contains copies of the SDK and UI Kit code, making it easy to run as a standalone example:
+This sample application uses pnpm workspace packages for the SDK and UI Kit:
 
-**Code Structure:**
-- `/conversational-ai-api` - Core SDK (copied from `../client-sdk/conversational-ai-api`)
-- `/react` - React hooks (copied from `../client-sdk/react`)
-- `/components/agora-ui` - UI components (copied from `../client-ui-kit/components`)
+**Workspace Dependencies:**
+- `@agora/conversational-ai` - Core SDK from `../client-sdk/conversational-ai-api`
+- `@agora/conversational-ai-react` - React hooks from `../client-sdk/react`
+- `@agora/ui-kit` - UI components from `../client-ui-kit`
 
 **Key Components:**
 1. **ConversationalAIAPI** - Main SDK for managing voice AI connections
 2. **RTCHelper** - Handles Agora RTC audio connections
 3. **SubRenderController** - Manages real-time transcription rendering
 4. **UI Components** - Pre-built components for chat, audio visualization, buttons, and agent state
-
-For a detailed comparison with other implementations, see [COMPARISON.md](./COMPARISON.md).
 
 ## Prerequisites
 
@@ -45,28 +43,14 @@ The agora-convoai-samples repository uses the following port sequence:
 
 ## Quick Start
 
-**Initial Setup (First Time):**
-
-This project contains copies of code from `../client-sdk` and `../client-ui-kit`. To get the latest versions:
-
+**Install dependencies (from repository root):**
 ```bash
-# Copy SDK code
-cp -r ../client-sdk/conversational-ai-api ./
-cp -r ../client-sdk/react ./
-
-# Copy UI Kit components
-mkdir -p components/agora-ui
-cp ../client-ui-kit/components/* components/agora-ui/
-```
-
-**Install dependencies:**
-```bash
-npm install --legacy-peer-deps
+pnpm install
 ```
 
 **Run development server:**
 ```bash
-npm run dev
+pnpm dev
 ```
 
 **Open browser:**
@@ -117,23 +101,7 @@ react-voice-client/
 │   ├── page.tsx                 # Main page with dynamic import
 │   └── globals.css              # Tailwind CSS
 ├── components/
-│   ├── VoiceClient.tsx          # Main voice client component
-│   └── agora-ui/                # UI components (copied from ../client-ui-kit)
-│       ├── mic-button.tsx
-│       ├── agent-visualizer.tsx
-│       ├── conversation.tsx
-│       ├── message.tsx
-│       └── ...
-├── conversational-ai-api/       # SDK code (copied from ../client-sdk)
-│   ├── helper/
-│   │   ├── rtc.ts
-│   │   └── rtm.ts
-│   ├── utils/
-│   │   └── sub-render.ts
-│   ├── type.ts
-│   └── index.ts
-├── react/                       # React hooks (copied from ../client-sdk)
-│   └── use-conversational-ai.ts
+│   └── VoiceClient.tsx          # Main voice client component
 ├── hooks/
 │   ├── use-audio-devices.ts
 │   ├── use-is-mobile.ts
@@ -419,10 +387,10 @@ See [COMPARISON.md](./COMPARISON.md) for detailed comparison of:
 - Clear .next folder: `rm -rf .next && npm run dev`
 
 **Component import errors**
-- Ensure all agora-ui components use `@/` imports:
+- Use workspace package imports:
   ```typescript
-  import { cn } from "@/lib/utils"  // ✅ Correct
-  import { cn } from "../lib/utils" // ❌ Wrong
+  import { MicButton } from "@agora/ui-kit"  // Correct
+  import { cn } from "@/lib/utils"           // Correct for local utils
   ```
 
 ## Contributing
@@ -435,42 +403,6 @@ When adding new features:
 4. Test build with `npm run build` before committing
 5. Update this README if adding new major features
 
-## Next Steps
-
-1. ✅ MessageEngine integration - **DONE**
-2. ✅ ConvoTextStream for chat UI - **DONE**
-3. ⬜ Add RTM messaging for sending text to agent (see ConversationalAIAPI)
-4. ⬜ Add interrupt functionality
-5. ⬜ Add conversation export (JSON/CSV)
-6. ⬜ Deploy to Vercel or similar platform
-7. ⬜ Add audio recording/playback
-8. ⬜ Implement theme customization
-
-## Enhanced Audio Visualization (client-ui-kit)
-
-This project includes enhanced audio visualization components with improved smoothness and configurability. See [client-ui-kit/README.md](./client-ui-kit/README.md) for detailed API documentation.
-
-**Components:**
-- `SimpleVisualizer` - CSS-based visualizer (no canvas flickering)
-- `LiveWaveform` - Enhanced canvas visualizer with configurable alpha
-- `useAudioVisualization` - Volume-based visualization hook with threshold, smoothing, and decay controls
-
-**Quick Example:**
-```tsx
-import { useAudioVisualization } from "@/client-ui-kit"
-import { SimpleVisualizer } from "@/client-ui-kit"
-
-const frequencyData = useAudioVisualization(localAudioTrack, isConnected, {
-  threshold: 0.15,      // Noise floor
-  barCount: 24,         // Number of bars
-  amplification: 4.0,   // Volume boost
-  volumeDecay: 0.95,    // Decay smoothing
-})
-
-<SimpleVisualizer data={frequencyData} />
-```
-
-For complete API documentation, configuration options, and usage examples, see the [Client UI Kit README](./client-ui-kit/README.md).
 
 ## License
 

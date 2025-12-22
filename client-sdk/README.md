@@ -95,22 +95,24 @@ Lightweight, framework-agnostic TypeScript SDK for building voice AI application
 
 ## Usage in Sample Projects
 
-This is reference SDK code for the agora-convoai-samples repository. Sample applications like `../react-voice-client` copy this code directly into their project:
+This SDK is part of the agora-convoai-samples pnpm workspace. Sample applications consume it as a workspace package:
 
-```bash
-# From your sample app directory (e.g., react-voice-client)
-cp -r ../client-sdk/conversational-ai-api ./
-cp -r ../client-sdk/react ./
+```json
+{
+  "dependencies": {
+    "@agora/conversational-ai": "workspace:*",
+    "@agora/conversational-ai-react": "workspace:*"
+  }
+}
 ```
 
-Then import using TypeScript path aliases:
+Import in your application:
 
 ```typescript
-import { ConversationalAIAPI } from "@/conversational-ai-api"
-import { RTCHelper } from "@/conversational-ai-api/helper/rtc"
+import { ConversationalAIAPI } from "@agora/conversational-ai"
+import { RTCHelper } from "@agora/conversational-ai/helper/rtc"
+import { useConversationalAI } from "@agora/conversational-ai-react"
 ```
-
-This copy-based approach allows samples to work standalone without package resolution issues.
 
 ---
 
@@ -169,80 +171,20 @@ Total: ~1,425 lines = ~35KB raw, ~10KB gzipped
 
 ## Installation
 
+### Workspace Setup
+
+From the repository root:
+
+```bash
+pnpm install
+```
+
+This installs all dependencies and links workspace packages automatically.
+
 ### Peer Dependencies
 
 ```bash
-npm install agora-rtc-sdk-ng agora-rtm
-```
-
-### Using as Local Package (Development)
-
-Add to your `package.json`:
-
-```json
-{
-  "dependencies": {
-    "@agora/conversational-ai": "file:../client-sdk/conversational-ai-api",
-    "@agora/conversational-ai-react": "file:../client-sdk/react"
-  }
-}
-```
-
-Then run:
-
-```bash
-npm install
-```
-
-### Using npm link (Alternative)
-
-```bash
-# In the SDK directory
-cd client-sdk/conversational-ai-api
-npm link
-
-cd ../react
-npm link
-
-# In your project
-npm link @agora/conversational-ai
-npm link @agora/conversational-ai-react
-```
-
-### Package Configuration
-
-Create `package.json` in each folder:
-
-**client-sdk/conversational-ai-api/package.json:**
-
-```json
-{
-  "name": "@agora/conversational-ai",
-  "version": "1.0.0",
-  "main": "index.ts",
-  "types": "index.ts",
-  "sideEffects": false,
-  "peerDependencies": {
-    "agora-rtc-sdk-ng": ">=4.23.4",
-    "agora-rtm": ">=2.0.0"
-  }
-}
-```
-
-**client-sdk/react/package.json:**
-
-```json
-{
-  "name": "@agora/conversational-ai-react",
-  "version": "1.0.0",
-  "main": "index.ts",
-  "types": "index.ts",
-  "sideEffects": false,
-  "peerDependencies": {
-    "react": ">=18.0.0",
-    "@agora/conversational-ai": "1.0.0"
-  }
-}
+pnpm add agora-rtc-sdk-ng agora-rtm
 ```
 
 ---

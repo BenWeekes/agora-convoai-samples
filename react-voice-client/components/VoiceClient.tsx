@@ -205,7 +205,7 @@ export function VoiceClient() {
             </div>
 
             {/* Desktop: Left Column (visualizer, controls, status) */}
-            <div className="hidden md:flex md:w-96 flex-col gap-6 min-h-0">
+            <div className="hidden md:flex md:w-96 flex-col gap-6 self-stretch">
               {/* Agent Visualizer */}
               <div className="rounded-lg border bg-card p-6 shadow-lg flex-shrink">
                 <AgentVisualizer state={getAgentState()} size="sm" />
@@ -234,7 +234,7 @@ export function VoiceClient() {
               </div>
 
               {/* Status */}
-              <div className="rounded-lg border bg-card p-4 shadow-lg">
+              <div className="rounded-lg border bg-card p-4 shadow-lg flex-1 flex flex-col justify-center">
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Channel:</span>
