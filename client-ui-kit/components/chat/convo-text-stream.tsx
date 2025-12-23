@@ -3,12 +3,12 @@
 import { useEffect, useRef, useState } from "react"
 import { MessageCircle, X } from "lucide-react"
 
-import { useIsMobile } from "@/hooks/use-is-mobile"
-import { EMessageStatus, IMessageListItem } from "@/lib/message-engine"
+import { useIsMobile } from "../../hooks/use-is-mobile"
+import { EMessageStatus, IMessageListItem } from "../../lib/message-engine"
 import { cn, renderMarkdownToHtml } from "../../lib/utils"
 
-export { EMessageStatus } from "@/lib/message-engine"
-export type { IMessageListItem } from "@/lib/message-engine"
+export { EMessageStatus } from "../../lib/message-engine"
+export type { IMessageListItem } from "../../lib/message-engine"
 
 export interface ConvoTextStreamProps {
   messageList: IMessageListItem[]
