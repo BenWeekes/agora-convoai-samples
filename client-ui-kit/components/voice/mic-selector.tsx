@@ -3,17 +3,17 @@
 import { useCallback, useEffect, useState } from "react"
 import { Check, ChevronDown, Mic, MicIcon, MicOff } from "lucide-react"
 
-import { useAudioDevices } from "@/hooks/use-audio-devices"
+import { useAudioDevices } from "../../hooks/use-audio-devices"
 import { cn } from "../../lib/utils"
 import { Button } from "../primitives/button"
-import { Chip } from "./chip"
+import { Chip } from "../primitives/chip"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./dropdown-menu"
-import { IconButton } from "./icon-button"
+} from "../primitives/dropdown-menu"
+import { IconButton } from "../primitives/icon-button"
 import { LiveWaveform } from "./live-waveform"
 import type { MicButtonState } from "./mic-button"
 
