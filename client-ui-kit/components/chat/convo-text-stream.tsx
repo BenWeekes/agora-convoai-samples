@@ -182,7 +182,7 @@ export function ConvoTextStream({
     >
       {isOpen ? (
         <div
-          className="chatbox expanded mx-auto flex max-w-96 min-w-96 flex-col shadow-lg md:mx-0"
+          className="chatbox expanded mx-auto flex max-w-96 min-w-96 max-h-[600px] flex-col shadow-lg md:mx-0"
           style={{ backgroundColor: "#171717", borderRadius: "15px" }}
         >
           <div className="flex shrink-0 items-center justify-end p-2">
