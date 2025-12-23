@@ -81,7 +81,19 @@ Benefits:
 
 ## Recent Changes
 
-### 1. Quickstart Guide Update (2025-12-23)
+### 1. ConvoTextStream Scrollbar Fix (2025-12-23)
+- **Problem:** Chat scrollbar not visible and cannot scroll when screen fills with messages
+- **Root cause:** Chatbox container lacked max-height constraint, causing it to expand indefinitely
+- **Solutions applied:**
+  - Added `max-h-[600px]` to chatbox container in convo-text-stream.tsx:185
+  - This enables the inner `overflow-auto` container to scroll properly
+  - Fixed all import paths from `@/` to relative paths in convo-text-stream.tsx and mic-selector.tsx
+- **Files changed:**
+  - `/client-ui-kit/components/chat/convo-text-stream.tsx` - Added max-height, fixed imports
+  - `/client-ui-kit/components/voice/mic-selector.tsx` - Fixed imports to use relative paths
+- **Commits:** a60ac60, 5abfe12, c85edbf
+
+### 2. Quickstart Guide Update (2025-12-23)
 - Updated `convo-ai-quickstart/README.md` with comprehensive improvements
 - Added TOC with all major sections
 - Added "RTC and RTM Explained" section clarifying their roles
@@ -103,7 +115,7 @@ Benefits:
 - Removed emojis, ticks, and icons
 - **Commit:** 8e87a0b
 
-### 2. pnpm Workspace Implementation (2025-12-22)
+### 3. pnpm Workspace Implementation (2025-12-22)
 - Implemented pnpm workspace monorepo for proper package development
 - Added `pnpm-workspace.yaml` to configure workspace
 - Added root `package.json` with workspace scripts (`pnpm dev`, `pnpm build`)
@@ -114,7 +126,7 @@ Benefits:
 - Installation: `pnpm install` from repo root
 - Development: `pnpm dev` from repo root
 
-### 2. Audio Visualizer Fixes (2025-12-22)
+### 4. Audio Visualizer Fixes (2025-12-22)
 - **Problem:** Visualizer bars disappeared after moving components to ui-kit package
 - **Root cause:** Tailwind CSS v4 wasn't scanning workspace packages for class names
 - **Solutions applied:**
@@ -128,18 +140,18 @@ Benefits:
   - `/client-ui-kit/components/mic-button.tsx` - Center content
   - `/react-voice-client/components/VoiceClient.tsx` - Fix mute/unmute restart
 
-### 3. Copy-based Architecture (2025-12-22) - SUPERSEDED
+### 5. Copy-based Architecture (2025-12-22) - SUPERSEDED
 - Initial attempt at copy-based architecture
 - Replaced by pnpm workspaces (above)
 
-### 4. SDK README Improvements
+### 6. SDK README Improvements
 - Removed emojis, ticks, and icons
 - Added detailed Table of Contents with method/event names
 - Moved Architecture section near start
 - Removed Status and Credits sections
 - Removed Bundle Size and Performance sections (moved to UI Kit)
 
-### 5. UI Kit README Improvements
+### 7. UI Kit README Improvements
 - Put all components into `components/` subfolder
 - Removed emojis, ticks, and icons
 - Added comprehensive TOC grouped by category:
@@ -148,7 +160,7 @@ Benefits:
   - Video Components
   - UI Primitives
 
-### 6. Git History Cleanup (2025-12-22)
+### 8. Git History Cleanup (2025-12-22)
 - **Problem:** Git push failed - node_modules was committed in f56db945 (119MB file exceeds GitHub's 100MB limit)
 - **Solution:**
   - Created .gitignore to prevent future node_modules commits
