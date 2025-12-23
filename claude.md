@@ -1,6 +1,6 @@
 # Agora ConvoAI Samples - Current State
 
-**Last Updated:** 2025-12-22
+**Last Updated:** 2025-12-23
 
 ## Running Services
 
@@ -81,7 +81,29 @@ Benefits:
 
 ## Recent Changes
 
-### 1. pnpm Workspace Implementation (2025-12-22)
+### 1. Quickstart Guide Update (2025-12-23)
+- Updated `convo-ai-quickstart/README.md` with comprehensive improvements
+- Added TOC with all major sections
+- Added "RTC and RTM Explained" section clarifying their roles
+- Added three implementation approaches:
+  - Approach A: Use SDK + UI Kit packages (recommended)
+  - Approach B: Use sample as template
+  - Approach C: Bare RTC/RTM implementation
+- Added SDK Package Reference section with:
+  - ConversationalAIAPI usage examples
+  - RTCHelper usage examples
+  - RTMHelper usage examples
+  - React hooks (useConversationalAI) usage examples
+- Added UI Kit Components section with:
+  - Voice components (AgentVisualizer, MicButton, AudioVisualizer, MicSelector)
+  - Chat components (Conversation, Message, ConvoTextStream)
+  - Video components (Avatar)
+- Updated sample references (react-voice-client instead of complete-voice-client)
+- Added token generation with RTC+RTM example
+- Removed emojis, ticks, and icons
+- **Commit:** 8e87a0b
+
+### 2. pnpm Workspace Implementation (2025-12-22)
 - Implemented pnpm workspace monorepo for proper package development
 - Added `pnpm-workspace.yaml` to configure workspace
 - Added root `package.json` with workspace scripts (`pnpm dev`, `pnpm build`)
