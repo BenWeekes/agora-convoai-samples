@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useRef } from "react"
 import { Mic, MicOff } from "lucide-react"
 import { useAgoraVoiceClient } from "@/hooks/useAgoraVoiceClient"
 import { useAudioVisualization } from "@/hooks/useAudioVisualization"
@@ -13,47 +13,12 @@ import { cn } from "@/lib/utils"
 
 const DEFAULT_BACKEND_URL = "http://localhost:8082"
 
-// Generate random channel name
-const generateRandomChannel = () => {
-  const adjectives = [
-    "swift",
-    "bright",
-    "cool",
-    "fresh",
-    "calm",
-    "bold",
-    "warm",
-    "quick",
-    "keen",
-    "pure",
-  ]
-  const nouns = ["wave", "spark", "stream", "cloud", "wind", "moon", "star", "ray", "echo", "flow"]
-  const randomAdj = adjectives[Math.floor(Math.random() * adjectives.length)]
-  const randomNoun = nouns[Math.floor(Math.random() * nouns.length)]
-  const randomNum = Math.floor(Math.random() * 1000)
-  return `${randomAdj}-${randomNoun}-${randomNum}`
-}
-
 export function VoiceClient() {
-  const [channel, setChannel] = useState("")
   const [backendUrl, setBackendUrl] = useState(DEFAULT_BACKEND_URL)
   const [agentUID, setAgentUID] = useState<string | undefined>(undefined)
   const [isLoading, setIsLoading] = useState(false)
   const [chatMessage, setChatMessage] = useState("")
   const conversationRef = useRef<HTMLDivElement>(null)
-
-  // Initialize channel from URL query parameter or generate random
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search)
-      const channelParam = params.get("channel")
-      if (channelParam) {
-        setChannel(channelParam)
-      } else {
-        setChannel(generateRandomChannel())
-      }
-    }
-  }, [])
 
   const {
     isConnected,
@@ -73,16 +38,10 @@ export function VoiceClient() {
   const frequencyData = useAudioVisualization(localAudioTrack, isConnected && !isMuted)
 
   const handleStart = async () => {
-    if (!channel.trim()) {
-      alert("Please enter a channel name")
-      return
-    }
-
     setIsLoading(true)
     try {
-      const response = await fetch(
-        `${backendUrl}/start-agent?channel=${encodeURIComponent(channel)}`
-      )
+      // Backend will auto-generate random channel if not provided
+      const response = await fetch(`${backendUrl}/start-agent`)
 
       if (!response.ok) {
         throw new Error(`Backend error: ${response.statusText}`)
@@ -160,20 +119,6 @@ export function VoiceClient() {
               <h2 className="mb-4 text-lg font-semibold">Connect to Agent</h2>
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="channel" className="mb-2 block text-sm font-medium">
-                    Channel Name
-                  </label>
-                  <input
-                    id="channel"
-                    type="text"
-                    value={channel}
-                    onChange={(e) => setChannel(e.target.value)}
-                    placeholder="e.g., my-channel"
-                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-                  />
-                </div>
-
-                <div>
                   <label htmlFor="backend" className="mb-2 block text-sm font-medium">
                     Backend URL
                   </label>
@@ -201,7 +146,7 @@ export function VoiceClient() {
           /* Responsive Layout: Mobile (column) / Desktop (two-column) */
           <div className="flex flex-1 flex-col gap-4 min-h-0 overflow-hidden md:flex-row md:gap-6">
             {/* Mobile: Compact Agent Status Bar (shown on top) */}
-            <div className="flex items-center justify-between rounded-lg border bg-card p-3 shadow-lg md:hidden">
+            <div className="flex items-center justify-center rounded-lg border bg-card p-3 shadow-lg md:hidden">
               <div className="flex items-center gap-3">
                 <div
                   className={cn(
@@ -213,7 +158,6 @@ export function VoiceClient() {
                   {isAgentSpeaking ? "Agent Speaking" : "Listening"}
                 </span>
               </div>
-              <span className="text-xs text-muted-foreground">{channel}</span>
             </div>
 
             {/* Desktop: Left Column (visualizer, controls, status) */}
@@ -248,10 +192,6 @@ export function VoiceClient() {
               {/* Status */}
               <div className="rounded-lg border bg-card p-4 shadow-lg flex-1 flex flex-col justify-center">
                 <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Channel:</span>
-                    <span className="font-mono font-medium">{channel}</span>
-                  </div>
                   {agentUID && (
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Agent:</span>
