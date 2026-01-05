@@ -4,32 +4,7 @@ A quick-start guide to understanding how the components connect
 
 ## System Architecture Diagram
 
-```
-                          ┌─────────────────────────┐
-                          │  Your Backend Services  │
-                          └───────┬───────────┬─────┘
-                                 ╱             ╲
-                                ╱               ╲
-                               ╱                 ╲
-                              ╱                   ╲
-         1. Serves client app│                     │3. Agent REST API
-         2. Provides token,  │                     │   (token, uid, channel,
-            uid, channel     │                     │    agent properties)
-                            ╱                       ╲
-                           ╱                         ╲
-                          ↓                           ↓
-              ┌────────────────────┐      ┌────────────────────┐
-              │  Voice AI Client   │      │  AI Agent Instance │
-              └──────────┬─────────┘      └─────────┬──────────┘
-                         │                          │
-                         │                          │
-                         │     ┌──────────────┐     │
-                         └────→│ Agora SD-RTN │←────┘
-                               │              │
-                               │ Audio, Video,│
-                               │     Data     │
-                               └──────────────┘
-```
+![System Architecture Diagram](./svg/system.svg)
 
 ## Component Overview
 

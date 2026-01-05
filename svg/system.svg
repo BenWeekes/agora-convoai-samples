@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+    <marker id="arrowhead-start" markerWidth="10" markerHeight="7" refX="1" refY="3.5" orient="auto">
+      <polygon points="10 0, 0 3.5, 10 7" fill="#333"/>
+    </marker>
+  </defs>
+  <!-- Your Backend Services (Top/North) -->
+  <rect x="280" y="20" width="240" height="50" rx="8" fill="#E5E5E5" stroke="#333" stroke-width="2"/>
+  <text x="400" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000">Your Backend Services</text>
+  <!-- Voice AI Client (Left/West) -->
+  <rect x="50" y="280" width="160" height="50" rx="8" fill="#FFFFFF" stroke="#333" stroke-width="2"/>
+  <text x="130" y="312" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000">Voice AI Client</text>
+  <!-- SD-RTN (Center) -->
+  <rect x="320" y="280" width="160" height="50" rx="8" fill="#CCCCCC" stroke="#333" stroke-width="2"/>
+  <text x="400" y="312" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000">Agora SD-RTN</text>
+  <!-- AI Agent Instance (Right/East) -->
+  <rect x="590" y="280" width="160" height="50" rx="8" fill="#999999" stroke="#333" stroke-width="2"/>
+  <text x="670" y="312" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000">AI Agent Instance</text>
+  <!-- Arrow: Backend Services → Voice AI Client (serves app + credentials) -->
+  <path d="M280 45 Q130 45 130 275" fill="none" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="175" y="140" font-family="Arial, sans-serif" font-size="11" fill="#333">1. Serves client app</text>
+  <text x="175" y="158" font-family="Arial, sans-serif" font-size="11" fill="#333">2. Provides token,</text>
+  <text x="190" y="176" font-family="Arial, sans-serif" font-size="11" fill="#333">uid, channel</text>
+  <!-- Arrow: Backend Services → AI Agent Instance -->
+  <path d="M520 45 Q670 45 670 275" fill="none" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="600" y="140" font-family="Arial, sans-serif" font-size="11" fill="#333" text-anchor="end">3. Agent REST API</text>
+  <text x="600" y="158" font-family="Arial, sans-serif" font-size="11" fill="#333" text-anchor="end">(token, uid, channel,</text>
+  <text x="600" y="176" font-family="Arial, sans-serif" font-size="11" fill="#333" text-anchor="end">agent properties)</text>
+  <!-- Arrow: Voice AI Client ↔ SD-RTN -->
+  <line x1="210" y1="305" x2="315" y2="305" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" marker-start="url(#arrowhead-start)"/>
+  <text x="262" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">Audio, Video, Data</text>
+  <!-- Arrow: SD-RTN ↔ AI Agent Instance -->
+  <line x1="480" y1="305" x2="585" y2="305" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" marker-start="url(#arrowhead-start)"/>
+  <text x="532" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">Audio, Video, Data</text>
+</svg>
