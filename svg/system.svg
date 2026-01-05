@@ -26,9 +26,9 @@
   <text x="190" y="176" font-family="Arial, sans-serif" font-size="11" fill="#333">uid, channel</text>
   <!-- Arrow: Backend Services → AI Agent Instance -->
   <path d="M520 45 Q670 45 670 275" fill="none" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
-  <text x="600" y="140" font-family="Arial, sans-serif" font-size="11" fill="#333" text-anchor="end">3. Agent REST API</text>
-  <text x="600" y="158" font-family="Arial, sans-serif" font-size="11" fill="#333" text-anchor="end">(token, uid, channel,</text>
-  <text x="600" y="176" font-family="Arial, sans-serif" font-size="11" fill="#333" text-anchor="end">agent properties)</text>
+  <text x="625" y="140" font-family="Arial, sans-serif" font-size="11" fill="#333" text-anchor="end">3. Agent REST API</text>
+  <text x="625" y="158" font-family="Arial, sans-serif" font-size="11" fill="#333" text-anchor="end">(token, uid, channel,</text>
+  <text x="625" y="176" font-family="Arial, sans-serif" font-size="11" fill="#333" text-anchor="end">agent properties)</text>
   <!-- Arrow: Voice AI Client ↔ SD-RTN -->
   <line x1="210" y1="305" x2="315" y2="305" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" marker-start="url(#arrowhead-start)"/>
   <text x="262" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">Audio, Video, Data</text>
