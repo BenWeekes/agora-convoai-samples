@@ -297,7 +297,7 @@ export function VoiceClient() {
                           )
                         }
                       >
-                        <MessageContent>
+                        <MessageContent variant={isAgent ? "assistant" : "user"}>
                           <Response>{msg.text}</Response>
                         </MessageContent>
                       </Message>
@@ -319,7 +319,10 @@ export function VoiceClient() {
                             )
                           }
                         >
-                          <MessageContent className="animate-pulse">
+                          <MessageContent
+                            variant={isAgent ? "assistant" : "user"}
+                            className="animate-pulse"
+                          >
                             <Response>{currentInProgressMessage.text}</Response>
                           </MessageContent>
                         </Message>

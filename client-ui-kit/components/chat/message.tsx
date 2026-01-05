@@ -50,6 +50,7 @@ export interface MessageContentProps extends React.HTMLAttributes<HTMLDivElement
 
 export const MessageContent = React.forwardRef<HTMLDivElement, MessageContentProps>(
   ({ className, variant = "assistant", ...props }, ref) => {
+    console.log("[MessageContent] variant:", variant)
     return (
       <div
         ref={ref}
