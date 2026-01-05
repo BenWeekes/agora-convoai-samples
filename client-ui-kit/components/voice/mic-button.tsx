@@ -47,6 +47,7 @@ export const MicButton = React.forwardRef<HTMLButtonElement, MicButtonProps>(
     },
     ref
   ) => {
+    const isProcessing = state === "processing"
     const isError = state === "error"
 
     return (
