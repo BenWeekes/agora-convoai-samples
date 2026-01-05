@@ -73,26 +73,6 @@ import { MicButton, AgentVisualizer, Conversation } from "@agora/ui-kit"
 
 ---
 
-## Installation
-
-### Workspace Setup
-
-From the repository root:
-
-```bash
-pnpm install
-```
-
-This installs all dependencies and links workspace packages automatically.
-
-### Dependencies
-
-```bash
-pnpm add lucide-react class-variance-authority clsx tailwind-merge @lottiefiles/dotlottie-react
-```
-
----
-
 ## Architecture
 
 ```
@@ -137,6 +117,69 @@ Components are organized into category subfolders:
 - **chat/** - Conversation, messages, text streaming
 - **video/** - Avatar (local/remote video components coming in future)
 - **primitives/** - Buttons, cards, form controls
+
+---
+
+## Installation
+
+### Workspace Setup
+
+From the repository root:
+
+```bash
+pnpm install
+```
+
+This installs all dependencies and links workspace packages automatically.
+
+### Dependencies
+
+```bash
+pnpm add lucide-react class-variance-authority clsx tailwind-merge @lottiefiles/dotlottie-react
+```
+
+---
+
+## Running Tests
+
+The UI Kit includes a comprehensive test suite using Vitest and React Testing
+Library.
+
+**Run all tests:**
+
+```bash
+pnpm test
+```
+
+**Run tests in watch mode:**
+
+```bash
+pnpm test:watch
+```
+
+**Run tests with UI:**
+
+```bash
+pnpm test:ui
+```
+
+**Run with coverage:**
+
+```bash
+pnpm test:coverage
+```
+
+**Test Structure:**
+
+The test suite focuses on component API contract validation, verifying that
+components accept documented props and export correct types.
+
+```
+components/
+└── voice/
+    └── __tests__/
+        └── mic-button.test.tsx  # MicButton component tests
+```
 
 ---
 

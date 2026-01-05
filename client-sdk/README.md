@@ -191,6 +191,48 @@ pnpm add agora-rtc-sdk-ng agora-rtm
 
 ---
 
+## Running Tests
+
+The SDK includes a comprehensive test suite using Vitest.
+
+**Run all tests:**
+
+```bash
+pnpm test
+```
+
+**Run tests in watch mode:**
+
+```bash
+pnpm test:watch
+```
+
+**Run tests with UI:**
+
+```bash
+pnpm test:ui
+```
+
+**Run with coverage:**
+
+```bash
+pnpm test:coverage
+```
+
+**Test Structure:**
+
+The test suite focuses on API contract validation using type-only tests to
+verify exports and interfaces without requiring full SDK initialization (which
+needs browser APIs).
+
+```
+conversational-ai-api/
+└── __tests__/
+    └── index.test.ts        # Type exports and API contract tests
+```
+
+---
+
 ## Quick Start
 
 ### Vanilla TypeScript

@@ -158,6 +158,54 @@ simple-backend/
 
 Core modules work identically in both Lambda and local environments.
 
+## Running Tests
+
+The backend includes a comprehensive test suite using pytest with unit and
+integration tests.
+
+**Run all tests:**
+
+```bash
+pytest
+```
+
+**Run with coverage:**
+
+```bash
+pytest --cov=core --cov-report=term-missing
+```
+
+**Run only unit tests:**
+
+```bash
+pytest -m unit
+```
+
+**Run only integration tests:**
+
+```bash
+pytest -m integration
+```
+
+**Run with verbose output:**
+
+```bash
+pytest -v
+```
+
+**Test Structure:**
+
+```
+tests/
+├── conftest.py              # Fixtures and configuration
+├── test_utils.py            # core/utils.py tests
+├── test_tokens.py           # core/tokens.py tests
+├── test_agent.py            # core/agent.py tests
+├── test_config.py           # core/config.py tests
+└── integration/
+    └── test_endpoints.py    # Flask endpoint tests
+```
+
 ## Profile Support
 
 Override config per use case:

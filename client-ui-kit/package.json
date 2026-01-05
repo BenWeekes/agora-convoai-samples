@@ -5,6 +5,12 @@
   "main": "index.ts",
   "types": "index.ts",
   "sideEffects": false,
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage"
+  },
   "keywords": [
     "agora",
     "voice-ai",
@@ -25,6 +31,15 @@
     "clsx": ">=2.0.0",
     "cmdk": ">=1.0.0",
     "tailwind-merge": ">=2.0.0"
+  },
+  "devDependencies": {
+    "vitest": "^1.0.0",
+    "@vitest/ui": "^1.0.0",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/jest-dom": "^6.0.0",
+    "jsdom": "^23.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   },
   "license": "MIT"
 }

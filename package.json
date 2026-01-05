@@ -16,7 +16,11 @@
     "format:py": "black .",
     "format:py:check": "black --check .",
     "format:all": "pnpm format && pnpm format:py",
-    "lint:all": "pnpm lint && pnpm lint:py"
+    "lint:all": "pnpm lint && pnpm lint:py",
+    "test:all": "pnpm test:ui && pnpm test:sdk && pnpm test:backend",
+    "test:ui": "pnpm --filter @agora/ui-kit test",
+    "test:sdk": "pnpm --filter @agora/conversational-ai test",
+    "test:backend": "cd simple-backend && python3 -m pytest -v"
   },
   "keywords": [
     "agora",
