@@ -2,29 +2,29 @@
 
 A quick-start guide to understanding how the components connect
 
-## System Architecture Diagram
+## System Architecture
 
 ![System Architecture Diagram](./svg/system.svg)
 
-## Component Overview
+## System Components
 
-### [You Build] Your Backend Services
+### Voice AI Client
+
+Your front-end application (web, mobile, or desktop) that captures user
+audio/video and plays back the AI agent's responses. Built using the Agora SDK.
+
+### Your Backend Services
 
 Your server-side application that authenticates users, generates Agora tokens,
 and orchestrates the AI agent. It serves the client app and calls the Agora REST
 API to start/stop agent instances.
 
-### [You Build] Voice AI Client
-
-Your front-end application (web, mobile, or desktop) that captures user
-audio/video and plays back the AI agent's responses. Built using the Agora SDK.
-
-### [Agora] SD-RTN
+### Agora SD-RTN
 
 Agora's Software-Defined Real-Time Network. A global low-latency network that
 routes audio, video, and data streams between participants in real-time.
 
-### [Agora] AI Agent Instance
+### AI Agent Instance
 
 A managed AI agent that joins the channel as a participant. It listens to user
 audio, processes it through STT → LLM → TTS, and streams the response back.
