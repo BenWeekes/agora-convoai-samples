@@ -40,15 +40,24 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
 
 Message.displayName = "Message"
 
-export type MessageContentProps = React.HTMLAttributes<HTMLDivElement>
+export interface MessageContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  /**
+   * Message variant - affects background color
+   * @default "assistant"
+   */
+  variant?: "user" | "assistant"
+}
 
 export const MessageContent = React.forwardRef<HTMLDivElement, MessageContentProps>(
-  ({ className, ...props }, ref) => {
+  ({ className, variant = "assistant", ...props }, ref) => {
     return (
       <div
         ref={ref}
         className={cn(
-          "flex max-w-xs flex-col gap-2 rounded-2xl px-4 py-3 bg-secondary text-foreground",
+          "flex max-w-xs flex-col gap-2 rounded-2xl px-4 py-3",
+          variant === "user"
+            ? "bg-primary text-primary-foreground"
+            : "bg-secondary text-foreground",
           className
         )}
         {...props}
