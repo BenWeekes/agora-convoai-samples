@@ -1,4 +1,4 @@
-# Agora Conversational AI Architecture
+# Agora Conversational AI
 
 A quick-start guide to understanding how the components connect
 
@@ -10,8 +10,10 @@ A quick-start guide to understanding how the components connect
 
 ### Voice AI Client
 
-Your front-end application (web, mobile, or desktop) that captures user
-audio/video and plays back the AI agent's responses. Built using the Agora SDK.
+Your front-end application (web, mobile, or desktop) that captures user inputs
+and plays out the AI agent's responses. Built with the Agora RTC SDK and
+optionally components from the Agora Conversational AI client-ui-kit used in the
+samples.
 
 ### Your Backend Services
 
