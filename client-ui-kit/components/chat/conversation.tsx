@@ -69,13 +69,13 @@ export const Conversation = React.forwardRef<HTMLDivElement, ConversationProps>(
         <div
           ref={ref}
           className={cn(
-            "relative flex flex-col overflow-hidden",
+            "relative flex flex-col overflow-scroll",
             height,
             className
           )}
           {...props}
         >
-          <div ref={scrollRef} className="flex-1 overflow-y-auto">
+          <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto">
             {props.children}
           </div>
           {showScrollButton && (

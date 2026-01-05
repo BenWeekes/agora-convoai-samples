@@ -189,7 +189,7 @@ export function VoiceClient() {
           </div>
         ) : (
           /* Responsive Layout: Mobile (column) / Desktop (two-column) */
-          <div className="flex flex-1 flex-col gap-4 min-h-0 md:flex-row md:gap-6">
+          <div className="flex flex-1 flex-col gap-4 min-h-0 overflow-hidden md:flex-row md:gap-6">
             {/* Mobile: Compact Agent Status Bar (shown on top) */}
             <div className="flex items-center justify-between rounded-lg border bg-card p-3 shadow-lg md:hidden">
               <div className="flex items-center gap-3">
@@ -257,7 +257,7 @@ export function VoiceClient() {
             </div>
 
             {/* Right Column - Conversation */}
-            <div ref={conversationRef} className="flex flex-1 flex-col rounded-lg border bg-card shadow-lg min-h-0">
+            <div ref={conversationRef} className="flex flex-1 flex-col rounded-lg border bg-card shadow-lg min-h-0 overflow-hidden">
               {/* Conversation Header */}
               <div className="border-b p-4 flex-shrink-0">
                 <h2 className="font-semibold">Conversation</h2>
@@ -267,9 +267,8 @@ export function VoiceClient() {
               </div>
 
               {/* Messages */}
-              <div className="flex flex-col flex-1 min-h-0">
-                <Conversation height="" className="flex-1 min-h-0">
-                  <ConversationContent>
+              <Conversation height="" className="flex-1 min-h-0" style={{ overflow: "scroll" }}>
+                <ConversationContent>
                     {messageList.map((msg, idx) => {
                       const isAgent = isAgentMessage(msg.uid)
                       return (
@@ -313,7 +312,6 @@ export function VoiceClient() {
                     })()}
                   </ConversationContent>
                 </Conversation>
-              </div>
 
               {/* Input Box */}
               <div className="border-t p-3 md:p-4 flex-shrink-0">
