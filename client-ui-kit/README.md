@@ -459,14 +459,14 @@ import { Conversation, ConversationContent } from '@agora/ui-kit'
 
 ### Message
 
-Individual message bubble for user or agent.
+Individual message bubble for user or agent with optional name label.
 
 **Props:**
 
 ```typescript
 interface MessageProps {
   from: "user" | "assistant"
-  avatar?: React.ReactNode
+  name?: string // Name to display above message (e.g., "Agent" or "User")
   children: React.ReactNode
   className?: string
 }
@@ -480,11 +480,11 @@ interface MessageContentProps {
 **Usage:**
 
 ```typescript
-import { Message, MessageContent, Response, Avatar } from '@agora/ui-kit'
+import { Message, MessageContent, Response } from '@agora/ui-kit'
 
 <Message
   from="assistant"
-  avatar={<Avatar initials="A" size="sm" />}
+  name="Agent"
 >
   <MessageContent>
     <Response>Hello! How can I help you?</Response>
@@ -493,7 +493,7 @@ import { Message, MessageContent, Response, Avatar } from '@agora/ui-kit'
 
 <Message
   from="user"
-  avatar={<Avatar initials="U" size="sm" />}
+  name="User"
 >
   <MessageContent>
     <Response>I need help with my account.</Response>
@@ -503,9 +503,9 @@ import { Message, MessageContent, Response, Avatar } from '@agora/ui-kit'
 
 **Layout:**
 
-- `from="assistant"` - Avatar on left, message on right
-- `from="user"` - Avatar on right, message on left
-- Responsive flex layout
+- `from="assistant"` - Name and message aligned left
+- `from="user"` - Name and message aligned right
+- Name displays above message with minimal spacing
 
 ---
 

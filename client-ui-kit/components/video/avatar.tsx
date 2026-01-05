@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { User } from "lucide-react"
 
 import { cn } from "../../lib/utils"
 
@@ -50,12 +49,6 @@ const sizeClasses: Record<AvatarSize, string> = {
   sm: "h-8 w-8",
   md: "h-10 w-10",
   lg: "h-12 w-12",
-}
-
-const iconSizeClasses: Record<AvatarSize, string> = {
-  sm: "h-4 w-4",
-  md: "h-5 w-5",
-  lg: "h-6 w-6",
 }
 
 const getInitials = (name?: string, customInitials?: string): string => {
@@ -114,15 +107,14 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
             onError={() => setImageError(true)}
           />
         ) : icon ? (
-          <div className={cn("flex items-center justify-center", bgColor, "text-white")}>
+          <div className={cn("h-full w-full flex items-center justify-center text-white", bgColor)}>
             {icon}
           </div>
         ) : (
           <div
             className={cn(
-              "flex items-center justify-center text-xs font-semibold text-white",
-              bgColor,
-              sizeClasses[size]
+              "h-full w-full flex items-center justify-center text-xs font-semibold text-white",
+              bgColor
             )}
           >
             {displayInitials}

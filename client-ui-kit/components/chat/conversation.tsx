@@ -27,7 +27,7 @@ const useConversation = () => {
 }
 
 export const Conversation = React.forwardRef<HTMLDivElement, ConversationProps>(
-  ({ className, height = "h-[400px]", ...props }, ref) => {
+  ({ className, height = "h-[400px]", ...props }, _ref) => {
     const scrollRef = React.useRef<HTMLDivElement>(null)
     const [showScrollButton, setShowScrollButton] = React.useState(false)
 
@@ -38,9 +38,11 @@ export const Conversation = React.forwardRef<HTMLDivElement, ConversationProps>(
     }
 
     React.useEffect(() => {
+      const scrollElement = scrollRef.current
+
       const handleScroll = () => {
-        if (scrollRef.current) {
-          const { scrollTop, scrollHeight, clientHeight } = scrollRef.current
+        if (scrollElement) {
+          const { scrollTop, scrollHeight, clientHeight } = scrollElement
           const isNearBottom = scrollHeight - scrollTop - clientHeight < 100
           setShowScrollButton(!isNearBottom)
         }
@@ -50,15 +52,15 @@ export const Conversation = React.forwardRef<HTMLDivElement, ConversationProps>(
         setTimeout(scrollToBottom, 0)
       })
 
-      if (scrollRef.current) {
-        observer.observe(scrollRef.current, { childList: true, subtree: true })
-        scrollRef.current.addEventListener("scroll", handleScroll)
+      if (scrollElement) {
+        observer.observe(scrollElement, { childList: true, subtree: true })
+        scrollElement.addEventListener("scroll", handleScroll)
       }
 
       return () => {
         observer.disconnect()
-        if (scrollRef.current) {
-          scrollRef.current.removeEventListener("scroll", handleScroll)
+        if (scrollElement) {
+          scrollElement.removeEventListener("scroll", handleScroll)
         }
       }
     }, [])
@@ -66,13 +68,11 @@ export const Conversation = React.forwardRef<HTMLDivElement, ConversationProps>(
     return (
       <ConversationContext.Provider value={{ scrollRef }}>
         <div
-          ref={ref}
+          ref={scrollRef}
           className={cn("relative flex flex-col overflow-scroll", height, className)}
           {...props}
         >
-          <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto">
-            {props.children}
-          </div>
+          <div className="flex-1 min-h-0">{props.children}</div>
           {showScrollButton && <ConversationScrollButton onClick={scrollToBottom} />}
         </div>
       </ConversationContext.Provider>
@@ -92,7 +92,7 @@ export interface ConversationContentProps extends React.HTMLAttributes<HTMLDivEl
 
 export const ConversationContent = React.forwardRef<HTMLDivElement, ConversationContentProps>(
   ({ className, padding = "p-4", ...props }, ref) => (
-    <div ref={ref} className={cn("flex flex-col gap-4", padding, className)} {...props} />
+    <div ref={ref} className={cn("flex flex-col gap-1", padding, className)} {...props} />
   )
 )
 

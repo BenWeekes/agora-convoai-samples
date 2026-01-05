@@ -11,27 +11,27 @@ export interface MessageProps extends React.HTMLAttributes<HTMLDivElement> {
   from: "user" | "assistant"
 
   /**
-   * Optional avatar component to display
+   * Name to display above the message (e.g., "Avatar" or "User")
    */
-  avatar?: React.ReactNode
+  name?: string
 }
 
 export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
-  ({ className, from, avatar, children, ...props }, ref) => {
+  ({ className, from, name, children, ...props }, ref) => {
+    const isUser = from === "user"
     return (
       <div
         ref={ref}
-        className={cn(
-          "flex w-full py-4",
-          from === "user" ? "justify-end" : "justify-start",
-          className
-        )}
+        className={cn("flex w-full", className)}
+        style={{ justifyContent: isUser ? "flex-end" : "flex-start" }}
         {...props}
       >
-        <div className="flex items-end gap-3">
-          {from === "assistant" && avatar}
-          <div className="flex flex-col">{children}</div>
-          {from === "user" && avatar}
+        <div
+          className="flex flex-col gap-0.5"
+          style={{ alignItems: isUser ? "flex-end" : "flex-start" }}
+        >
+          {name && <div className="text-sm font-medium text-muted-foreground">{name}</div>}
+          {children}
         </div>
       </div>
     )
@@ -40,24 +40,15 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
 
 Message.displayName = "Message"
 
-export interface MessageContentProps extends React.HTMLAttributes<HTMLDivElement> {
-  /**
-   * Message variant - affects background color
-   * @default "assistant"
-   */
-  variant?: "user" | "assistant"
-}
+export type MessageContentProps = React.HTMLAttributes<HTMLDivElement>
 
 export const MessageContent = React.forwardRef<HTMLDivElement, MessageContentProps>(
-  ({ className, variant = "assistant", ...props }, ref) => {
+  ({ className, ...props }, ref) => {
     return (
       <div
         ref={ref}
         className={cn(
-          "flex max-w-xs flex-col gap-2 rounded-2xl px-4 py-3",
-          variant === "user"
-            ? "bg-primary text-primary-foreground"
-            : "bg-secondary text-foreground",
+          "flex max-w-xs flex-col gap-2 rounded-2xl px-1 py-1 bg-secondary text-foreground",
           className
         )}
         {...props}

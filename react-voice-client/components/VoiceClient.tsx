@@ -9,7 +9,6 @@ import { AgentVisualizer, AgentVisualizerState } from "@agora/ui-kit"
 import { Conversation, ConversationContent } from "@agora/ui-kit"
 import { Message, MessageContent } from "@agora/ui-kit"
 import { Response } from "@agora/ui-kit"
-import { Avatar } from "@agora/ui-kit"
 import { cn } from "@/lib/utils"
 
 const DEFAULT_BACKEND_URL = "http://localhost:8082"
@@ -289,15 +288,9 @@ export function VoiceClient() {
                       <Message
                         key={`${msg.turn_id}-${msg.uid}-${idx}`}
                         from={isAgent ? "assistant" : "user"}
-                        avatar={
-                          isAgent ? (
-                            <Avatar size="sm" initials="A" />
-                          ) : (
-                            <Avatar size="sm" initials="U" />
-                          )
-                        }
+                        name={isAgent ? "Agent" : "User"}
                       >
-                        <MessageContent variant={isAgent ? "assistant" : "user"}>
+                        <MessageContent>
                           <Response>{msg.text}</Response>
                         </MessageContent>
                       </Message>
@@ -311,18 +304,9 @@ export function VoiceClient() {
                       return (
                         <Message
                           from={isAgent ? "assistant" : "user"}
-                          avatar={
-                            isAgent ? (
-                              <Avatar size="sm" initials="A" />
-                            ) : (
-                              <Avatar size="sm" initials="U" />
-                            )
-                          }
+                          name={isAgent ? "Agent" : "User"}
                         >
-                          <MessageContent
-                            variant={isAgent ? "assistant" : "user"}
-                            className="animate-pulse"
-                          >
+                          <MessageContent className="animate-pulse">
                             <Response>{currentInProgressMessage.text}</Response>
                           </MessageContent>
                         </Message>
