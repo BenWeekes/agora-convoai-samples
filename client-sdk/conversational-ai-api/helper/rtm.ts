@@ -6,11 +6,11 @@ import type { ConnectionState } from "../type"
 import { ConnectionState as CS } from "../type"
 
 export enum RTMHelperEvents {
-  MESSAGE = 'message',
-  PRESENCE = 'presence',
-  STATUS = 'status',
-  CONNECTION_STATE_CHANGED = 'connection-state-changed',
-  ERROR = 'error'
+  MESSAGE = "message",
+  PRESENCE = "presence",
+  STATUS = "status",
+  CONNECTION_STATE_CHANGED = "connection-state-changed",
+  ERROR = "error",
 }
 
 export interface RTMHelperEventMap {
@@ -43,11 +43,7 @@ export class RTMHelper extends EventHelper<RTMHelperEventMap> {
     return RTMHelper.instance
   }
 
-  async init(config: {
-    appId: string
-    uid: string
-    token: string | null
-  }): Promise<void> {
+  async init(config: { appId: string; uid: string; token: string | null }): Promise<void> {
     this.appId = config.appId
     this.uid = config.uid
     this.token = config.token
@@ -55,7 +51,7 @@ export class RTMHelper extends EventHelper<RTMHelperEventMap> {
     console.log("📡 [RTMHelper] Initializing RTM client:", { appId: this.appId, uid: this.uid })
 
     try {
-      this.client = new AgoraRTM.RTM(this.appId, this.uid, { logLevel: 'debug' })
+      this.client = new AgoraRTM.RTM(this.appId, this.uid, { logLevel: "debug" })
       console.log("📡 [RTMHelper] RTM client created")
     } catch (error) {
       console.error("📡 [RTMHelper] Failed to create RTM client:", error)
@@ -134,17 +130,17 @@ export class RTMHelper extends EventHelper<RTMHelperEventMap> {
 
     console.log("📡 [RTMHelper] Setting up event listeners")
 
-    this.client.addEventListener('message', (event: any) => {
+    this.client.addEventListener("message", (event: any) => {
       console.log("📡 [RTMHelper] Message event:", event)
       this.emit(RTMHelperEvents.MESSAGE, event)
     })
 
-    this.client.addEventListener('presence', (event: any) => {
+    this.client.addEventListener("presence", (event: any) => {
       console.log("📡 [RTMHelper] Presence event:", event)
       this.emit(RTMHelperEvents.PRESENCE, event)
     })
 
-    this.client.addEventListener('status', (event: any) => {
+    this.client.addEventListener("status", (event: any) => {
       console.log("📡 [RTMHelper] Status event:", event)
       this.emit(RTMHelperEvents.STATUS, event)
     })
@@ -170,7 +166,11 @@ export class RTMHelper extends EventHelper<RTMHelperEventMap> {
    * @param priority - Message priority: "APPEND" (default) or "REPLACE"
    * @returns Promise<void>
    */
-  async sendMessage(message: string, agentUid: string, priority: 'APPEND' | 'REPLACE' = 'APPEND'): Promise<void> {
+  async sendMessage(
+    message: string,
+    agentUid: string,
+    priority: "APPEND" | "REPLACE" = "APPEND"
+  ): Promise<void> {
     if (!this.client) {
       throw new Error("RTM client not initialized")
     }
@@ -186,18 +186,18 @@ export class RTMHelper extends EventHelper<RTMHelperEventMap> {
 
       const options = {
         customType: "user.transcription",
-        channelType: "USER" as const
+        channelType: "USER" as const,
       }
 
       const messagePayload = JSON.stringify({
         message: message.trim(),
-        priority
+        priority,
       })
 
       console.log("📡 [RTMHelper] Sending message:", {
         target: publishTarget,
         priority,
-        length: message.length
+        length: message.length,
       })
 
       await this.client.publish(publishTarget, messagePayload, options)

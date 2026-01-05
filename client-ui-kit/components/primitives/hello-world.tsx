@@ -6,17 +6,10 @@ export interface HelloWorldProps extends React.HTMLAttributes<HTMLDivElement> {
   message?: string
 }
 
-function HelloWorld({
-  className,
-  message = "Hello, World!",
-  ...props
-}: HelloWorldProps) {
+function HelloWorld({ className, message = "Hello, World!", ...props }: HelloWorldProps) {
   return (
     <div
-      className={cn(
-        "bg-card text-card-foreground rounded-lg border p-8 shadow-sm",
-        className
-      )}
+      className={cn("bg-card text-card-foreground rounded-lg border p-8 shadow-sm", className)}
       {...props}
     >
       <h1 className="mb-4 text-2xl font-bold">{message}</h1>

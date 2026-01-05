@@ -2,7 +2,8 @@
 
 ## Overview
 
-Full-featured client with AI avatar rendering and local video capture. Creates an immersive visual experience with animated AI avatars.
+Full-featured client with AI avatar rendering and local video capture. Creates
+an immersive visual experience with animated AI avatars.
 
 ## Features
 
@@ -32,12 +33,14 @@ Sample code and implementation details will be added here.
 ## Avatar Features
 
 ### Visual AI Representation
+
 - 3D or 2D avatar rendering
 - Real-time lip synchronization
 - Facial expression mapping
 - Emotion-based animations
 
 ### Video Capabilities
+
 - Local camera feed
 - Video resolution control
 - Multiple camera selection
@@ -65,14 +68,14 @@ Sample code and implementation details will be added here.
 ```javascript
 // Example avatar configuration (coming soon)
 const avatarConfig = {
-  type: '3d', // or '2d'
-  model: 'path/to/avatar/model',
+  type: "3d", // or '2d'
+  model: "path/to/avatar/model",
   animations: {
     idle: true,
     talking: true,
-    listening: true
-  }
-};
+    listening: true,
+  },
+}
 ```
 
 ## Browser Compatibility
@@ -84,4 +87,5 @@ const avatarConfig = {
 
 ## Support
 
-For questions and support, please visit the [Agora Developer Community](https://www.agora.io/en/community/).
+For questions and support, please visit the
+[Agora Developer Community](https://www.agora.io/en/community/).

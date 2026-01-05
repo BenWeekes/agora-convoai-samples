@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react"
 // Import from peer dependency
-// @ts-ignore - peer dependency
+// @ts-expect-error - peer dependency
 import { IMicrophoneAudioTrack, useRTCClient } from "agora-rtc-react"
 import { Mic, MicOff } from "lucide-react"
 
@@ -34,9 +34,7 @@ export function MicButtonWithVisualizer({
   className = "",
   localMicrophoneTrack, // deprecated
 }: MicButtonWithVisualizerProps) {
-  const [audioData, setAudioData] = useState<AudioBar[]>(
-    Array(5).fill({ height: 0 })
-  )
+  const [audioData, setAudioData] = useState<AudioBar[]>(Array(5).fill({ height: 0 }))
   const client = useRTCClient()
   const audioContextRef = useRef<AudioContext | null>(null)
   const analyserRef = useRef<AnalyserNode | null>(null)
@@ -46,6 +44,71 @@ export function MicButtonWithVisualizer({
   const audioTrack = track || localMicrophoneTrack
 
   useEffect(() => {
+    const updateAudioData = () => {
+      if (!analyserRef.current) return
+
+      const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount)
+      analyserRef.current.getByteFrequencyData(dataArray)
+
+      const segmentSize = Math.floor(dataArray.length / 5)
+      const newAudioData = Array(5)
+        .fill(0)
+        .map((_, index) => {
+          const start = index * segmentSize
+          const end = start + segmentSize
+          const segment = dataArray.slice(start, end)
+          const average = segment.reduce((a, b) => a + b, 0) / segment.length
+
+          const scaledHeight = Math.min(60, (average / 255) * 100 * 1.2)
+          const height = Math.pow(scaledHeight / 60, 0.7) * 60
+
+          return {
+            height: height,
+          }
+        })
+
+      setAudioData(newAudioData)
+      animationFrameRef.current = requestAnimationFrame(updateAudioData)
+    }
+
+    const cleanupAudioAnalyser = () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
+      if (audioContextRef.current) {
+        audioContextRef.current.close()
+        audioContextRef.current = null
+      }
+      setAudioData(Array(5).fill({ height: 0 }))
+    }
+
+    const setupAudioAnalyser = async () => {
+      if (!audioTrack) return
+
+      try {
+        audioContextRef.current = new AudioContext()
+        analyserRef.current = audioContextRef.current.createAnalyser()
+        analyserRef.current.fftSize = 64
+        analyserRef.current.smoothingTimeConstant = 0.5
+
+        let mediaStream: MediaStream
+        if (audioTrack instanceof MediaStream) {
+          mediaStream = audioTrack
+        } else {
+          // Agora track
+          const mediaStreamTrack = audioTrack.getMediaStreamTrack()
+          mediaStream = new MediaStream([mediaStreamTrack])
+        }
+
+        const source = audioContextRef.current.createMediaStreamSource(mediaStream)
+        source.connect(analyserRef.current)
+
+        updateAudioData()
+      } catch (error) {
+        console.error("Error setting up audio analyser:", error)
+      }
+    }
+
     if (audioTrack && isEnabled) {
       setupAudioAnalyser()
     } else {
@@ -55,72 +118,6 @@ export function MicButtonWithVisualizer({
     return () => cleanupAudioAnalyser()
   }, [audioTrack, isEnabled])
 
-  const setupAudioAnalyser = async () => {
-    if (!audioTrack) return
-
-    try {
-      audioContextRef.current = new AudioContext()
-      analyserRef.current = audioContextRef.current.createAnalyser()
-      analyserRef.current.fftSize = 64
-      analyserRef.current.smoothingTimeConstant = 0.5
-
-      let mediaStream: MediaStream
-      if (audioTrack instanceof MediaStream) {
-        mediaStream = audioTrack
-      } else {
-        // Agora track
-        const mediaStreamTrack = audioTrack.getMediaStreamTrack()
-        mediaStream = new MediaStream([mediaStreamTrack])
-      }
-
-      const source =
-        audioContextRef.current.createMediaStreamSource(mediaStream)
-      source.connect(analyserRef.current)
-
-      updateAudioData()
-    } catch (error) {
-      console.error("Error setting up audio analyser:", error)
-    }
-  }
-
-  const cleanupAudioAnalyser = () => {
-    if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current)
-    }
-    if (audioContextRef.current) {
-      audioContextRef.current.close()
-      audioContextRef.current = null
-    }
-    setAudioData(Array(5).fill({ height: 0 }))
-  }
-
-  const updateAudioData = () => {
-    if (!analyserRef.current) return
-
-    const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount)
-    analyserRef.current.getByteFrequencyData(dataArray)
-
-    const segmentSize = Math.floor(dataArray.length / 5)
-    const newAudioData = Array(5)
-      .fill(0)
-      .map((_, index) => {
-        const start = index * segmentSize
-        const end = start + segmentSize
-        const segment = dataArray.slice(start, end)
-        const average = segment.reduce((a, b) => a + b, 0) / segment.length
-
-        const scaledHeight = Math.min(60, (average / 255) * 100 * 1.2)
-        const height = Math.pow(scaledHeight / 60, 0.7) * 60
-
-        return {
-          height: height,
-        }
-      })
-
-    setAudioData(newAudioData)
-    animationFrameRef.current = requestAnimationFrame(updateAudioData)
-  }
-
   const toggleMicrophone = async () => {
     // If custom onToggle provided, use it
     if (onToggle) {
@@ -129,8 +126,7 @@ export function MicButtonWithVisualizer({
     }
 
     // Otherwise, handle Agora track toggle
-    const agoraTrack =
-      audioTrack && !(audioTrack instanceof MediaStream) ? audioTrack : null
+    const agoraTrack = audioTrack && !(audioTrack instanceof MediaStream) ? audioTrack : null
     if (agoraTrack) {
       const newState = !isEnabled
       try {

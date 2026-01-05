@@ -26,9 +26,7 @@ const buttonVariants = cva(
   }
 )
 
-interface ButtonProps
-  extends React.ComponentProps<"button">,
-    VariantProps<typeof buttonVariants> {
+interface ButtonProps extends React.ComponentProps<"button">, VariantProps<typeof buttonVariants> {
   asChild?: boolean
   label?: string
   labelClassName?: string
@@ -58,9 +56,7 @@ function Button({
     return (
       <div className="flex flex-col items-center">
         {button}
-        <p className={cn("text-muted-foreground mt-2 text-xs", labelClassName)}>
-          {label}
-        </p>
+        <p className={cn("text-muted-foreground mt-2 text-xs", labelClassName)}>{label}</p>
       </div>
     )
   }

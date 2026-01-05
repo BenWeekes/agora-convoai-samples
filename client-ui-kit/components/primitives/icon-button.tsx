@@ -12,10 +12,8 @@ const iconButtonVariants = cva(
         square: "rounded-md",
       },
       variant: {
-        filled:
-          "bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80",
-        outlined:
-          "border border-primary text-primary hover:bg-primary/10 active:bg-primary/20",
+        filled: "bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80",
+        outlined: "border border-primary text-primary hover:bg-primary/10 active:bg-primary/20",
         standard: "text-foreground hover:bg-accent/10 active:bg-accent/20",
       },
       size: {
@@ -35,21 +33,11 @@ const iconButtonVariants = cva(
 )
 
 interface IconButtonProps
-  extends React.ComponentProps<"button">,
-    VariantProps<typeof iconButtonVariants> {}
+  extends React.ComponentProps<"button">, VariantProps<typeof iconButtonVariants> {}
 
-function IconButton({
-  className,
-  shape,
-  variant,
-  size,
-  ...props
-}: IconButtonProps) {
+function IconButton({ className, shape, variant, size, ...props }: IconButtonProps) {
   return (
-    <button
-      className={cn(iconButtonVariants({ shape, variant, size, className }))}
-      {...props}
-    />
+    <button className={cn(iconButtonVariants({ shape, variant, size, className }))} {...props} />
   )
 }
 

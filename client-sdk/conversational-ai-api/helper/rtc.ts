@@ -124,13 +124,13 @@ export class RTCHelper extends EventHelper<RTCHelperEventMap> {
   }
 
   getMuted(): boolean {
-    return !this.localAudioTrack?.enabled ?? true
+    return this.localAudioTrack?.enabled === false
   }
 
   getRemoteUsers(): RemoteUser[] {
     if (!this.client) return []
 
-    return this.client.remoteUsers.map(user => ({
+    return this.client.remoteUsers.map((user) => ({
       uid: user.uid,
       audioTrack: user.audioTrack,
       hasAudio: !!user.audioTrack,
@@ -145,22 +145,30 @@ export class RTCHelper extends EventHelper<RTCHelperEventMap> {
         await this.client!.subscribe(user, mediaType)
         user.audioTrack?.play()
 
-        this.emit(RTCHelperEvents.USER_PUBLISHED, {
-          uid: user.uid,
-          audioTrack: user.audioTrack,
-          hasAudio: true,
-        }, mediaType)
+        this.emit(
+          RTCHelperEvents.USER_PUBLISHED,
+          {
+            uid: user.uid,
+            audioTrack: user.audioTrack,
+            hasAudio: true,
+          },
+          mediaType
+        )
 
         this.startAudioPTSEmission(user.audioTrack!)
       }
     })
 
     this.client.on("user-unpublished", (user, mediaType) => {
-      this.emit(RTCHelperEvents.USER_UNPUBLISHED, {
-        uid: user.uid,
-        audioTrack: undefined,
-        hasAudio: false,
-      }, mediaType)
+      this.emit(
+        RTCHelperEvents.USER_UNPUBLISHED,
+        {
+          uid: user.uid,
+          audioTrack: undefined,
+          hasAudio: false,
+        },
+        mediaType
+      )
     })
 
     this.client.on("user-joined", (user) => {
@@ -227,7 +235,7 @@ export class RTCHelper extends EventHelper<RTCHelperEventMap> {
         volumes.push({ uid: this.uid, level })
       }
 
-      this.client.remoteUsers.forEach(user => {
+      this.client.remoteUsers.forEach((user) => {
         if (user.audioTrack) {
           const level = user.audioTrack.getVolumeLevel()
           volumes.push({ uid: user.uid, level })

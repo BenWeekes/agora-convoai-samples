@@ -16,10 +16,7 @@ import { useEffect, useRef } from "react"
  *
  * return <div ref={containerRef}>...</div>
  */
-export function useAutoScroll(
-  ref: React.RefObject<HTMLElement | null>,
-  enabled: boolean = true
-) {
+export function useAutoScroll(ref: React.RefObject<HTMLElement | null>, enabled: boolean = true) {
   const observerRef = useRef<MutationObserver | null>(null)
 
   useEffect(() => {
@@ -27,7 +24,7 @@ export function useAutoScroll(
 
     const callback: MutationCallback = (mutationList) => {
       mutationList.forEach((mutation) => {
-        if (mutation.type === 'childList' && ref.current) {
+        if (mutation.type === "childList" && ref.current) {
           // Scroll to bottom when content changes
           ref.current.scrollTop = ref.current.scrollHeight
         }

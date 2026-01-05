@@ -1,8 +1,11 @@
 # Agora Conversational AI SDK
 
-Framework-agnostic TypeScript SDK for building voice AI applications with Agora RTC. Provides queue-based message handling, PTS synchronization, word-level deduplication, and multi-mode rendering.
+Framework-agnostic TypeScript SDK for building voice AI applications with Agora
+RTC. Provides queue-based message handling, PTS synchronization, word-level
+deduplication, and multi-mode rendering.
 
-**Status**: ✅ Core SDK Complete | 🚧 React Bindings Available | 📝 Documentation In Progress
+**Status**: ✅ Core SDK Complete | 🚧 React Bindings Available | 📝
+Documentation In Progress
 
 ---
 
@@ -33,35 +36,39 @@ Aligned with Agora's Conversational-AI-Demo architecture:
 
 ### Core SDK (`/conversational-ai-api`)
 
-✅ **EventHelper** - Type-safe pub/sub event system
-✅ **SubRenderController** - Queue-based message processing with:
-  - PTS (Presentation Time Stamp) synchronization
-  - Word-level deduplication by `start_ms`
-  - Support for TEXT, WORD, CHUNK, AUTO render modes
-  - Interrupt handling
-  - Turn-based deduplication by `turn_id` + `uid`
+✅ **EventHelper** - Type-safe pub/sub event system ✅ **SubRenderController** -
+Queue-based message processing with:
+
+- PTS (Presentation Time Stamp) synchronization
+- Word-level deduplication by `start_ms`
+- Support for TEXT, WORD, CHUNK, AUTO render modes
+- Interrupt handling
+- Turn-based deduplication by `turn_id` + `uid`
 
 ✅ **RTCHelper** - Agora RTC wrapper with:
-  - Singleton pattern
-  - Audio track lifecycle management
-  - Volume monitoring
-  - Network quality tracking
-  - PTS emission for audio synchronization
+
+- Singleton pattern
+- Audio track lifecycle management
+- Volume monitoring
+- Network quality tracking
+- PTS emission for audio synchronization
 
 ✅ **ConversationalAIAPI** - Main orchestration class:
-  - Integrates RTCHelper + SubRenderController
-  - Event-driven architecture
-  - Transcript management
-  - Connection state tracking
+
+- Integrates RTCHelper + SubRenderController
+- Event-driven architecture
+- Transcript management
+- Connection state tracking
 
 ### React Bindings (`/react`)
 
 ✅ **useConversationalAI** - Main React hook providing:
-  - Connection lifecycle (connect/disconnect)
-  - Real-time transcript updates
-  - Connection state management
-  - Error handling
-  - Direct API access
+
+- Connection lifecycle (connect/disconnect)
+- Real-time transcript updates
+- Connection state management
+- Error handling
+- Direct API access
 
 ---
 
@@ -70,15 +77,15 @@ Aligned with Agora's Conversational-AI-Demo architecture:
 ### Vanilla TypeScript
 
 ```typescript
-import { ConversationalAIAPI, RTCHelper } from './conversational-ai-api'
+import { ConversationalAIAPI, RTCHelper } from "./conversational-ai-api"
 
 const rtcHelper = RTCHelper.getInstance()
 
 await rtcHelper.init({
-  appId: 'your-app-id',
-  channel: 'test-channel',
-  token: 'your-token',
-  uid: 12345
+  appId: "your-app-id",
+  channel: "test-channel",
+  token: "your-token",
+  uid: 12345,
 })
 
 await rtcHelper.createAudioTrack()
@@ -87,16 +94,16 @@ await rtcHelper.publish()
 
 const api = ConversationalAIAPI.init({
   rtcEngine: rtcHelper.client!,
-  renderMode: 'word',
-  enableLog: true
+  renderMode: "word",
+  enableLog: true,
 })
 
-api.on('transcript-updated', (messages) => {
-  console.log('Transcript:', messages)
+api.on("transcript-updated", (messages) => {
+  console.log("Transcript:", messages)
 })
 
-api.on('connection-state-changed', (state) => {
-  console.log('Connection:', state)
+api.on("connection-state-changed", (state) => {
+  console.log("Connection:", state)
 })
 ```
 
@@ -154,7 +161,9 @@ function VoiceChat() {
 **Problem**: RTC may send duplicate or out-of-order messages.
 
 **Solution**: Two-level deduplication:
-- **Turn-based**: Find existing messages by `turn_id` + `uid`, update instead of create
+
+- **Turn-based**: Find existing messages by `turn_id` + `uid`, update instead of
+  create
 - **Word-based**: Deduplicate words by `start_ms` timestamp
 
 ```typescript
@@ -178,16 +187,16 @@ if (!existingMessage) {
 
 ```typescript
 // RTCHelper emits PTS every frame
-rtcHelper.on('audio-pts', (pts) => {
+rtcHelper.on("audio-pts", (pts) => {
   subRenderController.setPTS(pts)
 })
 
 // SubRenderController renders words when pts >= word.start_ms
 for (const word of queueItem.words) {
   if (word.start_ms <= this.pts) {
-    validWords.push(word)  // Render now
+    validWords.push(word) // Render now
   } else {
-    restWords.push(word)   // Render later
+    restWords.push(word) // Render later
   }
 }
 ```
@@ -209,31 +218,31 @@ const api = ConversationalAIAPI.getInstance()
 
 ```typescript
 enum AgentState {
-  IDLE = 'idle',
-  LISTENING = 'listening',
-  THINKING = 'thinking',
-  SPEAKING = 'speaking'
+  IDLE = "idle",
+  LISTENING = "listening",
+  THINKING = "thinking",
+  SPEAKING = "speaking",
 }
 
 enum TranscriptHelperMode {
-  TEXT = 'text',
-  WORD = 'word',
-  CHUNK = 'chunk',
-  AUTO = 'auto'
+  TEXT = "text",
+  WORD = "word",
+  CHUNK = "chunk",
+  AUTO = "auto",
 }
 
 enum TurnStatus {
   IN_PROGRESS = 0,
   END = 1,
-  INTERRUPTED = 2
+  INTERRUPTED = 2,
 }
 
 enum ConnectionState {
-  DISCONNECTED = 'disconnected',
-  CONNECTING = 'connecting',
-  CONNECTED = 'connected',
-  RECONNECTING = 'reconnecting',
-  FAILED = 'failed'
+  DISCONNECTED = "disconnected",
+  CONNECTING = "connecting",
+  CONNECTED = "connected",
+  RECONNECTING = "reconnecting",
+  FAILED = "failed",
 }
 ```
 
@@ -266,19 +275,25 @@ interface Word {
 ### ConversationalAIAPI Events
 
 ```typescript
-api.on('transcript-updated', (messages: TranscriptItem[]) => {})
-api.on('agent-state-changed', (agentUserId: string, event: { state: AgentState }) => {})
-api.on('connection-state-changed', (state: ConnectionState) => {})
-api.on('agent-error', (error: Error) => {})
+api.on("transcript-updated", (messages: TranscriptItem[]) => {})
+api.on(
+  "agent-state-changed",
+  (agentUserId: string, event: { state: AgentState }) => {}
+)
+api.on("connection-state-changed", (state: ConnectionState) => {})
+api.on("agent-error", (error: Error) => {})
 ```
 
 ### RTCHelper Events
 
 ```typescript
-rtcHelper.on('user-joined', (user: RemoteUser) => {})
-rtcHelper.on('user-published', (user: RemoteUser, mediaType: 'audio' | 'video') => {})
-rtcHelper.on('volume-indicator', (volumes: VolumeIndicator[]) => {})
-rtcHelper.on('audio-pts', (pts: number) => {})
+rtcHelper.on("user-joined", (user: RemoteUser) => {})
+rtcHelper.on(
+  "user-published",
+  (user: RemoteUser, mediaType: "audio" | "video") => {}
+)
+rtcHelper.on("volume-indicator", (volumes: VolumeIndicator[]) => {})
+rtcHelper.on("audio-pts", (pts: number) => {})
 ```
 
 ---
@@ -307,21 +322,23 @@ rtcHelper.on('audio-pts', (pts: number) => {})
 
 ## Comparison with Conversational-AI-Demo
 
-| Feature | This SDK | Conversational-AI-Demo |
-|---------|----------|------------------------|
-| Architecture | Framework-agnostic core | Next.js integrated |
-| Message Handling | SubRenderController | CovSubRenderController |
-| RTC Management | RTCHelper | RTCHelper (similar) |
-| State Management | Event-driven | Zustand stores |
-| React Support | Optional bindings | Built-in |
-| RTM Support | Not yet | Full support |
+| Feature          | This SDK                | Conversational-AI-Demo |
+| ---------------- | ----------------------- | ---------------------- |
+| Architecture     | Framework-agnostic core | Next.js integrated     |
+| Message Handling | SubRenderController     | CovSubRenderController |
+| RTC Management   | RTCHelper               | RTCHelper (similar)    |
+| State Management | Event-driven            | Zustand stores         |
+| React Support    | Optional bindings       | Built-in               |
+| RTM Support      | Not yet                 | Full support           |
 
 ---
 
 ## Credits
 
 Based on architecture patterns from:
+
 - [Agora Conversational-AI-Demo](https://github.com/AgoraIO-Community/Conversational-AI-Demo)
 - [Agora RTC SDK](https://docs.agora.io/en/video-calling/overview/product-overview)
 
-Built to be the **canonical library for Agora Conversational AI** across web applications.
+Built to be the **canonical library for Agora Conversational AI** across web
+applications.

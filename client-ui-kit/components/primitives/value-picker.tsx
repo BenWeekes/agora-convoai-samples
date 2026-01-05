@@ -64,9 +64,7 @@ const ValuePicker = React.forwardRef<
             )}
           >
             <SelectPrimitive.Value placeholder={placeholder} asChild>
-              <span className="truncate leading-tight">
-                {selectedItem?.name || placeholder}
-              </span>
+              <span className="truncate leading-tight">{selectedItem?.name || placeholder}</span>
             </SelectPrimitive.Value>
             <SelectPrimitive.Icon asChild>
               <ChevronDown className="size-5" />

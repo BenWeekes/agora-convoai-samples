@@ -6,9 +6,35 @@
   "scripts": {
     "dev": "pnpm --filter react-voice-client dev",
     "build": "pnpm --filter react-voice-client build",
-    "clean": "pnpm -r exec rm -rf node_modules && rm -rf node_modules"
+    "clean": "pnpm -r exec rm -rf node_modules && rm -rf node_modules",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:py": "ruff check .",
+    "lint:py:fix": "ruff check --fix .",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,css,scss}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,css,scss}\"",
+    "format:py": "black .",
+    "format:py:check": "black --check .",
+    "format:all": "pnpm format && pnpm format:py",
+    "lint:all": "pnpm lint && pnpm lint:py"
   },
-  "keywords": ["agora", "conversational-ai", "voice", "ai"],
+  "keywords": [
+    "agora",
+    "conversational-ai",
+    "voice",
+    "ai"
+  ],
   "author": "Agora",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@typescript-eslint/eslint-plugin": "^8.51.0",
+    "@typescript-eslint/parser": "^8.51.0",
+    "eslint": "^9",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "prettier": "^3.7.4",
+    "typescript-eslint": "^8.51.0"
+  }
 }

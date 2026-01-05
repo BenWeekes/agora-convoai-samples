@@ -16,8 +16,7 @@ export type AgentVisualizerState =
 
 export type AgentVisualizerSize = "sm" | "md" | "lg"
 
-export interface AgentVisualizerProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface AgentVisualizerProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * Current state of the agent visualizer
    */
@@ -64,10 +63,7 @@ const stateToText: Record<AgentVisualizerState, string> = {
   disconnected: "Disconnected",
 }
 
-const sizeClasses: Record<
-  AgentVisualizerSize,
-  { container: string; text: string }
-> = {
+const sizeClasses: Record<AgentVisualizerSize, { container: string; text: string }> = {
   sm: {
     container: "w-32 h-32",
     text: "text-sm",
@@ -82,10 +78,7 @@ const sizeClasses: Record<
   },
 }
 
-export const AgentVisualizer = React.forwardRef<
-  HTMLDivElement,
-  AgentVisualizerProps
->(
+export const AgentVisualizer = React.forwardRef<HTMLDivElement, AgentVisualizerProps>(
   (
     {
       state,
@@ -102,38 +95,19 @@ export const AgentVisualizer = React.forwardRef<
     const sizeConfig = sizeClasses[size]
 
     // Use custom path if provided, otherwise construct from base path
-    const lottieSrc =
-      lottiePaths?.[state] || `${lottieBasePath}/${lottieFileName}`
+    const lottieSrc = lottiePaths?.[state] || `${lottieBasePath}/${lottieFileName}`
 
     return (
       <div
         ref={ref}
-        className={cn(
-          "flex flex-col items-center justify-center gap-4",
-          className
-        )}
+        className={cn("flex flex-col items-center justify-center gap-4", className)}
         {...props}
       >
-        <div
-          className={cn(
-            "flex items-center justify-center",
-            sizeConfig.container
-          )}
-        >
-          <DotLottieReact
-            src={lottieSrc}
-            loop
-            autoplay
-            className="h-full w-full"
-          />
+        <div className={cn("flex items-center justify-center", sizeConfig.container)}>
+          <DotLottieReact src={lottieSrc} loop autoplay className="h-full w-full" />
         </div>
         {displayText && (
-          <p
-            className={cn(
-              "text-foreground text-center font-medium",
-              sizeConfig.text
-            )}
-          >
+          <p className={cn("text-foreground text-center font-medium", sizeConfig.text)}>
             {displayText}
           </p>
         )}

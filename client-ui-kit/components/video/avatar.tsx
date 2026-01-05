@@ -107,13 +107,7 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
             onError={() => setImageError(true)}
           />
         ) : icon ? (
-          <div
-            className={cn(
-              "flex items-center justify-center",
-              bgColor,
-              "text-white"
-            )}
-          >
+          <div className={cn("flex items-center justify-center", bgColor, "text-white")}>
             {icon}
           </div>
         ) : (

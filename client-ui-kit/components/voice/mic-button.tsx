@@ -8,8 +8,7 @@ import { SimpleVisualizer } from "./simple-visualizer"
 
 export type MicButtonState = "idle" | "listening" | "processing" | "error"
 
-export interface MicButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface MicButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * Current state of the mic button
    * @default "idle"
@@ -48,10 +47,7 @@ export const MicButton = React.forwardRef<HTMLButtonElement, MicButtonProps>(
     },
     ref
   ) => {
-    const isListening = state === "listening"
-    const isProcessing = state === "processing"
     const isError = state === "error"
-    const isActive = isListening || isProcessing
 
     return (
       <button
@@ -74,10 +70,7 @@ export const MicButton = React.forwardRef<HTMLButtonElement, MicButtonProps>(
         <div className="flex items-center justify-center gap-1.5">
           {isError ? <MicOff className="h-4 w-4" /> : icon}
           {audioData && audioData.length > 0 && (
-            <SimpleVisualizer
-              data={audioData}
-              className={isProcessing ? "text-slate-400" : ""}
-            />
+            <SimpleVisualizer data={audioData} className={isProcessing ? "text-slate-400" : ""} />
           )}
         </div>
 

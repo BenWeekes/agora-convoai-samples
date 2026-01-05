@@ -16,7 +16,18 @@ const DEFAULT_BACKEND_URL = "http://localhost:8082"
 
 // Generate random channel name
 const generateRandomChannel = () => {
-  const adjectives = ["swift", "bright", "cool", "fresh", "calm", "bold", "warm", "quick", "keen", "pure"]
+  const adjectives = [
+    "swift",
+    "bright",
+    "cool",
+    "fresh",
+    "calm",
+    "bold",
+    "warm",
+    "quick",
+    "keen",
+    "pure",
+  ]
   const nouns = ["wave", "spark", "stream", "cloud", "wind", "moon", "star", "ray", "echo", "flow"]
   const randomAdj = adjectives[Math.floor(Math.random() * adjectives.length)]
   const randomNoun = nouns[Math.floor(Math.random() * nouns.length)]
@@ -119,7 +130,7 @@ export function VoiceClient() {
   }
 
   const getAgentState = (): AgentVisualizerState => {
-    const state = !isConnected ? "not-joined" : (isAgentSpeaking ? "talking" : "listening")
+    const state = !isConnected ? "not-joined" : isAgentSpeaking ? "talking" : "listening"
     return state
   }
 
@@ -193,10 +204,12 @@ export function VoiceClient() {
             {/* Mobile: Compact Agent Status Bar (shown on top) */}
             <div className="flex items-center justify-between rounded-lg border bg-card p-3 shadow-lg md:hidden">
               <div className="flex items-center gap-3">
-                <div className={cn(
-                  "h-3 w-3 rounded-full",
-                  isAgentSpeaking ? "bg-green-500 animate-pulse" : "bg-blue-500"
-                )} />
+                <div
+                  className={cn(
+                    "h-3 w-3 rounded-full",
+                    isAgentSpeaking ? "bg-green-500 animate-pulse" : "bg-blue-500"
+                  )}
+                />
                 <span className="text-sm font-medium">
                   {isAgentSpeaking ? "Agent Speaking" : "Listening"}
                 </span>
@@ -248,16 +261,17 @@ export function VoiceClient() {
                   )}
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Mic:</span>
-                    <span className="font-mono font-medium">
-                      {isMuted ? "Muted" : "Active"}
-                    </span>
+                    <span className="font-mono font-medium">{isMuted ? "Muted" : "Active"}</span>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Right Column - Conversation */}
-            <div ref={conversationRef} className="flex flex-1 flex-col rounded-lg border bg-card shadow-lg min-h-0 overflow-hidden">
+            <div
+              ref={conversationRef}
+              className="flex flex-1 flex-col rounded-lg border bg-card shadow-lg min-h-0 overflow-hidden"
+            >
               {/* Conversation Header */}
               <div className="border-b p-4 flex-shrink-0">
                 <h2 className="font-semibold">Conversation</h2>
@@ -269,29 +283,30 @@ export function VoiceClient() {
               {/* Messages */}
               <Conversation height="" className="flex-1 min-h-0" style={{ overflow: "scroll" }}>
                 <ConversationContent>
-                    {messageList.map((msg, idx) => {
-                      const isAgent = isAgentMessage(msg.uid)
-                      return (
-                        <Message
-                          key={`${msg.turn_id}-${msg.uid}-${idx}`}
-                          from={isAgent ? "assistant" : "user"}
-                          avatar={
-                            isAgent ? (
-                              <Avatar size="sm" initials="A" />
-                            ) : (
-                              <Avatar size="sm" initials="U" />
-                            )
-                          }
-                        >
-                          <MessageContent>
-                            <Response>{msg.text}</Response>
-                          </MessageContent>
-                        </Message>
-                      )
-                    })}
+                  {messageList.map((msg, idx) => {
+                    const isAgent = isAgentMessage(msg.uid)
+                    return (
+                      <Message
+                        key={`${msg.turn_id}-${msg.uid}-${idx}`}
+                        from={isAgent ? "assistant" : "user"}
+                        avatar={
+                          isAgent ? (
+                            <Avatar size="sm" initials="A" />
+                          ) : (
+                            <Avatar size="sm" initials="U" />
+                          )
+                        }
+                      >
+                        <MessageContent>
+                          <Response>{msg.text}</Response>
+                        </MessageContent>
+                      </Message>
+                    )
+                  })}
 
-                    {/* In-progress message */}
-                    {currentInProgressMessage && (() => {
+                  {/* In-progress message */}
+                  {currentInProgressMessage &&
+                    (() => {
                       const isAgent = isAgentMessage(currentInProgressMessage.uid)
                       return (
                         <Message
@@ -310,8 +325,8 @@ export function VoiceClient() {
                         </Message>
                       )
                     })()}
-                  </ConversationContent>
-                </Conversation>
+                </ConversationContent>
+              </Conversation>
 
               {/* Input Box */}
               <div className="border-t p-3 md:p-4 flex-shrink-0">

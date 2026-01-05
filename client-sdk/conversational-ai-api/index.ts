@@ -21,8 +21,11 @@ export class ConversationalAIAPI extends EventHelper<ConversationalAIAPIEventMap
   private subRenderController: SubRenderController | null = null
   private rtcClient: any
   private enableLog: boolean = false
-  private rtmConfig: ConversationalAIAPIConfig['rtmConfig'] | null = null
-  private messageCache: Map<string, Array<{ part_idx: number; part_sum: number; content: string }>> = new Map()
+  private rtmConfig: ConversationalAIAPIConfig["rtmConfig"] | null = null
+  private messageCache: Map<
+    string,
+    Array<{ part_idx: number; part_sum: number; content: string }>
+  > = new Map()
 
   private constructor(config: ConversationalAIAPIConfig) {
     super()
@@ -83,9 +86,9 @@ export class ConversationalAIAPI extends EventHelper<ConversationalAIAPIEventMap
 
         // Convert to string if Uint8Array
         if (stream instanceof Uint8Array) {
-          const decoder = new TextDecoder('utf-8')
+          const decoder = new TextDecoder("utf-8")
           text = decoder.decode(stream)
-        } else if (typeof stream === 'string') {
+        } else if (typeof stream === "string") {
           text = stream
         } else {
           console.warn("[API] Unknown stream type:", typeof stream, stream)
@@ -93,7 +96,7 @@ export class ConversationalAIAPI extends EventHelper<ConversationalAIAPIEventMap
         }
 
         // Check if it's chunked format: message_id|part_idx|part_sum|data
-        const parts = text.split('|')
+        const parts = text.split("|")
         if (parts.length === 4) {
           // Chunked message format (Trulience pattern)
           const message = this.handleChunkedMessage(parts)
@@ -121,7 +124,7 @@ export class ConversationalAIAPI extends EventHelper<ConversationalAIAPIEventMap
 
     const input = {
       part_idx: parseInt(partIdx, 10),
-      part_sum: partSum === '???' ? -1 : parseInt(partSum, 10),
+      part_sum: partSum === "???" ? -1 : parseInt(partSum, 10),
       content: partData,
     }
 
@@ -137,7 +140,7 @@ export class ConversationalAIAPI extends EventHelper<ConversationalAIAPIEventMap
     // Check if complete
     if (input.part_sum !== -1 && cache.length === input.part_sum) {
       // Assemble complete message
-      const base64Message = cache.map((chunk) => chunk.content).join('')
+      const base64Message = cache.map((chunk) => chunk.content).join("")
 
       try {
         // Base64 decode
@@ -162,12 +165,11 @@ export class ConversationalAIAPI extends EventHelper<ConversationalAIAPIEventMap
   }
 
   private routeMessage(message: any): void {
-
-    if (message.object === 'user.transcription') {
+    if (message.object === "user.transcription") {
       this.subRenderController?.handleUserTranscription(message)
-    } else if (message.object === 'assistant.transcription') {
+    } else if (message.object === "assistant.transcription") {
       this.subRenderController?.handleAgentTranscription(message)
-    } else if (message.object === 'message.interrupt') {
+    } else if (message.object === "message.interrupt") {
       this.subRenderController?.handleMessageInterrupt(message)
     }
   }
@@ -198,22 +200,30 @@ export class ConversationalAIAPI extends EventHelper<ConversationalAIAPIEventMap
    * @returns Promise<void>
    * @throws Error if RTM is not configured
    */
-  async sendMessage(message: string, agentUid: string = "100", priority: 'APPEND' | 'REPLACE' = 'APPEND'): Promise<void> {
+  async sendMessage(
+    message: string,
+    agentUid: string = "100",
+    priority: "APPEND" | "REPLACE" = "APPEND"
+  ): Promise<void> {
     if (!this.rtmHelper) {
-      throw new Error("RTM not configured. Provide rtmConfig when initializing ConversationalAIAPI.")
+      throw new Error(
+        "RTM not configured. Provide rtmConfig when initializing ConversationalAIAPI."
+      )
     }
 
     return this.rtmHelper.sendMessage(message, agentUid, priority)
   }
 
-  private async initRTM(config: NonNullable<ConversationalAIAPIConfig['rtmConfig']>): Promise<void> {
+  private async initRTM(
+    config: NonNullable<ConversationalAIAPIConfig["rtmConfig"]>
+  ): Promise<void> {
     try {
       this.rtmHelper = RTMHelper.getInstance()
 
       await this.rtmHelper.init({
         appId: config.appId,
         uid: config.uid,
-        token: config.token
+        token: config.token,
       })
 
       await this.rtmHelper.login()
@@ -240,10 +250,10 @@ export class ConversationalAIAPI extends EventHelper<ConversationalAIAPIEventMap
         let parsedMessage: any
 
         // Handle both string and Uint8Array
-        if (typeof messageData === 'string') {
+        if (typeof messageData === "string") {
           parsedMessage = JSON.parse(messageData)
         } else if (messageData instanceof Uint8Array) {
-          const decoder = new TextDecoder('utf-8')
+          const decoder = new TextDecoder("utf-8")
           const text = decoder.decode(messageData)
           parsedMessage = JSON.parse(text)
         } else {
@@ -254,10 +264,10 @@ export class ConversationalAIAPI extends EventHelper<ConversationalAIAPIEventMap
         console.log("💬 [API] Parsed RTM message:", parsedMessage)
 
         // Route to SubRenderController based on message type
-        if (parsedMessage.object === 'user.transcription') {
+        if (parsedMessage.object === "user.transcription") {
           console.log("💬 [API] Routing to handleUserTranscription")
           this.subRenderController?.handleUserTranscription(parsedMessage)
-        } else if (parsedMessage.object === 'assistant.transcription') {
+        } else if (parsedMessage.object === "assistant.transcription") {
           console.log("💬 [API] Routing to handleAgentTranscription")
           this.subRenderController?.handleAgentTranscription(parsedMessage)
         } else {

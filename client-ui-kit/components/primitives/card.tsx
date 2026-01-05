@@ -19,23 +19,14 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-title"
-      className={cn(
-        "text-tiny leading-none font-semibold uppercase",
-        className
-      )}
+      className={cn("text-tiny leading-none font-semibold uppercase", className)}
       {...props}
     />
   )
 }
 
 function CardContent({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-content"
-      className={cn("text-tiny", className)}
-      {...props}
-    />
-  )
+  return <div data-slot="card-content" className={cn("text-tiny", className)} {...props} />
 }
 
 export { Card, CardTitle, CardContent }

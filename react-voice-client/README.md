@@ -1,14 +1,18 @@
 # React Voice AI Client
 
-React/Next.js implementation demonstrating the Agora Conversational AI SDK and UI Kit integration.
+React/Next.js implementation demonstrating the Agora Conversational AI SDK and
+UI Kit integration.
 
 ## Features
 
 - **Workspace Architecture** - Uses pnpm workspace packages for SDK and UI Kit
-- **Real-time Transcription** - Live transcription rendering with word-level and text-level modes
-- **UI Components** - Pre-built components for chat, audio visualization, and agent state
+- **Real-time Transcription** - Live transcription rendering with word-level and
+  text-level modes
+- **UI Components** - Pre-built components for chat, audio visualization, and
+  agent state
 - **MicButton** - Microphone control with visual feedback
-- **RTC Audio** - High-quality stereo audio with echo cancellation, noise suppression, and auto gain control
+- **RTC Audio** - High-quality stereo audio with echo cancellation, noise
+  suppression, and auto gain control
 - **TypeScript** - Full type safety with Agora SDK and UIKit types
 - **React 19 & Next.js 16** - Latest React features and patterns
 
@@ -17,15 +21,19 @@ React/Next.js implementation demonstrating the Agora Conversational AI SDK and U
 This sample application uses pnpm workspace packages for the SDK and UI Kit:
 
 **Workspace Dependencies:**
-- `@agora/conversational-ai` - Core SDK from `../client-sdk/conversational-ai-api`
+
+- `@agora/conversational-ai` - Core SDK from
+  `../client-sdk/conversational-ai-api`
 - `@agora/conversational-ai-react` - React hooks from `../client-sdk/react`
 - `@agora/ui-kit` - UI components from `../client-ui-kit`
 
 **Key Components:**
+
 1. **ConversationalAIAPI** - Main SDK for managing voice AI connections
 2. **RTCHelper** - Handles Agora RTC audio connections
 3. **SubRenderController** - Manages real-time transcription rendering
-4. **UI Components** - Pre-built components for chat, audio visualization, buttons, and agent state
+4. **UI Components** - Pre-built components for chat, audio visualization,
+   buttons, and agent state
 
 ## Prerequisites
 
@@ -39,21 +47,25 @@ The agora-convoai-samples repository uses the following port sequence:
 
 - **8082** - Python Backend (simple-backend)
 - **8083** - React Voice Client (this project)
-- Port 3000 is intentionally avoided as it's commonly used by other development servers
+- Port 3000 is intentionally avoided as it's commonly used by other development
+  servers
 
 ## Quick Start
 
 **Install dependencies (from repository root):**
+
 ```bash
 pnpm install
 ```
 
 **Run development server:**
+
 ```bash
 pnpm dev
 ```
 
 **Open browser:**
+
 ```
 http://localhost:8083
 ```
@@ -70,12 +82,14 @@ PORT=8082 python3 local_server.py
 ## Usage
 
 1. **Start the Backend** (if not already running):
+
    ```bash
    cd ../simple-backend
    PORT=8082 python3 local_server.py
    ```
 
 2. **Start the React Client**:
+
    ```bash
    npm run dev
    ```
@@ -88,7 +102,8 @@ PORT=8082 python3 local_server.py
 
 4. **Interact with Agent**:
    - Speak into your microphone
-   - See real-time transcriptions in the fixed-position chat window (bottom-right)
+   - See real-time transcriptions in the fixed-position chat window
+     (bottom-right)
    - Toggle mute with the microphone button
    - End the call with the "End Call" button
 
@@ -120,18 +135,23 @@ react-voice-client/
 
 ### MessageEngine Integration
 
-The MessageEngine handles real-time transcription messages from the Agora RTC stream:
+The MessageEngine handles real-time transcription messages from the Agora RTC
+stream:
 
 ```typescript
-import { MessageEngine, EMessageEngineMode, IMessageListItem } from "@/lib/message-engine"
+import {
+  MessageEngine,
+  EMessageEngineMode,
+  IMessageListItem,
+} from "@/lib/message-engine"
 
 const engine = new MessageEngine({
-  rtcEngine: client,  // Agora RTC client
-  renderMode: EMessageEngineMode.AUTO,  // AUTO, TEXT, or WORD
+  rtcEngine: client, // Agora RTC client
+  renderMode: EMessageEngineMode.AUTO, // AUTO, TEXT, or WORD
   callback: (messages) => {
     // Filter completed messages vs in-progress
-    const completedMessages = messages.filter(msg => msg.status !== 0)
-    const inProgress = messages.find(msg => msg.status === 0)
+    const completedMessages = messages.filter((msg) => msg.status !== 0)
+    const inProgress = messages.find((msg) => msg.status === 0)
 
     setMessageList(completedMessages)
     setCurrentInProgressMessage(inProgress || null)
@@ -140,6 +160,7 @@ const engine = new MessageEngine({
 ```
 
 **Rendering Modes:**
+
 - `AUTO` - Automatically determines best mode based on message content
 - `TEXT` - Processes messages as complete text blocks
 - `WORD` - Word-by-word rendering with timing information
@@ -158,6 +179,7 @@ Displays transcriptions in a fixed-position chat window (bottom-right):
 ```
 
 **Features:**
+
 - Auto-opens on first message
 - Auto-scroll with manual override detection
 - Supports streaming (in-progress) messages with pulse animation
@@ -177,6 +199,7 @@ Shows Lottie animations for different agent states:
 ```
 
 **Available States:**
+
 - `not-joined` - Not connected
 - `joining` - Connecting to channel
 - `ambient` - Connected but idle
@@ -197,6 +220,7 @@ Controls microphone with live waveform visualization:
 ```
 
 **States:**
+
 - `idle` - Not active
 - `listening` - Active and listening (shows waveform)
 - `processing` - Processing audio
@@ -221,6 +245,7 @@ const {
 ```
 
 **Responsibilities:**
+
 - Agora client lifecycle management
 - MessageEngine initialization and cleanup
 - Microphone track creation with AEC/ANS/AGC
@@ -233,6 +258,7 @@ const {
 The MessageEngine processes these message types from RTC stream-message events:
 
 ### User Transcription
+
 ```typescript
 {
   object: "user.transcription",
@@ -253,6 +279,7 @@ The MessageEngine processes these message types from RTC stream-message events:
 ```
 
 ### Agent Transcription
+
 ```typescript
 {
   object: "assistant.transcription",
@@ -271,6 +298,7 @@ The MessageEngine processes these message types from RTC stream-message events:
 ```
 
 ### Message Interrupt
+
 ```typescript
 {
   object: "message.interrupt",
@@ -290,6 +318,7 @@ npm start
 ```
 
 The build creates an optimized production bundle with:
+
 - Server-side rendering disabled for browser-only components (Agora SDK)
 - TypeScript type checking
 - Optimized static pages
@@ -314,7 +343,6 @@ When adding new features:
 3. Update TypeScript types appropriately
 4. Test build with `npm run build` before committing
 5. Update this README if adding new major features
-
 
 ## License
 

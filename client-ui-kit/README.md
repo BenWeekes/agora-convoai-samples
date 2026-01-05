@@ -54,7 +54,8 @@ React component library for building voice AI user interfaces with Agora.
 
 ## Usage in Sample Projects
 
-This UI Kit is part of the agora-convoai-samples pnpm workspace. Sample applications consume it as a workspace package:
+This UI Kit is part of the agora-convoai-samples pnpm workspace. Sample
+applications consume it as a workspace package:
 
 ```json
 {
@@ -149,10 +150,10 @@ Microphone button with built-in audio visualization and state management.
 
 ```typescript
 interface MicButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  state?: 'idle' | 'listening' | 'processing' | 'error'
+  state?: "idle" | "listening" | "processing" | "error"
   icon?: React.ReactNode
   showErrorBadge?: boolean
-  audioData?: number[]  // 0-1 normalized frequency data
+  audioData?: number[] // 0-1 normalized frequency data
 }
 ```
 
@@ -195,8 +196,8 @@ Animated agent state visualizer with pulsing circles.
 
 ```typescript
 interface AgentVisualizerProps {
-  state: 'not-joined' | 'listening' | 'talking' | 'thinking'
-  size?: 'sm' | 'md' | 'lg'
+  state: "not-joined" | "listening" | "talking" | "thinking"
+  size?: "sm" | "md" | "lg"
   className?: string
 }
 ```
@@ -235,12 +236,12 @@ Full-featured frequency bar visualizer.
 
 ```typescript
 interface AudioVisualizerProps {
-  data: number[]         // 0-1 normalized frequency data
-  barCount?: number      // Number of bars (default: 32)
-  barWidth?: number      // Bar width in px (default: 4)
-  barGap?: number        // Gap between bars (default: 2)
-  height?: number        // Height in px (default: 100)
-  color?: string         // Bar color (default: 'rgb(59, 130, 246)')
+  data: number[] // 0-1 normalized frequency data
+  barCount?: number // Number of bars (default: 32)
+  barWidth?: number // Bar width in px (default: 4)
+  barGap?: number // Gap between bars (default: 2)
+  height?: number // Height in px (default: 100)
+  color?: string // Bar color (default: 'rgb(59, 130, 246)')
   className?: string
 }
 ```
@@ -464,7 +465,7 @@ Individual message bubble for user or agent.
 
 ```typescript
 interface MessageProps {
-  from: 'user' | 'assistant'
+  from: "user" | "assistant"
   avatar?: React.ReactNode
   children: React.ReactNode
   className?: string
@@ -586,7 +587,7 @@ interface AvatarProps {
   src?: string
   alt?: string
   initials?: string
-  size?: 'sm' | 'md' | 'lg'
+  size?: "sm" | "md" | "lg"
   className?: string
 }
 ```
@@ -610,7 +611,8 @@ import { Avatar } from '@agora/ui-kit'
 - `md` - 40px
 - `lg` - 48px
 
-**Note:** Future video components will include LocalVideoDisplay and RemoteVideoDisplay for rendering video streams from Agora RTC.
+**Note:** Future video components will include LocalVideoDisplay and
+RemoteVideoDisplay for rendering video streams from Agora RTC.
 
 ---
 
@@ -624,8 +626,8 @@ Standard button with variant support.
 
 ```typescript
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'default' | 'outline' | 'ghost' | 'destructive'
-  size?: 'sm' | 'md' | 'lg'
+  variant?: "default" | "outline" | "ghost" | "destructive"
+  size?: "sm" | "md" | "lg"
   className?: string
 }
 ```
@@ -662,8 +664,8 @@ Circular icon button for actions.
 ```typescript
 interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon: React.ReactNode
-  size?: 'sm' | 'md' | 'lg'
-  variant?: 'default' | 'ghost'
+  size?: "sm" | "md" | "lg"
+  variant?: "default" | "ghost"
   className?: string
 }
 ```
@@ -724,7 +726,7 @@ Small label/tag component.
 ```typescript
 interface ChipProps {
   children: React.ReactNode
-  variant?: 'default' | 'success' | 'warning' | 'error'
+  variant?: "default" | "success" | "warning" | "error"
   className?: string
 }
 ```
@@ -917,7 +919,8 @@ function AudioViz() {
 
 ## Theming
 
-All components use Tailwind CSS and support the `cn()` utility for custom styling:
+All components use Tailwind CSS and support the `cn()` utility for custom
+styling:
 
 ```typescript
 import { cn } from '@/lib/utils'
@@ -940,12 +943,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#0066ff',
-        'agent-active': '#10b981',
-        'agent-idle': '#3b82f6'
-      }
-    }
-  }
+        primary: "#0066ff",
+        "agent-active": "#10b981",
+        "agent-idle": "#3b82f6",
+      },
+    },
+  },
 }
 ```
 
@@ -967,9 +970,12 @@ All components follow accessibility best practices:
 
 **Optimization Tips:**
 
-1. **Audio Visualization** - Throttle updates to 100ms for smooth 10fps rendering
-2. **Conversation Scrolling** - Use `will-change: scroll-position` for smooth scroll
-3. **Message List** - Use `key` prop with unique IDs for efficient React reconciliation
+1. **Audio Visualization** - Throttle updates to 100ms for smooth 10fps
+   rendering
+2. **Conversation Scrolling** - Use `will-change: scroll-position` for smooth
+   scroll
+3. **Message List** - Use `key` prop with unique IDs for efficient React
+   reconciliation
 4. **Memoization** - Wrap expensive components in `React.memo()` when needed
 
 **Example:**

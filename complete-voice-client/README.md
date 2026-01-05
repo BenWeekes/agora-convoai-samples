@@ -1,6 +1,7 @@
 # Complete Voice AI Client
 
-Complete HTML/Javascript client that calls a backend to start an Agora AI voice agent and get RTC credentials, then joins the channel to talk with the agent.
+Complete HTML/Javascript client that calls a backend to start an Agora AI voice
+agent and get RTC credentials, then joins the channel to talk with the agent.
 
 ## How It Works
 
@@ -19,11 +20,13 @@ Complete HTML/Javascript client that calls a backend to start an Agora AI voice 
 Open `index.html` in a browser. Configure via form or URL parameters:
 
 **URL Parameters:**
+
 ```
 index.html?channel=test&backend=http://localhost:8082&title=My%20Agent
 ```
 
 **Parameters:**
+
 - `channel` (required) - Channel name
 - `backend` (optional) - Backend URL (defaults to http://localhost:8082)
 - `title` (optional) - Session title (defaults to "Voice AI Agent")
@@ -33,11 +36,13 @@ index.html?channel=test&backend=http://localhost:8082&title=My%20Agent
 Run a local web server in this directory:
 
 **Python:**
+
 ```bash
 python3 -m http.server 8003
 ```
 
 **Node.js:**
+
 ```bash
 npx http-server -p 8003
 ```
@@ -46,9 +51,11 @@ Then open http://localhost:8003 in your browser.
 
 ## Backend Required
 
-This client requires a running backend. See [../simple-backend/](../simple-backend/) for setup instructions.
+This client requires a running backend. See
+[../simple-backend/](../simple-backend/) for setup instructions.
 
 **Quick backend start:**
+
 ```bash
 cd ../simple-backend
 PORT=8082 python3 local_server.py
@@ -59,6 +66,7 @@ Backend should be running on http://localhost:8082
 ## Complete Flow Example
 
 1. **Start backend:**
+
    ```bash
    cd ../simple-backend
    PORT=8082 python3 local_server.py
@@ -66,6 +74,7 @@ Backend should be running on http://localhost:8082
    ```
 
 2. **Open client:**
+
    ```
    http://localhost:8003/index.html?channel=test
    ```
@@ -88,9 +97,9 @@ Backend should be running on http://localhost:8082
 
 ## Differences from Simple Voice Client
 
-| Feature | Simple Voice Client | Complete Voice Client |
-|---------|-------------------|---------------------|
-| Manual credentials | ✅ Enter appid, token, uid | ❌ Not needed |
-| Backend integration | ❌ No backend needed | ✅ Calls backend |
-| Agent management | ❌ Manual | ✅ Automatic |
-| Use case | Testing with existing agent | Production-ready flow |
+| Feature             | Simple Voice Client         | Complete Voice Client |
+| ------------------- | --------------------------- | --------------------- |
+| Manual credentials  | ✅ Enter appid, token, uid  | ❌ Not needed         |
+| Backend integration | ❌ No backend needed        | ✅ Calls backend      |
+| Agent management    | ❌ Manual                   | ✅ Automatic          |
+| Use case            | Testing with existing agent | Production-ready flow |

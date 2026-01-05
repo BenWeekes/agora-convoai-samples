@@ -2,7 +2,8 @@
 
 ## Overview
 
-Voice client with integrated text chat alongside real-time audio conversation. Combines voice and text for a rich conversational experience.
+Voice client with integrated text chat alongside real-time audio conversation.
+Combines voice and text for a rich conversational experience.
 
 ## Features
 
@@ -32,11 +33,13 @@ Sample code and implementation details will be added here.
 ## Features in Detail
 
 ### Voice Communication
+
 - Real-time audio streaming
 - Low-latency voice interaction
 - AI agent voice responses
 
 ### Text Chat
+
 - Send and receive text messages
 - Chat history
 - Voice-to-text transcription
@@ -60,4 +63,5 @@ Sample code and implementation details will be added here.
 
 ## Support
 
-For questions and support, please visit the [Agora Developer Community](https://www.agora.io/en/community/).
+For questions and support, please visit the
+[Agora Developer Community](https://www.agora.io/en/community/).

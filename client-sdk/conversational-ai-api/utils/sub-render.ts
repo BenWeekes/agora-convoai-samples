@@ -9,8 +9,8 @@ import type {
   TranscriptHelperMode,
   TurnStatus,
   SubRenderControllerConfig,
-} from '../type'
-import {  TurnStatus as TS, TranscriptHelperMode as Mode } from '../type'
+} from "../type"
+import { TurnStatus as TS, TranscriptHelperMode as Mode } from "../type"
 
 interface QueueItem {
   turn_id: number
@@ -69,9 +69,8 @@ export class SubRenderController {
     const stream_id = message.stream_id
     const turn_status = message.final ? TS.END : TS.IN_PROGRESS
 
-    const uid = message.user_id && message.user_id.trim() !== ''
-      ? parseInt(message.user_id, 10)
-      : stream_id
+    const uid =
+      message.user_id && message.user_id.trim() !== "" ? parseInt(message.user_id, 10) : stream_id
 
     const existingMessage = this.messageList.find(
       (item) => item.turn_id === turn_id && item.uid === uid
@@ -114,9 +113,8 @@ export class SubRenderController {
     const words = message.words || []
     const stream_id = message.stream_id
 
-    const uid = message.user_id && message.user_id.trim() !== ''
-      ? parseInt(message.user_id, 10)
-      : stream_id
+    const uid =
+      message.user_id && message.user_id.trim() !== "" ? parseInt(message.user_id, 10) : stream_id
 
     if (isAgentMessage && this.mode === Mode.AUTO) {
       if (!words || words.length === 0) {
@@ -169,7 +167,7 @@ export class SubRenderController {
     for (const queueItem of this.queue) {
       if (queueItem.turn_id === turn_id) {
         queueItem.status = TS.INTERRUPTED
-        queueItem.words = queueItem.words.map(word => {
+        queueItem.words = queueItem.words.map((word) => {
           if (word.start_ms >= start_ms) {
             return { ...word, status: TS.INTERRUPTED }
           }
@@ -182,7 +180,7 @@ export class SubRenderController {
       if (message.turn_id === turn_id && message.start_ms && message.start_ms >= start_ms) {
         message.status = TS.INTERRUPTED
         if (message.words) {
-          message.words = message.words.map(word => {
+          message.words = message.words.map((word) => {
             if (word.start_ms >= start_ms) {
               return { ...word, status: TS.INTERRUPTED }
             }
@@ -197,10 +195,10 @@ export class SubRenderController {
 
   private sortWordsWithStatus(words: Word[], turn_status: TurnStatus): Word[] {
     const sortedWords = words
-      .map(word => ({ ...word, status: TS.IN_PROGRESS as TurnStatus }))
+      .map((word) => ({ ...word, status: TS.IN_PROGRESS as TurnStatus }))
       .sort((a, b) => a.start_ms - b.start_ms)
       .reduce((acc, curr) => {
-        if (!acc.find(word => word.start_ms === curr.start_ms)) {
+        if (!acc.find((word) => word.start_ms === curr.start_ms)) {
           acc.push(curr)
         }
         return acc
@@ -214,7 +212,7 @@ export class SubRenderController {
   }
 
   private pushToQueue(data: QueueItem): void {
-    const existing = this.queue.find(item => item.turn_id === data.turn_id)
+    const existing = this.queue.find((item) => item.turn_id === data.turn_id)
 
     if (!existing) {
       this.queue.push(data)
@@ -223,10 +221,7 @@ export class SubRenderController {
       }
     } else {
       existing.text = data.text
-      existing.words = this.sortWordsWithStatus(
-        [...existing.words, ...data.words],
-        data.status
-      )
+      existing.words = this.sortWordsWithStatus([...existing.words, ...data.words], data.status)
       existing.status = data.status
     }
   }
@@ -254,12 +249,10 @@ export class SubRenderController {
       }
     }
 
-    const validWordsText = validWords
-      .map(word => word.word)
-      .join('')
+    const validWordsText = validWords.map((word) => word.word).join("")
 
     const existingMessage = this.messageList.find(
-      item => item.turn_id === queueItem.turn_id && item.uid === queueItem.uid
+      (item) => item.turn_id === queueItem.turn_id && item.uid === queueItem.uid
     )
 
     if (!existingMessage) {
@@ -275,7 +268,8 @@ export class SubRenderController {
     } else {
       existingMessage.text = validWordsText
       existingMessage.words = validWords
-      existingMessage.status = validWords.length === queueItem.words.length ? queueItem.status : TS.IN_PROGRESS
+      existingMessage.status =
+        validWords.length === queueItem.words.length ? queueItem.status : TS.IN_PROGRESS
     }
 
     if (restWords.length === 0 && queueItem.status !== TS.IN_PROGRESS) {

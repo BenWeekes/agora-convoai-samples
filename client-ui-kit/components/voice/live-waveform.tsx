@@ -86,10 +86,7 @@ export const LiveWaveform = ({
       if (streamRef.current) {
         streamRef.current.getTracks().forEach((track) => track.stop())
       }
-      if (
-        audioContextRef.current &&
-        audioContextRef.current.state !== "closed"
-      ) {
+      if (audioContextRef.current && audioContextRef.current.state !== "closed") {
         audioContextRef.current.close()
       }
       if (animationIdRef.current) {
@@ -102,10 +99,7 @@ export const LiveWaveform = ({
       const animateIdle = () => {
         t += 0.03
         // generate flat, symmetric waveform values
-        const idleArray = Array.from(
-          { length: 64 },
-          (_, i) => 0.05 + Math.sin(t + i * 0.3) * 0.01
-        )
+        const idleArray = Array.from({ length: 64 }, (_, i) => 0.05 + Math.sin(t + i * 0.3) * 0.01)
         setData(idleArray)
         rafId = requestAnimationFrame(animateIdle)
       }
@@ -133,8 +127,7 @@ export const LiveWaveform = ({
 
         const AudioContextConstructor =
           window.AudioContext ||
-          (window as unknown as { webkitAudioContext: typeof AudioContext })
-            .webkitAudioContext
+          (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
         const audioContext = new AudioContextConstructor()
         const analyser = audioContext.createAnalyser()
         analyser.fftSize = fftSize
@@ -187,10 +180,7 @@ export const LiveWaveform = ({
       if (streamRef.current) {
         streamRef.current.getTracks().forEach((track) => track.stop())
       }
-      if (
-        audioContextRef.current &&
-        audioContextRef.current.state !== "closed"
-      ) {
+      if (audioContextRef.current && audioContextRef.current.state !== "closed") {
         audioContextRef.current.close()
       }
       if (animationIdRef.current) {
@@ -199,12 +189,7 @@ export const LiveWaveform = ({
     }
   }, [active, deviceId, fftSize, smoothingTimeConstant, sensitivity, onError])
 
-  // Update data from external source if provided
-  useEffect(() => {
-    if (externalData) {
-      setData(externalData)
-    }
-  }, [externalData])
+  // Update data from external source if provided (removed useEffect to avoid setState in effect)
 
   // Canvas rendering
   useEffect(() => {
@@ -232,9 +217,12 @@ export const LiveWaveform = ({
       const barCount = Math.floor(rect.width / step)
       const centerY = rect.height / 2
 
+      // Use external data if available, otherwise use internal data
+      const displayData = externalData || data
+
       // Render bars from data
-      for (let i = 0; i < barCount && i < data.length; i++) {
-        const value = data[i] || 0.05
+      for (let i = 0; i < barCount && i < displayData.length; i++) {
+        const value = displayData[i] || 0.05
         const x = i * step
         const barHeight = Math.max(4, value * rect.height * 0.8)
         const y = centerY - barHeight / 2
@@ -280,7 +268,18 @@ export const LiveWaveform = ({
         cancelAnimationFrame(rafId)
       }
     }
-  }, [data, barWidth, barGap, barRadius, barColor, fadeEdges, fadeWidth, minAlpha, alphaRange])
+  }, [
+    data,
+    externalData,
+    barWidth,
+    barGap,
+    barRadius,
+    barColor,
+    fadeEdges,
+    fadeWidth,
+    minAlpha,
+    alphaRange,
+  ])
 
   return (
     <div
@@ -291,11 +290,7 @@ export const LiveWaveform = ({
       role="img"
       {...props}
     >
-      <canvas
-        className="block h-full w-full"
-        ref={canvasRef}
-        aria-hidden="true"
-      />
+      <canvas className="block h-full w-full" ref={canvasRef} aria-hidden="true" />
     </div>
   )
 }

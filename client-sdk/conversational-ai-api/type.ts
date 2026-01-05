@@ -3,42 +3,42 @@
 import type { IAgoraRTCClient, IMicrophoneAudioTrack } from "agora-rtc-sdk-ng"
 
 export enum AgentState {
-  IDLE = 'idle',
-  LISTENING = 'listening',
-  THINKING = 'thinking',
-  SPEAKING = 'speaking'
+  IDLE = "idle",
+  LISTENING = "listening",
+  THINKING = "thinking",
+  SPEAKING = "speaking",
 }
 
 export enum TranscriptHelperMode {
-  TEXT = 'text',
-  WORD = 'word',
-  CHUNK = 'chunk',
-  AUTO = 'auto'
+  TEXT = "text",
+  WORD = "word",
+  CHUNK = "chunk",
+  AUTO = "auto",
 }
 
 export enum TurnStatus {
   IN_PROGRESS = 0,
   END = 1,
-  INTERRUPTED = 2
+  INTERRUPTED = 2,
 }
 
 export enum ConnectionState {
-  DISCONNECTED = 'disconnected',
-  CONNECTING = 'connecting',
-  CONNECTED = 'connected',
-  RECONNECTING = 'reconnecting',
-  FAILED = 'failed'
+  DISCONNECTED = "disconnected",
+  CONNECTING = "connecting",
+  CONNECTED = "connected",
+  RECONNECTING = "reconnecting",
+  FAILED = "failed",
 }
 
 export enum ChatMessageType {
-  TEXT = 'text',
-  IMAGE = 'image'
+  TEXT = "text",
+  IMAGE = "image",
 }
 
 export enum ChatMessagePriority {
-  NORMAL = 'normal',
-  HIGH = 'high',
-  INTERRUPTED = 'interrupted'
+  NORMAL = "normal",
+  HIGH = "high",
+  INTERRUPTED = "interrupted",
 }
 
 export interface Word {
@@ -60,7 +60,7 @@ export interface TranscriptItem {
 }
 
 export interface UserTranscription {
-  object: 'user.transcription'
+  object: "user.transcription"
   text: string
   start_ms: number
   duration_ms: number
@@ -73,7 +73,7 @@ export interface UserTranscription {
 }
 
 export interface AgentTranscription {
-  object: 'assistant.transcription'
+  object: "assistant.transcription"
   text: string
   start_ms: number
   duration_ms: number
@@ -88,7 +88,7 @@ export interface AgentTranscription {
 }
 
 export interface MessageInterrupt {
-  object: 'message.interrupt'
+  object: "message.interrupt"
   turn_id: number
   start_ms: number
 }
@@ -117,7 +117,7 @@ export interface ConversationalAIAPIConfig {
 export interface RTCHelperConfig {
   appId: string
   userId: number
-  logLevel?: 'debug' | 'info' | 'warn' | 'error'
+  logLevel?: "debug" | "info" | "warn" | "error"
 }
 
 export interface RTMHelperConfig {
@@ -148,18 +148,21 @@ export interface NetworkQuality {
 }
 
 export enum ConversationalAIAPIEvents {
-  AGENT_STATE_CHANGED = 'agent-state-changed',
-  AGENT_INTERRUPTED = 'agent-interrupted',
-  AGENT_METRICS = 'agent-metrics',
-  AGENT_ERROR = 'agent-error',
-  TRANSCRIPT_UPDATED = 'transcript-updated',
-  CONNECTION_STATE_CHANGED = 'connection-state-changed',
-  MESSAGE_ERROR = 'message-error',
-  DEBUG_LOG = 'debug-log'
+  AGENT_STATE_CHANGED = "agent-state-changed",
+  AGENT_INTERRUPTED = "agent-interrupted",
+  AGENT_METRICS = "agent-metrics",
+  AGENT_ERROR = "agent-error",
+  TRANSCRIPT_UPDATED = "transcript-updated",
+  CONNECTION_STATE_CHANGED = "connection-state-changed",
+  MESSAGE_ERROR = "message-error",
+  DEBUG_LOG = "debug-log",
 }
 
 export interface ConversationalAIAPIEventMap {
-  [ConversationalAIAPIEvents.AGENT_STATE_CHANGED]: (agentUserId: string, event: { state: AgentState }) => void
+  [ConversationalAIAPIEvents.AGENT_STATE_CHANGED]: (
+    agentUserId: string,
+    event: { state: AgentState }
+  ) => void
   [ConversationalAIAPIEvents.AGENT_INTERRUPTED]: (agentUserId: string) => void
   [ConversationalAIAPIEvents.AGENT_METRICS]: (metrics: any) => void
   [ConversationalAIAPIEvents.AGENT_ERROR]: (error: Error) => void
@@ -170,23 +173,23 @@ export interface ConversationalAIAPIEventMap {
 }
 
 export enum RTCHelperEvents {
-  USER_JOINED = 'user-joined',
-  USER_LEFT = 'user-left',
-  USER_PUBLISHED = 'user-published',
-  USER_UNPUBLISHED = 'user-unpublished',
-  VOLUME_INDICATOR = 'volume-indicator',
-  NETWORK_QUALITY = 'network-quality',
-  CONNECTION_STATE_CHANGED = 'connection-state-changed',
-  AUDIO_PTS = 'audio-pts',
-  STREAM_MESSAGE = 'stream-message',
-  ERROR = 'error'
+  USER_JOINED = "user-joined",
+  USER_LEFT = "user-left",
+  USER_PUBLISHED = "user-published",
+  USER_UNPUBLISHED = "user-unpublished",
+  VOLUME_INDICATOR = "volume-indicator",
+  NETWORK_QUALITY = "network-quality",
+  CONNECTION_STATE_CHANGED = "connection-state-changed",
+  AUDIO_PTS = "audio-pts",
+  STREAM_MESSAGE = "stream-message",
+  ERROR = "error",
 }
 
 export interface RTCHelperEventMap {
   [RTCHelperEvents.USER_JOINED]: (user: RemoteUser) => void
   [RTCHelperEvents.USER_LEFT]: (user: RemoteUser) => void
-  [RTCHelperEvents.USER_PUBLISHED]: (user: RemoteUser, mediaType: 'audio' | 'video') => void
-  [RTCHelperEvents.USER_UNPUBLISHED]: (user: RemoteUser, mediaType: 'audio' | 'video') => void
+  [RTCHelperEvents.USER_PUBLISHED]: (user: RemoteUser, mediaType: "audio" | "video") => void
+  [RTCHelperEvents.USER_UNPUBLISHED]: (user: RemoteUser, mediaType: "audio" | "video") => void
   [RTCHelperEvents.VOLUME_INDICATOR]: (volumes: VolumeIndicator[]) => void
   [RTCHelperEvents.NETWORK_QUALITY]: (quality: NetworkQuality) => void
   [RTCHelperEvents.CONNECTION_STATE_CHANGED]: (state: ConnectionState) => void

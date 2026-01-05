@@ -6,8 +6,7 @@ import { ChevronDown } from "lucide-react"
 import { cn } from "../../lib/utils"
 import { Button } from "../primitives/button"
 
-export interface ConversationProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface ConversationProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * Height of the conversation container
    * @default "h-[400px]"
@@ -68,19 +67,13 @@ export const Conversation = React.forwardRef<HTMLDivElement, ConversationProps>(
       <ConversationContext.Provider value={{ scrollRef }}>
         <div
           ref={ref}
-          className={cn(
-            "relative flex flex-col overflow-scroll",
-            height,
-            className
-          )}
+          className={cn("relative flex flex-col overflow-scroll", height, className)}
           {...props}
         >
           <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto">
             {props.children}
           </div>
-          {showScrollButton && (
-            <ConversationScrollButton onClick={scrollToBottom} />
-          )}
+          {showScrollButton && <ConversationScrollButton onClick={scrollToBottom} />}
         </div>
       </ConversationContext.Provider>
     )
@@ -89,8 +82,7 @@ export const Conversation = React.forwardRef<HTMLDivElement, ConversationProps>(
 
 Conversation.displayName = "Conversation"
 
-export interface ConversationContentProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface ConversationContentProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * Padding class
    * @default "p-4"
@@ -98,21 +90,15 @@ export interface ConversationContentProps
   padding?: string
 }
 
-export const ConversationContent = React.forwardRef<
-  HTMLDivElement,
-  ConversationContentProps
->(({ className, padding = "p-4", ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn("flex flex-col gap-4", padding, className)}
-    {...props}
-  />
-))
+export const ConversationContent = React.forwardRef<HTMLDivElement, ConversationContentProps>(
+  ({ className, padding = "p-4", ...props }, ref) => (
+    <div ref={ref} className={cn("flex flex-col gap-4", padding, className)} {...props} />
+  )
+)
 
 ConversationContent.displayName = "ConversationContent"
 
-export interface ConversationEmptyStateProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface ConversationEmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * Icon to display
    */
@@ -131,10 +117,7 @@ export interface ConversationEmptyStateProps
   description?: string
 }
 
-export const ConversationEmptyState = React.forwardRef<
-  HTMLDivElement,
-  ConversationEmptyStateProps
->(
+export const ConversationEmptyState = React.forwardRef<HTMLDivElement, ConversationEmptyStateProps>(
   (
     {
       className,
@@ -164,8 +147,7 @@ export const ConversationEmptyState = React.forwardRef<
 
 ConversationEmptyState.displayName = "ConversationEmptyState"
 
-export interface ConversationScrollButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+export type ConversationScrollButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>
 
 export const ConversationScrollButton = React.forwardRef<
   HTMLButtonElement,
@@ -176,10 +158,7 @@ export const ConversationScrollButton = React.forwardRef<
   return (
     <Button
       ref={ref}
-      className={cn(
-        "absolute bottom-4 left-1/2 -translate-x-1/2 shadow-md",
-        className
-      )}
+      className={cn("absolute bottom-4 left-1/2 -translate-x-1/2 shadow-md", className)}
       onClick={() => {
         if (scrollRef.current) {
           scrollRef.current.scrollTop = scrollRef.current.scrollHeight

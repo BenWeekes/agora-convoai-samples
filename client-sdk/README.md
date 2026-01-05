@@ -1,6 +1,7 @@
 # Agora Conversational AI SDK
 
-Lightweight, framework-agnostic TypeScript SDK for building voice AI applications with Agora RTC/RTM.
+Lightweight, framework-agnostic TypeScript SDK for building voice AI
+applications with Agora RTC/RTM.
 
 ---
 
@@ -95,7 +96,8 @@ Lightweight, framework-agnostic TypeScript SDK for building voice AI application
 
 ## Usage in Sample Projects
 
-This SDK is part of the agora-convoai-samples pnpm workspace. Sample applications consume it as a workspace package:
+This SDK is part of the agora-convoai-samples pnpm workspace. Sample
+applications consume it as a workspace package:
 
 ```json
 {
@@ -194,23 +196,23 @@ pnpm add agora-rtc-sdk-ng agora-rtm
 ### Vanilla TypeScript
 
 ```typescript
-import { ConversationalAIAPI, RTCHelper } from '@agora/conversational-ai'
+import { ConversationalAIAPI, RTCHelper } from "@agora/conversational-ai"
 
 // Initialize RTC
 const rtcHelper = RTCHelper.getInstance()
 await rtcHelper.init({
-  appId: 'your-app-id',
-  channel: 'test-channel',
-  token: 'your-token',
-  uid: 12345
+  appId: "your-app-id",
+  channel: "test-channel",
+  token: "your-token",
+  uid: 12345,
 })
 
 // Create audio track
 await rtcHelper.createAudioTrack({
-  encoderConfig: 'high_quality_stereo',
+  encoderConfig: "high_quality_stereo",
   AEC: true,
   ANS: true,
-  AGC: true
+  AGC: true,
 })
 
 // Join channel and publish
@@ -221,24 +223,24 @@ await rtcHelper.publish()
 const api = ConversationalAIAPI.init({
   rtcEngine: rtcHelper.client!,
   rtmConfig: {
-    appId: 'your-app-id',
-    uid: '12345',
-    token: 'your-rtm-token',
-    channel: 'test-channel'
+    appId: "your-app-id",
+    uid: "12345",
+    token: "your-rtm-token",
+    channel: "test-channel",
   },
-  renderMode: 'auto',
-  enableLog: true
+  renderMode: "auto",
+  enableLog: true,
 })
 
 // Listen for transcript updates
-api.on('transcript-updated', (messages) => {
-  messages.forEach(msg => {
-    console.log(`${msg.uid === 0 ? 'Agent' : 'User'}: ${msg.text}`)
+api.on("transcript-updated", (messages) => {
+  messages.forEach((msg) => {
+    console.log(`${msg.uid === 0 ? "Agent" : "User"}: ${msg.text}`)
   })
 })
 
 // Send message to agent
-await api.sendMessage('Hello, agent!', '100')
+await api.sendMessage("Hello, agent!", "100")
 ```
 
 ### React
@@ -308,13 +310,13 @@ Initialize the singleton instance.
 const api = ConversationalAIAPI.init({
   rtcEngine: rtcClient,
   rtmConfig: {
-    appId: 'your-app-id',
-    uid: '12345',
-    token: 'your-rtm-token',
-    channel: 'test-channel'
+    appId: "your-app-id",
+    uid: "12345",
+    token: "your-rtm-token",
+    channel: "test-channel",
   },
-  renderMode: 'auto',
-  enableLog: true
+  renderMode: "auto",
+  enableLog: true,
 })
 ```
 
@@ -326,7 +328,8 @@ const api = ConversationalAIAPI.init({
   - `uid` - User ID as string
   - `token` - RTM token (or null)
   - `channel` - Channel name
-- `config.renderMode` (optional) - Message rendering mode: 'text' | 'word' | 'chunk' | 'auto' (default: 'auto')
+- `config.renderMode` (optional) - Message rendering mode: 'text' | 'word' |
+  'chunk' | 'auto' (default: 'auto')
 - `config.enableLog` (optional) - Enable debug logging (default: false)
 
 **Returns:** ConversationalAIAPI instance
@@ -352,7 +355,7 @@ const api = ConversationalAIAPI.getInstance()
 Send a text message to the agent via RTM.
 
 ```typescript
-await api.sendMessage('Hello!', '100', 'APPEND')
+await api.sendMessage("Hello!", "100", "APPEND")
 ```
 
 **Parameters:**
@@ -420,8 +423,8 @@ const controller = api.getSubRenderController()
 Subscribe to events.
 
 ```typescript
-api.on('transcript-updated', (messages) => {
-  console.log('New transcript:', messages)
+api.on("transcript-updated", (messages) => {
+  console.log("New transcript:", messages)
 })
 ```
 
@@ -439,7 +442,7 @@ api.on('transcript-updated', (messages) => {
 Unsubscribe from events.
 
 ```typescript
-api.off('transcript-updated', handler)
+api.off("transcript-updated", handler)
 ```
 
 **Parameters:**
@@ -468,8 +471,8 @@ api.destroy()
 Fired when transcript changes.
 
 ```typescript
-api.on('transcript-updated', (messages: TranscriptItem[]) => {
-  console.log('Transcript:', messages)
+api.on("transcript-updated", (messages: TranscriptItem[]) => {
+  console.log("Transcript:", messages)
 })
 ```
 
@@ -483,14 +486,14 @@ api.on('transcript-updated', (messages: TranscriptItem[]) => {
 
 ```typescript
 interface TranscriptItem {
-  turn_id: number        // Unique turn identifier
-  uid: number            // User ID (0 = agent)
-  stream_id: number      // Stream identifier
-  timestamp: number      // Unix timestamp
-  text: string           // Message text
-  status: TurnStatus     // 0=IN_PROGRESS, 1=END, 2=INTERRUPTED
-  words?: Word[]         // Word-level data (if available)
-  metadata?: any         // Additional metadata
+  turn_id: number // Unique turn identifier
+  uid: number // User ID (0 = agent)
+  stream_id: number // Stream identifier
+  timestamp: number // Unix timestamp
+  text: string // Message text
+  status: TurnStatus // 0=IN_PROGRESS, 1=END, 2=INTERRUPTED
+  words?: Word[] // Word-level data (if available)
+  metadata?: any // Additional metadata
 }
 ```
 
@@ -501,8 +504,8 @@ interface TranscriptItem {
 Fired when connection state changes.
 
 ```typescript
-api.on('connection-state-changed', (state: ConnectionState) => {
-  console.log('Connection:', state)
+api.on("connection-state-changed", (state: ConnectionState) => {
+  console.log("Connection:", state)
 })
 ```
 
@@ -515,7 +518,12 @@ api.on('connection-state-changed', (state: ConnectionState) => {
 **ConnectionState:**
 
 ```typescript
-type ConnectionState = 'disconnected' | 'connecting' | 'connected' | 'reconnecting' | 'failed'
+type ConnectionState =
+  | "disconnected"
+  | "connecting"
+  | "connected"
+  | "reconnecting"
+  | "failed"
 ```
 
 ---
@@ -525,9 +533,12 @@ type ConnectionState = 'disconnected' | 'connecting' | 'connected' | 'reconnecti
 Fired when agent state changes.
 
 ```typescript
-api.on('agent-state-changed', (agentUserId: string, event: { state: AgentState }) => {
-  console.log(`Agent ${agentUserId} is ${event.state}`)
-})
+api.on(
+  "agent-state-changed",
+  (agentUserId: string, event: { state: AgentState }) => {
+    console.log(`Agent ${agentUserId} is ${event.state}`)
+  }
+)
 ```
 
 **Handler Signature:**
@@ -539,7 +550,7 @@ api.on('agent-state-changed', (agentUserId: string, event: { state: AgentState }
 **AgentState:**
 
 ```typescript
-type AgentState = 'idle' | 'listening' | 'thinking' | 'speaking'
+type AgentState = "idle" | "listening" | "thinking" | "speaking"
 ```
 
 ---
@@ -549,7 +560,7 @@ type AgentState = 'idle' | 'listening' | 'thinking' | 'speaking'
 Fired when agent is interrupted.
 
 ```typescript
-api.on('agent-interrupted', (agentUserId: string) => {
+api.on("agent-interrupted", (agentUserId: string) => {
   console.log(`Agent ${agentUserId} interrupted`)
 })
 ```
@@ -567,8 +578,8 @@ api.on('agent-interrupted', (agentUserId: string) => {
 Fired when an error occurs.
 
 ```typescript
-api.on('agent-error', (error: Error) => {
-  console.error('Error:', error.message)
+api.on("agent-error", (error: Error) => {
+  console.error("Error:", error.message)
 })
 ```
 
@@ -585,8 +596,8 @@ api.on('agent-error', (error: Error) => {
 Fired when metrics are available.
 
 ```typescript
-api.on('agent-metrics', (metrics: any) => {
-  console.log('Metrics:', metrics)
+api.on("agent-metrics", (metrics: any) => {
+  console.log("Metrics:", metrics)
 })
 ```
 
@@ -603,8 +614,8 @@ api.on('agent-metrics', (metrics: any) => {
 Fired when message processing fails.
 
 ```typescript
-api.on('message-error', (error: Error) => {
-  console.error('Message error:', error)
+api.on("message-error", (error: Error) => {
+  console.error("Message error:", error)
 })
 ```
 
@@ -621,8 +632,8 @@ api.on('message-error', (error: Error) => {
 Fired for debug logging (when `enableLog: true`).
 
 ```typescript
-api.on('debug-log', (message: string) => {
-  console.log('Debug:', message)
+api.on("debug-log", (message: string) => {
+  console.log("Debug:", message)
 })
 ```
 
@@ -658,10 +669,10 @@ Initialize RTC client.
 
 ```typescript
 await rtcHelper.init({
-  appId: 'your-app-id',
-  channel: 'test-channel',
-  token: 'your-token',
-  uid: 12345
+  appId: "your-app-id",
+  channel: "test-channel",
+  token: "your-token",
+  uid: 12345,
 })
 ```
 
@@ -682,16 +693,17 @@ Create microphone audio track.
 
 ```typescript
 const track = await rtcHelper.createAudioTrack({
-  encoderConfig: 'high_quality_stereo',
-  AEC: true,  // Acoustic Echo Cancellation
-  ANS: true,  // Automatic Noise Suppression
-  AGC: true   // Automatic Gain Control
+  encoderConfig: "high_quality_stereo",
+  AEC: true, // Acoustic Echo Cancellation
+  ANS: true, // Automatic Noise Suppression
+  AGC: true, // Automatic Gain Control
 })
 ```
 
 **Parameters:**
 
-- `config.encoderConfig` (optional) - Encoder configuration (default: 'high_quality_stereo')
+- `config.encoderConfig` (optional) - Encoder configuration (default:
+  'high_quality_stereo')
 - `config.AEC` (optional) - Enable AEC (default: true)
 - `config.ANS` (optional) - Enable ANS (default: true)
 - `config.AGC` (optional) - Enable AGC (default: true)
@@ -754,10 +766,11 @@ await rtcHelper.unpublish()
 
 ##### `setMuted(muted: boolean): Promise<void>`
 
-Mute/unmute microphone. Uses `setMuted()` to keep track enabled for visualization.
+Mute/unmute microphone. Uses `setMuted()` to keep track enabled for
+visualization.
 
 ```typescript
-await rtcHelper.setMuted(true)  // Mute
+await rtcHelper.setMuted(true) // Mute
 await rtcHelper.setMuted(false) // Unmute
 ```
 
@@ -787,7 +800,7 @@ Get list of remote users.
 
 ```typescript
 const users = rtcHelper.getRemoteUsers()
-users.forEach(user => {
+users.forEach((user) => {
   console.log(`User ${user.uid}: hasAudio=${user.hasAudio}`)
 })
 ```
@@ -833,7 +846,7 @@ rtcHelper.destroy()
 Fired when a user joins the channel.
 
 ```typescript
-rtcHelper.on('user-joined', (user: RemoteUser) => {
+rtcHelper.on("user-joined", (user: RemoteUser) => {
   console.log(`User ${user.uid} joined`)
 })
 ```
@@ -851,7 +864,7 @@ rtcHelper.on('user-joined', (user: RemoteUser) => {
 Fired when a user leaves the channel.
 
 ```typescript
-rtcHelper.on('user-left', (user: RemoteUser) => {
+rtcHelper.on("user-left", (user: RemoteUser) => {
   console.log(`User ${user.uid} left`)
 })
 ```
@@ -869,9 +882,12 @@ rtcHelper.on('user-left', (user: RemoteUser) => {
 Fired when a user publishes audio.
 
 ```typescript
-rtcHelper.on('user-published', (user: RemoteUser, mediaType: 'audio' | 'video') => {
-  console.log(`User ${user.uid} published ${mediaType}`)
-})
+rtcHelper.on(
+  "user-published",
+  (user: RemoteUser, mediaType: "audio" | "video") => {
+    console.log(`User ${user.uid} published ${mediaType}`)
+  }
+)
 ```
 
 **Handler Signature:**
@@ -887,9 +903,12 @@ rtcHelper.on('user-published', (user: RemoteUser, mediaType: 'audio' | 'video') 
 Fired when a user unpublishes audio.
 
 ```typescript
-rtcHelper.on('user-unpublished', (user: RemoteUser, mediaType: 'audio' | 'video') => {
-  console.log(`User ${user.uid} unpublished ${mediaType}`)
-})
+rtcHelper.on(
+  "user-unpublished",
+  (user: RemoteUser, mediaType: "audio" | "video") => {
+    console.log(`User ${user.uid} unpublished ${mediaType}`)
+  }
+)
 ```
 
 **Handler Signature:**
@@ -905,8 +924,8 @@ rtcHelper.on('user-unpublished', (user: RemoteUser, mediaType: 'audio' | 'video'
 Fired periodically with volume levels (200ms interval).
 
 ```typescript
-rtcHelper.on('volume-indicator', (volumes: VolumeIndicator[]) => {
-  volumes.forEach(v => {
+rtcHelper.on("volume-indicator", (volumes: VolumeIndicator[]) => {
+  volumes.forEach((v) => {
     console.log(`User ${v.uid}: ${v.level}`)
   })
 })
@@ -923,7 +942,7 @@ rtcHelper.on('volume-indicator', (volumes: VolumeIndicator[]) => {
 ```typescript
 interface VolumeIndicator {
   uid: number | string
-  level: number  // 0.0 to 1.0
+  level: number // 0.0 to 1.0
 }
 ```
 
@@ -934,8 +953,10 @@ interface VolumeIndicator {
 Fired when network quality changes.
 
 ```typescript
-rtcHelper.on('network-quality', (quality: NetworkQuality) => {
-  console.log(`Uplink: ${quality.uplinkNetworkQuality}, Downlink: ${quality.downlinkNetworkQuality}`)
+rtcHelper.on("network-quality", (quality: NetworkQuality) => {
+  console.log(
+    `Uplink: ${quality.uplinkNetworkQuality}, Downlink: ${quality.downlinkNetworkQuality}`
+  )
 })
 ```
 
@@ -949,8 +970,8 @@ rtcHelper.on('network-quality', (quality: NetworkQuality) => {
 
 ```typescript
 interface NetworkQuality {
-  uplinkNetworkQuality: number    // 0-6 (0=unknown, 1=excellent, 6=down)
-  downlinkNetworkQuality: number  // 0-6 (0=unknown, 1=excellent, 6=down)
+  uplinkNetworkQuality: number // 0-6 (0=unknown, 1=excellent, 6=down)
+  downlinkNetworkQuality: number // 0-6 (0=unknown, 1=excellent, 6=down)
 }
 ```
 
@@ -961,8 +982,8 @@ interface NetworkQuality {
 Fired when RTC connection state changes.
 
 ```typescript
-rtcHelper.on('connection-state-changed', (state: ConnectionState) => {
-  console.log('RTC connection:', state)
+rtcHelper.on("connection-state-changed", (state: ConnectionState) => {
+  console.log("RTC connection:", state)
 })
 ```
 
@@ -979,8 +1000,8 @@ rtcHelper.on('connection-state-changed', (state: ConnectionState) => {
 Fired every frame with audio presentation timestamp.
 
 ```typescript
-rtcHelper.on('audio-pts', (pts: number) => {
-  console.log('Audio PTS:', pts)
+rtcHelper.on("audio-pts", (pts: number) => {
+  console.log("Audio PTS:", pts)
 })
 ```
 
@@ -997,7 +1018,7 @@ rtcHelper.on('audio-pts', (pts: number) => {
 Fired when stream message received (internal use).
 
 ```typescript
-rtcHelper.on('stream-message', (uid: number, stream: Uint8Array) => {
+rtcHelper.on("stream-message", (uid: number, stream: Uint8Array) => {
   console.log(`Message from ${uid}:`, stream)
 })
 ```
@@ -1015,8 +1036,8 @@ rtcHelper.on('stream-message', (uid: number, stream: Uint8Array) => {
 Fired when RTC error occurs.
 
 ```typescript
-rtcHelper.on('error', (error: Error) => {
-  console.error('RTC error:', error)
+rtcHelper.on("error", (error: Error) => {
+  console.error("RTC error:", error)
 })
 ```
 
@@ -1052,9 +1073,9 @@ Initialize RTM client.
 
 ```typescript
 await rtmHelper.init({
-  appId: 'your-app-id',
-  uid: '12345',
-  token: 'your-rtm-token'
+  appId: "your-app-id",
+  uid: "12345",
+  token: "your-rtm-token",
 })
 ```
 
@@ -1087,7 +1108,7 @@ await rtmHelper.login()
 Subscribe to a channel.
 
 ```typescript
-await rtmHelper.subscribe('test-channel')
+await rtmHelper.subscribe("test-channel")
 ```
 
 **Parameters:**
@@ -1127,14 +1148,15 @@ await rtmHelper.logout()
 Send message to agent.
 
 ```typescript
-await rtmHelper.sendMessage('Hello!', '100', 'APPEND')
+await rtmHelper.sendMessage("Hello!", "100", "APPEND")
 ```
 
 **Parameters:**
 
 - `message` - Text message to send
 - `agentUid` - Agent UID (typically "100")
-- `priority` (optional) - Message priority: 'APPEND' | 'REPLACE' (default: 'APPEND')
+- `priority` (optional) - Message priority: 'APPEND' | 'REPLACE' (default:
+  'APPEND')
 
 **Returns:** Promise<void>
 
@@ -1171,8 +1193,8 @@ rtmHelper.destroy()
 Fired when RTM message received.
 
 ```typescript
-rtmHelper.on('message', (event: any) => {
-  console.log('RTM message:', event)
+rtmHelper.on("message", (event: any) => {
+  console.log("RTM message:", event)
 })
 ```
 
@@ -1189,8 +1211,8 @@ rtmHelper.on('message', (event: any) => {
 Fired when presence event occurs.
 
 ```typescript
-rtmHelper.on('presence', (event: any) => {
-  console.log('Presence:', event)
+rtmHelper.on("presence", (event: any) => {
+  console.log("Presence:", event)
 })
 ```
 
@@ -1207,8 +1229,8 @@ rtmHelper.on('presence', (event: any) => {
 Fired when status changes.
 
 ```typescript
-rtmHelper.on('status', (event: any) => {
-  console.log('Status:', event)
+rtmHelper.on("status", (event: any) => {
+  console.log("Status:", event)
 })
 ```
 
@@ -1225,8 +1247,8 @@ rtmHelper.on('status', (event: any) => {
 Fired when RTM connection state changes.
 
 ```typescript
-rtmHelper.on('connection-state-changed', (state: ConnectionState) => {
-  console.log('RTM connection:', state)
+rtmHelper.on("connection-state-changed", (state: ConnectionState) => {
+  console.log("RTM connection:", state)
 })
 ```
 
@@ -1243,8 +1265,8 @@ rtmHelper.on('connection-state-changed', (state: ConnectionState) => {
 Fired when RTM error occurs.
 
 ```typescript
-rtmHelper.on('error', (error: Error) => {
-  console.error('RTM error:', error)
+rtmHelper.on("error", (error: Error) => {
+  console.error("RTM error:", error)
 })
 ```
 
@@ -1268,17 +1290,18 @@ Create message controller.
 
 ```typescript
 const controller = new SubRenderController({
-  mode: 'auto',
+  mode: "auto",
   interval: 200,
   callback: (messages) => {
-    console.log('Transcript updated:', messages)
-  }
+    console.log("Transcript updated:", messages)
+  },
 })
 ```
 
 **Parameters:**
 
-- `config.mode` (optional) - Render mode: 'text' | 'word' | 'chunk' | 'auto' (default: 'auto')
+- `config.mode` (optional) - Render mode: 'text' | 'word' | 'chunk' | 'auto'
+  (default: 'auto')
 - `config.interval` (optional) - Processing interval in ms (default: 200)
 - `config.callback` - Callback function called when transcript updates
 
@@ -1290,15 +1313,15 @@ Process user transcription message.
 
 ```typescript
 controller.handleUserTranscription({
-  object: 'user.transcription',
-  text: 'Hello',
+  object: "user.transcription",
+  text: "Hello",
   turn_id: 1,
   stream_id: 0,
-  user_id: '12345',
+  user_id: "12345",
   start_ms: 0,
   duration_ms: 500,
-  language: 'en-US',
-  final: true
+  language: "en-US",
+  final: true,
 })
 ```
 
@@ -1314,17 +1337,17 @@ Process agent transcription message.
 
 ```typescript
 controller.handleAgentTranscription({
-  object: 'assistant.transcription',
-  text: 'Hi there!',
+  object: "assistant.transcription",
+  text: "Hi there!",
   turn_id: 2,
   stream_id: 0,
-  user_id: '100',
+  user_id: "100",
   start_ms: 500,
   duration_ms: 600,
-  language: 'en-US',
+  language: "en-US",
   quiet: false,
   turn_seq_id: 0,
-  turn_status: 1
+  turn_status: 1,
 })
 ```
 
@@ -1340,9 +1363,9 @@ Handle message interruption.
 
 ```typescript
 controller.handleMessageInterrupt({
-  object: 'message.interrupt',
+  object: "message.interrupt",
   turn_id: 2,
-  start_ms: 800
+  start_ms: 800,
 })
 ```
 
@@ -1371,7 +1394,7 @@ controller.setPTS(1234)
 Change rendering mode.
 
 ```typescript
-controller.setRenderMode('word')
+controller.setRenderMode("word")
 ```
 
 **Parameters:**
@@ -1428,42 +1451,42 @@ controller.destroy()
 
 ```typescript
 enum AgentState {
-  IDLE = 'idle',
-  LISTENING = 'listening',
-  THINKING = 'thinking',
-  SPEAKING = 'speaking'
+  IDLE = "idle",
+  LISTENING = "listening",
+  THINKING = "thinking",
+  SPEAKING = "speaking",
 }
 
 enum TranscriptHelperMode {
-  TEXT = 'text',
-  WORD = 'word',
-  CHUNK = 'chunk',
-  AUTO = 'auto'
+  TEXT = "text",
+  WORD = "word",
+  CHUNK = "chunk",
+  AUTO = "auto",
 }
 
 enum TurnStatus {
   IN_PROGRESS = 0,
   END = 1,
-  INTERRUPTED = 2
+  INTERRUPTED = 2,
 }
 
 enum ConnectionState {
-  DISCONNECTED = 'disconnected',
-  CONNECTING = 'connecting',
-  CONNECTED = 'connected',
-  RECONNECTING = 'reconnecting',
-  FAILED = 'failed'
+  DISCONNECTED = "disconnected",
+  CONNECTING = "connecting",
+  CONNECTED = "connected",
+  RECONNECTING = "reconnecting",
+  FAILED = "failed",
 }
 
 enum ChatMessageType {
-  TEXT = 'text',
-  IMAGE = 'image'
+  TEXT = "text",
+  IMAGE = "image",
 }
 
 enum ChatMessagePriority {
-  NORMAL = 'normal',
-  HIGH = 'high',
-  INTERRUPTED = 'interrupted'
+  NORMAL = "normal",
+  HIGH = "high",
+  INTERRUPTED = "interrupted",
 }
 ```
 
@@ -1489,7 +1512,7 @@ interface TranscriptItem {
 }
 
 interface UserTranscription {
-  object: 'user.transcription'
+  object: "user.transcription"
   text: string
   start_ms: number
   duration_ms: number
@@ -1502,7 +1525,7 @@ interface UserTranscription {
 }
 
 interface AgentTranscription {
-  object: 'assistant.transcription'
+  object: "assistant.transcription"
   text: string
   start_ms: number
   duration_ms: number
@@ -1517,7 +1540,7 @@ interface AgentTranscription {
 }
 
 interface MessageInterrupt {
-  object: 'message.interrupt'
+  object: "message.interrupt"
   turn_id: number
   start_ms: number
 }
@@ -1542,11 +1565,13 @@ The SDK automatically deduplicates messages at two levels:
 
 **Turn-Based Deduplication:**
 
-Prevents duplicate turns based on `turn_id` + `uid`. Automatically updates existing messages instead of creating duplicates.
+Prevents duplicate turns based on `turn_id` + `uid`. Automatically updates
+existing messages instead of creating duplicates.
 
 **Word-Level Deduplication:**
 
-Prevents duplicate words based on `start_ms` timestamp. Only processes words that haven't been seen before.
+Prevents duplicate words based on `start_ms` timestamp. Only processes words
+that haven't been seen before.
 
 ---
 
@@ -1556,7 +1581,8 @@ The SDK supports multi-part messages from the backend:
 
 Backend sends messages in format: `message_id|part_idx|part_sum|base64_data`
 
-SDK automatically assembles and decodes complete messages. No manual handling required.
+SDK automatically assembles and decodes complete messages. No manual handling
+required.
 
 ---
 
@@ -1564,7 +1590,8 @@ SDK automatically assembles and decodes complete messages. No manual handling re
 
 Sync transcript rendering with audio playback:
 
-Automatically handled via RTC audio PTS. Words render when audio reaches their `start_ms` timestamp. Ensures natural audio/text alignment.
+Automatically handled via RTC audio PTS. Words render when audio reaches their
+`start_ms` timestamp. Ensures natural audio/text alignment.
 
 ---
 
@@ -1575,11 +1602,11 @@ Choose how messages are rendered:
 ```typescript
 const api = ConversationalAIAPI.init({
   rtcEngine: client,
-  renderMode: 'word'
+  renderMode: "word",
 })
 
 // Change mode dynamically
-api.getSubRenderController()?.setRenderMode('text')
+api.getSubRenderController()?.setRenderMode("text")
 ```
 
 **Modes:**
@@ -1596,7 +1623,7 @@ api.getSubRenderController()?.setRenderMode('text')
 Monitor audio levels for visualization:
 
 ```typescript
-rtcHelper.on('volume-indicator', (volumes) => {
+rtcHelper.on("volume-indicator", (volumes) => {
   volumes.forEach(({ uid, level }) => {
     // Update UI visualization
     // level is 0.0 to 1.0
@@ -1612,7 +1639,7 @@ rtcHelper.on('volume-indicator', (volumes) => {
 Track connection quality:
 
 ```typescript
-rtcHelper.on('network-quality', (quality) => {
+rtcHelper.on("network-quality", (quality) => {
   const { uplinkNetworkQuality, downlinkNetworkQuality } = quality
 
   // 0 = unknown, 1 = excellent, 2 = good, 3 = poor, 4 = bad, 5 = very bad, 6 = down

@@ -1,11 +1,9 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
-import { Check, ChevronDown, Mic, MicIcon, MicOff } from "lucide-react"
+import { useEffect, useState } from "react"
+import { Check, ChevronDown, Mic, MicOff } from "lucide-react"
 
 import { useAudioDevices } from "../../hooks/use-audio-devices"
-import { cn } from "../../lib/utils"
-import { Button } from "../primitives/button"
 import { Chip } from "../primitives/chip"
 import {
   DropdownMenu,
@@ -36,17 +34,11 @@ export function MicSelector({
   onValueChange,
   muted,
   onMutedChange,
-  disabled = false,
-  className,
+  disabled: _disabled = false,
+  className: _className,
 }: MicSelectorProps) {
-  const [state, setState] = useState<
-    "idle" | "listening" | "success" | "error"
-  >("idle")
-  const { devices, loading, error, hasPermission, loadDevices } =
-    useAudioDevices()
-  const [selectedDevice, setSelectedDevice] = useState<string>(value || "")
+  const { devices, loading, error, hasPermission, loadDevices } = useAudioDevices()
   const [internalMuted, setInternalMuted] = useState(false)
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   // Use controlled muted if provided, otherwise use internal state
   const isMuted = muted !== undefined ? muted : internalMuted
@@ -55,32 +47,18 @@ export function MicSelector({
   // console.log("supriya error: ", error)
   // console.log("supriya hasPermission: ", hasPermission)
 
-  // Update internal state when controlled value changes
-  useEffect(() => {
-    if (value !== undefined) {
-      setSelectedDevice(value)
-    }
-  }, [value])
+  // Use controlled value if provided, otherwise use first device
+  const selectedDevice = value || devices[0]?.deviceId || ""
 
-  // Select first device by default
-  const defaultDeviceId = devices[0]?.deviceId || ""
+  // Notify parent when default device is selected and no value is controlled
   useEffect(() => {
-    if (!selectedDevice && defaultDeviceId) {
-      const newDevice = defaultDeviceId
-      setSelectedDevice(newDevice)
-      onValueChange?.(newDevice)
+    if (!value && selectedDevice && devices.length > 0) {
+      onValueChange?.(selectedDevice)
     }
-  }, [defaultDeviceId, selectedDevice, onValueChange])
-
-  const currentDevice = devices.find((d) => d.deviceId === selectedDevice) ||
-    devices[0] || {
-      label: loading ? "Loading..." : "No microphone",
-      deviceId: "",
-    }
+  }, [value, selectedDevice, devices.length, onValueChange])
 
   const handleDeviceSelect = (deviceId: string, e?: React.MouseEvent) => {
     e?.preventDefault()
-    setSelectedDevice(deviceId)
     onValueChange?.(deviceId)
   }
 
@@ -122,9 +100,7 @@ export function MicSelector({
         </IconButton>
         {isError && (
           <div className="bg-warning absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full">
-            <span className="text-hard-black text-xs leading-none font-bold">
-              !
-            </span>
+            <span className="text-hard-black text-xs leading-none font-bold">!</span>
           </div>
         )}
       </div>
@@ -148,9 +124,7 @@ export function MicSelector({
               Loading devices...
             </div>
           ) : error ? (
-            <div className="text-error px-4 py-3 text-center text-sm">
-              Error: {error}
-            </div>
+            <div className="text-error px-4 py-3 text-center text-sm">Error: {error}</div>
           ) : devices.length === 0 ? (
             <div className="text-muted-foreground px-4 py-3 text-center text-sm">
               No microphones available
@@ -166,9 +140,7 @@ export function MicSelector({
                   disabled={loading && isError}
                 >
                   <span className="truncate">{device.label}</span>
-                  {selectedDevice === device.deviceId && (
-                    <Check className="size-5 flex-shrink-0" />
-                  )}
+                  {selectedDevice === device.deviceId && <Check className="size-5 flex-shrink-0" />}
                 </DropdownMenuItem>
               ))}
             </>

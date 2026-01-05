@@ -1,12 +1,15 @@
 # Simple Backend
 
-Python backend for starting/stopping Agora AI voice agents and returning an Agora RTC token for the client to join the same channel. Supports both local development and AWS Lambda deployment.
+Python backend for starting/stopping Agora AI voice agents and returning an
+Agora RTC token for the client to join the same channel. Supports both local
+development and AWS Lambda deployment.
 
 ## Usage
 
 ### Local Development
 
 **1. Install dependencies:**
+
 ```bash
 pip3 install -r requirements-local.txt
 ```
@@ -44,22 +47,26 @@ DEFAULT_PROMPT=You are Bella, a quiz master who asks capital city questions. Kee
 See `.env.example` for all available configuration options.
 
 **3. Run server:**
+
 ```bash
 python3 local_server.py
 # Or specify custom port:
 PORT=8082 python3 local_server.py
 ```
 
-Server runs on http://localhost:8081 (default) or custom port via `PORT` env var.
+Server runs on http://localhost:8081 (default) or custom port via `PORT` env
+var.
 
 **4. Test the endpoints:**
 
 **Start agent in channel:**
+
 ```bash
 curl "http://localhost:8081/start-agent?channel=test"
 ```
 
 Response includes `agent_id` needed for stopping the agent:
+
 ```json
 {
   "channel": "test",
@@ -74,12 +81,14 @@ Response includes `agent_id` needed for stopping the agent:
 ```
 
 **Stop agent:**
+
 ```bash
 # Use agent_id from start response
 curl "http://localhost:8081/hangup-agent?agent_id=abc123"
 ```
 
 **Other examples:**
+
 ```bash
 # Token-only mode (no agent started)
 curl "http://localhost:8081/start-agent?channel=test&connect=false"
@@ -94,6 +103,7 @@ curl "http://localhost:8081/health"
 ### AWS Lambda Deployment
 
 **1. Package for Lambda:**
+
 ```bash
 zip -r lambda.zip lambda_handler.py core/
 ```
@@ -101,6 +111,7 @@ zip -r lambda.zip lambda_handler.py core/
 **2. Upload to AWS Lambda**
 
 **3. Set environment variables in Lambda console:**
+
 - `APP_ID`
 - `APP_CERTIFICATE`
 - `AGENT_AUTH_HEADER`
@@ -113,9 +124,11 @@ zip -r lambda.zip lambda_handler.py core/
 
 ## Configuration
 
-All configuration via environment variables. See `.env.example` for complete list.
+All configuration via environment variables. See `.env.example` for complete
+list.
 
 **Required:**
+
 - `APP_ID` - Agora App ID
 - `AGENT_AUTH_HEADER` - Agora API authorization
 - `LLM_API_KEY` - OpenAI or LLM API key
@@ -123,6 +136,7 @@ All configuration via environment variables. See `.env.example` for complete lis
 - Vendor-specific keys (e.g., `RIME_API_KEY`)
 
 **Optional:**
+
 - `APP_CERTIFICATE` - For token security (leave blank for testing)
 - `ASR_VENDOR` - Speech recognition (default: ares, no key needed)
 - `ENABLE_AIVAD` - AI voice activity detection (default: true)
@@ -158,6 +172,7 @@ curl "http://localhost:8081/start-agent?channel=test&profile=sales"
 ```
 
 Variables checked in order:
+
 1. `VAR_NAME_profile` (if profile specified)
 2. `VAR_NAME` (base variable)
 3. Default value (hardcoded)

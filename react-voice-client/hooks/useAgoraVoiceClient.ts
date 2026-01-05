@@ -30,7 +30,9 @@ export function useAgoraVoiceClient() {
   const [isMuted, setIsMuted] = useState(false)
   const [micState, setMicState] = useState<MicButtonState>("idle")
   const [messageList, setMessageList] = useState<IMessageListItem[]>([])
-  const [currentInProgressMessage, setCurrentInProgressMessage] = useState<IMessageListItem | null>(null)
+  const [currentInProgressMessage, setCurrentInProgressMessage] = useState<IMessageListItem | null>(
+    null
+  )
   const [isAgentSpeaking, setIsAgentSpeaking] = useState(false)
   const [remoteAudioTrack, setRemoteAudioTrack] = useState<any>(null)
 
@@ -43,7 +45,7 @@ export function useAgoraVoiceClient() {
     const rtcHelper = rtcHelperRef.current
     if (!rtcHelper) return
 
-    const handleUserPublished = (user: any, mediaType: 'audio' | 'video') => {
+    const handleUserPublished = (user: any, mediaType: "audio" | "video") => {
       if (mediaType === "audio" && user.audioTrack) {
         user.audioTrack.play()
         setRemoteAudioTrack(user.audioTrack)
@@ -51,7 +53,7 @@ export function useAgoraVoiceClient() {
       }
     }
 
-    const handleUserUnpublished = (user: any, mediaType: 'audio' | 'video') => {
+    const handleUserUnpublished = (user: any, mediaType: "audio" | "video") => {
       if (mediaType === "audio") {
         setIsAgentSpeaking(false)
         setRemoteAudioTrack(null)
@@ -86,7 +88,7 @@ export function useAgoraVoiceClient() {
 
     const volumes: number[] = []
     volumeCheckIntervalRef.current = setInterval(() => {
-      if (remoteAudioTrack && typeof remoteAudioTrack.getVolumeLevel === 'function') {
+      if (remoteAudioTrack && typeof remoteAudioTrack.getVolumeLevel === "function") {
         const volume = remoteAudioTrack.getVolumeLevel()
         volumes.push(volume)
         if (volumes.length > 3) volumes.shift()
@@ -123,7 +125,7 @@ export function useAgoraVoiceClient() {
           appId: config.appId,
           channel: config.channel,
           token: config.token,
-          uid: config.uid
+          uid: config.uid,
         })
 
         // Create and publish audio track
@@ -147,23 +149,23 @@ export function useAgoraVoiceClient() {
           rtcEngine: rtcHelper.client!,
           rtmConfig: {
             appId: config.appId,
-            uid: `${config.uid}`,  // RTM uid must be string
+            uid: `${config.uid}`, // RTM uid must be string
             token: config.token,
-            channel: config.channel
+            channel: config.channel,
           },
-          renderMode: 'auto' as TranscriptHelperMode,
-          enableLog: true
+          renderMode: "auto" as TranscriptHelperMode,
+          enableLog: true,
         })
 
         // Listen to transcript updates
-        api.on('transcript-updated' as any, (messages: TranscriptItem[]) => {
+        api.on("transcript-updated" as any, (messages: TranscriptItem[]) => {
           // Convert to IMessageListItem format
-          const convertedMessages = messages.map(m => ({
+          const convertedMessages = messages.map((m) => ({
             turn_id: m.turn_id,
             uid: m.uid,
             text: m.text,
             status: m.status,
-            timestamp: m.timestamp
+            timestamp: m.timestamp,
           }))
 
           // Filter out in-progress messages
@@ -171,9 +173,7 @@ export function useAgoraVoiceClient() {
             (msg) => msg.status !== TurnStatus.IN_PROGRESS
           )
 
-          const inProgress = convertedMessages.find(
-            (msg) => msg.status === TurnStatus.IN_PROGRESS
-          )
+          const inProgress = convertedMessages.find((msg) => msg.status === TurnStatus.IN_PROGRESS)
 
           setMessageList(completedMessages)
           setCurrentInProgressMessage(inProgress || null)

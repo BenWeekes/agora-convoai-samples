@@ -1,6 +1,7 @@
 # Agora Conversational AI - Implementation Guide for AI Assistants
 
-This guide helps AI coding assistants implement Agora Conversational AI voice agents in web applications.
+This guide helps AI coding assistants implement Agora Conversational AI voice
+agents in web applications.
 
 ## Table of Contents
 
@@ -34,6 +35,7 @@ This guide helps AI coding assistants implement Agora Conversational AI voice ag
 Three paths to build a conversational AI app:
 
 **Path A: Use SDK + UI Kit Packages (Recommended)**
+
 ```bash
 cd agora-convoai-samples
 pnpm install
@@ -41,6 +43,7 @@ pnpm install
 ```
 
 **Path B: Use Sample as Template**
+
 ```bash
 cd agora-convoai-samples/react-voice-client
 pnpm install
@@ -48,8 +51,8 @@ pnpm dev
 # Open http://localhost:8083
 ```
 
-**Path C: Implement from Scratch**
-See [Bare RTC/RTM Implementation](#approach-c-bare-rtcrtm-implementation) below.
+**Path C: Implement from Scratch** See
+[Bare RTC/RTM Implementation](#approach-c-bare-rtcrtm-implementation) below.
 
 ## Architecture Overview
 
@@ -85,18 +88,21 @@ See [Bare RTC/RTM Implementation](#approach-c-bare-rtcrtm-implementation) below.
 Agora Conversational AI uses two complementary SDKs:
 
 **RTC (Real-Time Communication)**
+
 - Handles audio and video streaming between client and agent
 - Provides low-latency audio transport
 - Manages echo cancellation, noise suppression, auto gain control
 - Used for: Voice input/output, audio visualizations
 
 **RTM (Real-Time Messaging)**
+
 - Handles text messages and control signals
 - Transmits transcriptions, turn status, interrupts
 - Provides structured JSON messages from agent
 - Used for: Live transcriptions, chat display, agent state
 
-Both use the same channel and require proper token generation. The SDK packages abstract the complexity of managing both connections.
+Both use the same channel and require proper token generation. The SDK packages
+abstract the complexity of managing both connections.
 
 ## Implementation Approaches
 
@@ -164,7 +170,8 @@ pnpm install
 pnpm dev
 ```
 
-Modify `components/VoiceClient.tsx` and `hooks/useAgoraVoiceClient.ts` as needed.
+Modify `components/VoiceClient.tsx` and `hooks/useAgoraVoiceClient.ts` as
+needed.
 
 ### Approach C: Bare RTC/RTM Implementation
 
@@ -177,51 +184,51 @@ npm install agora-rtc-sdk-ng agora-rtm
 Implement RTC audio connection:
 
 ```javascript
-import AgoraRTC from 'agora-rtc-sdk-ng'
+import AgoraRTC from "agora-rtc-sdk-ng"
 
 let agoraClient = null
 let localAudioTrack = null
 
 async function joinChannel(appId, channel, token, uid) {
-    agoraClient = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp9' })
+  agoraClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp9" })
 
-    agoraClient.on('user-published', async (user, mediaType) => {
-        if (mediaType === 'audio') {
-            await agoraClient.subscribe(user, mediaType)
-            user.audioTrack.play()
-        }
-    })
+  agoraClient.on("user-published", async (user, mediaType) => {
+    if (mediaType === "audio") {
+      await agoraClient.subscribe(user, mediaType)
+      user.audioTrack.play()
+    }
+  })
 
-    await agoraClient.join(appId, channel, token || null, parseInt(uid))
+  await agoraClient.join(appId, channel, token || null, parseInt(uid))
 
-    localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack({
-        encoderConfig: 'high_quality_stereo',
-        AEC: true,
-        ANS: true,
-        AGC: true
-    })
+  localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack({
+    encoderConfig: "high_quality_stereo",
+    AEC: true,
+    ANS: true,
+    AGC: true,
+  })
 
-    await agoraClient.publish(localAudioTrack)
+  await agoraClient.publish(localAudioTrack)
 }
 ```
 
 Implement RTM message handling:
 
 ```javascript
-import AgoraRTM from 'agora-rtm'
+import AgoraRTM from "agora-rtm"
 
 const rtmClient = AgoraRTM.createInstance(appId)
 
-rtmClient.on('MessageFromPeer', (message, peerId) => {
-    const data = JSON.parse(message.text)
+rtmClient.on("MessageFromPeer", (message, peerId) => {
+  const data = JSON.parse(message.text)
 
-    if (data.object === 'assistant.transcription') {
-        console.log('Agent said:', data.text)
-    }
+  if (data.object === "assistant.transcription") {
+    console.log("Agent said:", data.text)
+  }
 
-    if (data.object === 'user.transcription') {
-        console.log('User said:', data.text)
-    }
+  if (data.object === "user.transcription") {
+    console.log("User said:", data.text)
+  }
 })
 
 await rtmClient.login({ token, uid })
@@ -234,21 +241,21 @@ await rtmClient.login({ token, uid })
 Main SDK class for managing conversational AI connections.
 
 ```typescript
-import { ConversationalAIAPI } from '@agora/conversational-ai'
+import { ConversationalAIAPI } from "@agora/conversational-ai"
 
 const api = ConversationalAIAPI.getInstance()
 
 await api.init({
   rtcEngine: rtcClient,
   rtmConfig: {
-    appId: 'your_app_id',
-    token: 'your_token',
-    uid: '101',
+    appId: "your_app_id",
+    token: "your_token",
+    uid: "101",
   },
-  agentUID: '100',
-  renderMode: 'auto',
+  agentUID: "100",
+  renderMode: "auto",
   callback: (messages) => {
-    console.log('Messages updated:', messages)
+    console.log("Messages updated:", messages)
   },
 })
 
@@ -261,15 +268,15 @@ await api.dispose()
 Manages Agora RTC client lifecycle and audio tracks.
 
 ```typescript
-import { RTCHelper } from '@agora/conversational-ai'
+import { RTCHelper } from "@agora/conversational-ai"
 
 const rtcHelper = RTCHelper.getInstance()
 
 await rtcHelper.init({
-  appId: 'your_app_id',
-  channel: 'your_channel',
-  token: 'your_token',
-  uid: '101',
+  appId: "your_app_id",
+  channel: "your_channel",
+  token: "your_token",
+  uid: "101",
 })
 
 await rtcHelper.start()
@@ -281,16 +288,16 @@ await rtcHelper.dispose()
 Manages Agora RTM client lifecycle and message handling.
 
 ```typescript
-import { RTMHelper } from '@agora/conversational-ai'
+import { RTMHelper } from "@agora/conversational-ai"
 
 const rtmHelper = RTMHelper.getInstance()
 
 await rtmHelper.init({
-  appId: 'your_app_id',
-  token: 'your_token',
-  uid: '101',
+  appId: "your_app_id",
+  token: "your_token",
+  uid: "101",
   onMessageReceived: (message) => {
-    console.log('RTM message:', message)
+    console.log("RTM message:", message)
   },
 })
 
@@ -332,6 +339,7 @@ const {
 ### Voice Components
 
 **AgentVisualizer**
+
 ```typescript
 import { AgentVisualizer } from '@agora/ui-kit'
 
@@ -342,6 +350,7 @@ import { AgentVisualizer } from '@agora/ui-kit'
 ```
 
 **MicButton**
+
 ```typescript
 import { MicButton } from '@agora/ui-kit'
 
@@ -352,6 +361,7 @@ import { MicButton } from '@agora/ui-kit'
 ```
 
 **AudioVisualizer**
+
 ```typescript
 import { AudioVisualizer } from '@agora/ui-kit'
 
@@ -362,6 +372,7 @@ import { AudioVisualizer } from '@agora/ui-kit'
 ```
 
 **MicSelector**
+
 ```typescript
 import { MicSelector } from '@agora/ui-kit'
 
@@ -374,6 +385,7 @@ import { MicSelector } from '@agora/ui-kit'
 ### Chat Components
 
 **Conversation**
+
 ```typescript
 import { Conversation, ConversationContent } from '@agora/ui-kit'
 
@@ -385,6 +397,7 @@ import { Conversation, ConversationContent } from '@agora/ui-kit'
 ```
 
 **Message**
+
 ```typescript
 import { Message, MessageContent } from '@agora/ui-kit'
 
@@ -396,6 +409,7 @@ import { Message, MessageContent } from '@agora/ui-kit'
 ```
 
 **ConvoTextStream**
+
 ```typescript
 import { ConvoTextStream } from '@agora/ui-kit'
 
@@ -410,6 +424,7 @@ import { ConvoTextStream } from '@agora/ui-kit'
 ### Video Components
 
 **Avatar**
+
 ```typescript
 import { Avatar } from '@agora/ui-kit'
 
@@ -527,6 +542,7 @@ def start_agent_endpoint():
 ### TTS Vendors
 
 **Rime (Recommended)**
+
 ```python
 tts_config = {
     "vendor": "rime",
@@ -542,6 +558,7 @@ tts_config = {
 ```
 
 **ElevenLabs**
+
 ```python
 tts_config = {
     "vendor": "elevenlabs",
@@ -556,6 +573,7 @@ tts_config = {
 ```
 
 **OpenAI**
+
 ```python
 tts_config = {
     "vendor": "openai",
@@ -568,6 +586,7 @@ tts_config = {
 ```
 
 **Cartesia**
+
 ```python
 tts_config = {
     "vendor": "cartesia",
@@ -582,6 +601,7 @@ tts_config = {
 ### ASR Providers
 
 **Ares (Default - No API key needed)**
+
 ```python
 asr_config = {
     "vendor": "ares",
@@ -590,6 +610,7 @@ asr_config = {
 ```
 
 **Deepgram**
+
 ```python
 asr_config = {
     "vendor": "deepgram",
@@ -625,29 +646,34 @@ llm_config = {
 ## Sample Code Reference
 
 **react-voice-client**
+
 - React/Next.js application using SDK and UI Kit packages
 - Full integration with backend
 - Production-ready component structure
 - Location: `/react-voice-client/`
 
 **simple-voice-client**
+
 - Standalone HTML client for testing
 - Manual credential entry (appid, token, uid)
 - Real-time audio visualization
 - Location: `/simple-voice-client/`
 
 **simple-backend**
+
 - Python Flask + AWS Lambda compatible
 - Token generation with RTC+RTM
 - Agent lifecycle management
 - Location: `/simple-backend/`
 
 **client-sdk**
+
 - Core SDK packages (ConversationalAIAPI, RTCHelper, RTMHelper)
 - React hooks (useConversationalAI)
 - Location: `/client-sdk/`
 
 **client-ui-kit**
+
 - Pre-built UI components
 - Voice, chat, video components
 - Location: `/client-ui-kit/`
@@ -655,6 +681,7 @@ llm_config = {
 ## Common Patterns
 
 **Start backend and frontend (pnpm workspace):**
+
 ```bash
 cd agora-convoai-samples
 
@@ -668,6 +695,7 @@ pnpm dev
 ```
 
 **Backend with CORS (local development):**
+
 ```python
 @app.after_request
 def after_request(response):
@@ -676,6 +704,7 @@ def after_request(response):
 ```
 
 **Profile-based configuration:**
+
 ```python
 # Environment variables
 DEFAULT_PROMPT_sales=You are a sales assistant
@@ -687,6 +716,7 @@ prompt = get_env_var('DEFAULT_PROMPT', profile)
 ```
 
 **Agent cleanup:**
+
 ```python
 def hangup_agent(agent_id, app_id, agent_auth_header):
     url = f"https://api.agora.io/api/conversational-ai-agent/v2/projects/{app_id}/agents/{agent_id}"
@@ -698,25 +728,31 @@ def hangup_agent(agent_id, app_id, agent_auth_header):
 ## Troubleshooting
 
 **"UID_CONFLICT" error**
+
 - Multiple clients using same UID
 - Ensure cleanup before rejoin
 
 **"no such stream id" error**
+
 - Agent UID mismatch
 - Verify agent joined with correct UID
 
 **"INVALID_PARAMS" token error**
+
 - Pass `null` not empty string when no certificate
 - Use `parseInt(uid)` for RTC client
 
 **Agent not speaking**
+
 - Check TTS vendor API key
 - Verify TTS configuration
 
 **Can't hear user**
+
 - Verify microphone permissions
 - Check AGC/AEC settings
 
 **Module not found errors**
+
 - Run `pnpm install` from repository root
 - Verify workspace packages are linked correctly

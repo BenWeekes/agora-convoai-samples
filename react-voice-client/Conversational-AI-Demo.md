@@ -2,7 +2,11 @@
 
 ## High-Level Overview
 
-The **Conversational-AI-Demo VoiceAgent** is a sophisticated Next.js-based web application that enables real-time voice conversations with AI agents using Agora's RTC (Real-Time Communication) and RTM (Real-Time Messaging) technologies. The application provides a complete solution for building interactive voice AI experiences with features like:
+The **Conversational-AI-Demo VoiceAgent** is a sophisticated Next.js-based web
+application that enables real-time voice conversations with AI agents using
+Agora's RTC (Real-Time Communication) and RTM (Real-Time Messaging)
+technologies. The application provides a complete solution for building
+interactive voice AI experiences with features like:
 
 - Real-time bidirectional voice communication
 - Live transcription with word-level synchronization
@@ -18,6 +22,7 @@ The **Conversational-AI-Demo VoiceAgent** is a sophisticated Next.js-based web a
 **Version**: 1.8.5
 
 **Tech Stack**:
+
 - **Framework**: Next.js 15.5.2 with App Router
 - **UI**: React 19, Radix UI components, Tailwind CSS
 - **State Management**: Zustand
@@ -108,9 +113,11 @@ The **Conversational-AI-Demo VoiceAgent** is a sophisticated Next.js-based web a
 
 ### 1. ConversationalAIAPI (`conversational-ai-api/index.ts`)
 
-The **main orchestration class** that manages the entire conversational AI interaction lifecycle.
+The **main orchestration class** that manages the entire conversational AI
+interaction lifecycle.
 
 **Key Responsibilities**:
+
 - Singleton pattern management
 - RTC/RTM engine initialization and coordination
 - Event handling and delegation
@@ -127,11 +134,11 @@ const conversationalAIAPI = ConversationalAIAPI.init({
   rtcEngine: rtcClient,
   rtmEngine: rtmClient,
   enableLog: true,
-  renderMode: ETranscriptHelperMode.WORD
-});
+  renderMode: ETranscriptHelperMode.WORD,
+})
 
 // Subscribe to channel
-conversationalAIAPI.subscribeMessage(channel_name);
+conversationalAIAPI.subscribeMessage(channel_name)
 
 // Listen to events
 conversationalAIAPI.on(
@@ -139,39 +146,40 @@ conversationalAIAPI.on(
   (chatHistory) => {
     // Handle transcript updates
   }
-);
+)
 
 conversationalAIAPI.on(
   EConversationalAIAPIEvents.AGENT_STATE_CHANGED,
   (agentUserId, event) => {
     // Handle agent state changes (idle, listening, thinking, speaking)
   }
-);
+)
 
 // Send messages
 await conversationalAIAPI.chat(agentUserId, {
   messageType: EChatMessageType.TEXT,
   priority: EChatMessagePriority.HIGH,
   responseInterruptable: true,
-  text: "Hello!"
-});
+  text: "Hello!",
+})
 
 // Interrupt agent
-await conversationalAIAPI.interrupt(agentUserId);
+await conversationalAIAPI.interrupt(agentUserId)
 ```
 
 **Event System**:
+
 ```typescript
 enum EConversationalAIAPIEvents {
-  AGENT_STATE_CHANGED = 'agent-state-changed',
-  AGENT_INTERRUPTED = 'agent-interrupted',
-  AGENT_METRICS = 'agent-metrics',
-  AGENT_ERROR = 'agent-error',
-  TRANSCRIPT_UPDATED = 'transcript-updated',
-  DEBUG_LOG = 'debug-log',
-  MESSAGE_RECEIPT_UPDATED = 'message-receipt-updated',
-  MESSAGE_ERROR = 'message-error',
-  MESSAGE_SAL_STATUS = 'message-sal-status'
+  AGENT_STATE_CHANGED = "agent-state-changed",
+  AGENT_INTERRUPTED = "agent-interrupted",
+  AGENT_METRICS = "agent-metrics",
+  AGENT_ERROR = "agent-error",
+  TRANSCRIPT_UPDATED = "transcript-updated",
+  DEBUG_LOG = "debug-log",
+  MESSAGE_RECEIPT_UPDATED = "message-receipt-updated",
+  MESSAGE_ERROR = "message-error",
+  MESSAGE_SAL_STATUS = "message-sal-status",
 }
 ```
 
@@ -179,9 +187,11 @@ enum EConversationalAIAPIEvents {
 
 ### 2. CovSubRenderController (`conversational-ai-api/utils/sub-render.ts`)
 
-The **transcript rendering engine** that manages message synchronization, deduplication, and display.
+The **transcript rendering engine** that manages message synchronization,
+deduplication, and display.
 
 **Key Responsibilities**:
+
 - PTS (Presentation Time Stamp) synchronization
 - Word-level transcript rendering
 - Message queue management
@@ -267,6 +277,7 @@ private _handleTurnObj(queueItem: TQueueItem, curPTS: number) {
 Manages **Agora RTC** (Real-Time Communication) for audio streaming.
 
 **Key Responsibilities**:
+
 - Audio track creation and management
 - AI denoiser integration
 - Network quality monitoring
@@ -277,22 +288,22 @@ Manages **Agora RTC** (Real-Time Communication) for audio streaming.
 
 ```typescript
 // Initialize and join channel
-const rtcHelper = RTCHelper.getInstance();
-await rtcHelper.retrieveToken(userId, channel);
-await rtcHelper.initDenoiserProcessor('/denoiser/external');
-await rtcHelper.createTracks(); // Creates microphone track with denoiser
-await rtcHelper.join({ channel, userId });
-await rtcHelper.publishTracks();
+const rtcHelper = RTCHelper.getInstance()
+await rtcHelper.retrieveToken(userId, channel)
+await rtcHelper.initDenoiserProcessor("/denoiser/external")
+await rtcHelper.createTracks() // Creates microphone track with denoiser
+await rtcHelper.join({ channel, userId })
+await rtcHelper.publishTracks()
 
 // Listen to events
 rtcHelper.on(ERTCEvents.AUDIO_PTS, (pts) => {
   // Synchronize transcripts with audio playback
-  covSubRenderController.setPts(pts);
-});
+  covSubRenderController.setPts(pts)
+})
 
 rtcHelper.on(ERTCCustomEvents.REMOTE_USER_JOINED, (user) => {
   // Handle agent joining the channel
-});
+})
 ```
 
 **Audio Denoising**:
@@ -322,6 +333,7 @@ async createTracks() {
 Manages **Agora RTM** (Real-Time Messaging) for text/metadata communication.
 
 **Key Responsibilities**:
+
 - RTM client initialization
 - Channel subscription
 - Message publishing (handled by ConversationalAIAPI)
@@ -329,17 +341,18 @@ Manages **Agora RTM** (Real-Time Messaging) for text/metadata communication.
 **Usage**:
 
 ```typescript
-const rtmHelper = RTMHelper.getInstance();
-rtmHelper.initClient({ app_id, user_id });
-await rtmHelper.login(token);
-await rtmHelper.join(channel);
+const rtmHelper = RTMHelper.getInstance()
+rtmHelper.initClient({ app_id, user_id })
+await rtmHelper.login(token)
+await rtmHelper.join(channel)
 ```
 
 ---
 
 ### 5. EventHelper (`conversational-ai-api/utils/event.ts`)
 
-A **generic event emitter** class used throughout the codebase for type-safe event handling.
+A **generic event emitter** class used throughout the codebase for type-safe
+event handling.
 
 **Design Pattern**: Observer pattern with TypeScript generics
 
@@ -354,13 +367,13 @@ class EventHelper<T> {
 
 // Usage
 interface IMyEvents {
-  'data-received': (data: string) => void
-  'error': (error: Error) => void
+  "data-received": (data: string) => void
+  error: (error: Error) => void
 }
 
-const emitter = new EventHelper<IMyEvents>();
-emitter.on('data-received', (data) => console.log(data));
-emitter.emit('data-received', 'Hello');
+const emitter = new EventHelper<IMyEvents>()
+emitter.on("data-received", (data) => console.log(data))
+emitter.emit("data-received", "Hello")
 ```
 
 ---
@@ -369,7 +382,8 @@ emitter.emit('data-received', 'Hello');
 
 ### 1. UID/Stream_ID Mapping Pattern
 
-**Problem**: Agent messages have `stream_id = 0`, user messages have `stream_id = remote_rtc_uid`.
+**Problem**: Agent messages have `stream_id = 0`, user messages have
+`stream_id = remote_rtc_uid`.
 
 **Solution**: Consistent mapping in subtitle component:
 
@@ -381,19 +395,19 @@ const transcription2subtitle = (
   return remoteTranscriptionList
     .sort((a, b) => {
       if (a.turn_id !== b.turn_id) {
-        return a.turn_id - b.turn_id;
+        return a.turn_id - b.turn_id
       }
-      return Number(a.uid) - Number(b.uid);
+      return Number(a.uid) - Number(b.uid)
     })
     .map((item) => ({
-      identifier: 'remote-transcription',
+      identifier: "remote-transcription",
       id: `${item.turn_id}-${item.uid}-${item._time}`,
       type: Number(item.uid) === 0 ? EChatItemType.USER : EChatItemType.AGENT,
       timestamp: item._time,
       status: item.status,
-      content: item.text.trim()
-    }));
-};
+      content: item.text.trim(),
+    }))
+}
 ```
 
 **Key Insight**: `uid === "0"` → User message, `uid !== "0"` → Agent message
@@ -430,6 +444,7 @@ sortWordsWithStatus(words: TDataChunkMessageWord[], turn_status: ETurnStatus) {
 ```
 
 **Features**:
+
 - Deduplicates by `start_ms` timestamp
 - Maintains chronological order
 - Handles status propagation
@@ -438,7 +453,8 @@ sortWordsWithStatus(words: TDataChunkMessageWord[], turn_status: ETurnStatus) {
 
 ### 3. PTS Synchronization for Lip-Sync
 
-**Problem**: Transcripts must sync with audio playback for natural conversation flow.
+**Problem**: Transcripts must sync with audio playback for natural conversation
+flow.
 
 **Solution**: Audio PTS (Presentation Time Stamp) tracking:
 
@@ -474,8 +490,8 @@ interface IRTCStore {
   channel_name: string
   agent_rtc_uid: number
   remote_rtc_uid: number
-  agentStatus: EConnectionStatus    // CONNECTING, CONNECTED, DISCONNECTED, ERROR
-  agentState: EAgentState          // IDLE, LISTENING, THINKING, SPEAKING
+  agentStatus: EConnectionStatus // CONNECTING, CONNECTED, DISCONNECTED, ERROR
+  agentState: EAgentState // IDLE, LISTENING, THINKING, SPEAKING
   networkQuality: ENetworkStatus
   updateAgentState: (state: EAgentState) => void
   updateAgentStatus: (status: EConnectionStatus) => void
@@ -499,6 +515,7 @@ interface IAgentSettingsStore {
 ```
 
 **Flow**:
+
 1. ConversationalAIAPI receives events → Updates Zustand stores
 2. React components subscribe to stores → Re-render on changes
 3. User actions → Trigger API calls → Update stores
@@ -551,17 +568,20 @@ handleMessageInterrupt(uid: string, message: IMessageInterrupt) {
 ### 6. Multi-Mode Rendering Strategy
 
 **TEXT Mode** (legacy):
+
 - Receives complete sentences
 - Renders immediately
 - No PTS synchronization
 
 **WORD Mode** (modern):
+
 - Receives word array with timestamps
 - Queue-based processing
 - PTS-synchronized rendering
 - Best for natural conversation flow
 
 **CHUNK Mode** (progressive):
+
 - Character-by-character animation
 - Fixed interval (100ms per char)
 - Visual typewriter effect
@@ -572,10 +592,10 @@ handleMessageInterrupt(uid: string, message: IMessageInterrupt) {
 // CovSubRenderController automatically detects mode from first agent message
 if (isAgentMessage && this._mode === ETranscriptHelperMode.UNKNOWN) {
   if (!message.words || message.words.length === 0) {
-    this.setMode(ETranscriptHelperMode.TEXT);
+    this.setMode(ETranscriptHelperMode.TEXT)
   } else {
-    this._setupIntervalForWords();
-    this.setMode(ETranscriptHelperMode.WORD);
+    this._setupIntervalForWords()
+    this.setMode(ETranscriptHelperMode.WORD)
   }
 }
 ```
@@ -590,50 +610,50 @@ if (isAgentMessage && this._mode === ETranscriptHelperMode.UNKNOWN) {
 // From agent-control.tsx
 const startCall = async () => {
   // 1. Initialize RTC
-  const rtcHelper = RTCHelper.getInstance();
-  await rtcHelper.retrieveToken(remote_rtc_uid, channel_name);
+  const rtcHelper = RTCHelper.getInstance()
+  await rtcHelper.retrieveToken(remote_rtc_uid, channel_name)
 
   // 2. Initialize RTM
-  const rtmHelper = RTMHelper.getInstance();
-  rtmHelper.initClient({ app_id, user_id });
-  const rtmEngine = await rtmHelper.login(token);
+  const rtmHelper = RTMHelper.getInstance()
+  rtmHelper.initClient({ app_id, user_id })
+  const rtmEngine = await rtmHelper.login(token)
 
   // 3. Initialize Conversational AI API
   const conversationalAIAPI = ConversationalAIAPI.init({
     rtcEngine: rtcHelper.client,
     rtmEngine,
     enableLog: true,
-    renderMode: ETranscriptHelperMode.WORD
-  });
+    renderMode: ETranscriptHelperMode.WORD,
+  })
 
   // 4. Subscribe to events
   rtcHelper.on(ERTCEvents.AUDIO_PTS, (pts) => {
-    covSubRenderController.setPts(pts);
-  });
+    covSubRenderController.setPts(pts)
+  })
 
   conversationalAIAPI.on(
     EConversationalAIAPIEvents.TRANSCRIPT_UPDATED,
     (history) => setHistory(history)
-  );
+  )
 
   conversationalAIAPI.on(
     EConversationalAIAPIEvents.AGENT_STATE_CHANGED,
     (_, event) => updateAgentState(event.state)
-  );
+  )
 
   // 5. Subscribe to channel
-  conversationalAIAPI.subscribeMessage(channel_name);
+  conversationalAIAPI.subscribeMessage(channel_name)
 
   // 6. Create and publish audio tracks
-  await rtcHelper.initDenoiserProcessor();
-  await rtcHelper.createTracks();
-  await rtmHelper.join(channel_name);
-  await rtcHelper.join({ channel, userId });
-  await rtcHelper.publishTracks();
+  await rtcHelper.initDenoiserProcessor()
+  await rtcHelper.createTracks()
+  await rtmHelper.join(channel_name)
+  await rtcHelper.join({ channel, userId })
+  await rtcHelper.publishTracks()
 
   // 7. Start agent service (backend API call)
-  await startAgentService();
-};
+  await startAgentService()
+}
 ```
 
 ### Sending Messages
@@ -644,15 +664,15 @@ await conversationalAIAPI.chat(agentUserId, {
   messageType: EChatMessageType.TEXT,
   priority: EChatMessagePriority.INTERRUPTED,
   responseInterruptable: true,
-  text: "What's the weather today?"
-});
+  text: "What's the weather today?",
+})
 
 // Image message
 await conversationalAIAPI.chat(agentUserId, {
   messageType: EChatMessageType.IMAGE,
   uuid: genUUID(),
-  url: imageUrl
-});
+  url: imageUrl,
+})
 ```
 
 ### Cleanup on Exit
@@ -660,23 +680,23 @@ await conversationalAIAPI.chat(agentUserId, {
 ```typescript
 const clearAndExit = async () => {
   // Abort any pending operations
-  startAgentAbortControllerRef.current?.abort();
+  startAgentAbortControllerRef.current?.abort()
 
   // Clear timers
-  clearHeartBeat();
-  clearAgentConnectedTimeout();
+  clearHeartBeat()
+  clearAgentConnectedTimeout()
 
   // Reset state
-  clearStatus();
+  clearStatus()
 
   // Cleanup connections
-  RTCHelper.getInstance().exitAndCleanup();
-  RTMHelper.getInstance().exitAndCleanup();
-  ConversationalAIAPI.getInstance().unsubscribe();
+  RTCHelper.getInstance().exitAndCleanup()
+  RTMHelper.getInstance().exitAndCleanup()
+  ConversationalAIAPI.getInstance().unsubscribe()
 
   // Stop agent on backend
-  await stopAgent({ agent_id, channel_name, preset_name });
-};
+  await stopAgent({ agent_id, channel_name, preset_name })
+}
 ```
 
 ---
@@ -685,15 +705,15 @@ const clearAndExit = async () => {
 
 ### Architectural Differences
 
-| Aspect | Conversational-AI-Demo | react-voice-client |
-|--------|------------------------|---------------------|
-| **Architecture** | Layered architecture with dedicated API abstraction | Direct SDK usage |
-| **Message Handling** | `CovSubRenderController` with queue-based rendering | Simpler direct handling |
-| **State Management** | Zustand stores | React useState/useContext |
-| **Event System** | Custom `EventHelper` class | Direct event listeners |
-| **Deduplication** | Built-in with `sortWordsWithStatus` | Manual implementation needed |
-| **PTS Sync** | Automatic with interval-based rendering | Requires custom implementation |
-| **Rendering Modes** | 3 modes (TEXT, WORD, CHUNK) | Single mode |
+| Aspect               | Conversational-AI-Demo                              | react-voice-client             |
+| -------------------- | --------------------------------------------------- | ------------------------------ |
+| **Architecture**     | Layered architecture with dedicated API abstraction | Direct SDK usage               |
+| **Message Handling** | `CovSubRenderController` with queue-based rendering | Simpler direct handling        |
+| **State Management** | Zustand stores                                      | React useState/useContext      |
+| **Event System**     | Custom `EventHelper` class                          | Direct event listeners         |
+| **Deduplication**    | Built-in with `sortWordsWithStatus`                 | Manual implementation needed   |
+| **PTS Sync**         | Automatic with interval-based rendering             | Requires custom implementation |
+| **Rendering Modes**  | 3 modes (TEXT, WORD, CHUNK)                         | Single mode                    |
 
 ### Key Similarities
 
@@ -704,11 +724,15 @@ const clearAndExit = async () => {
 
 ### What react-voice-client Can Learn
 
-1. **CovSubRenderController Pattern**: Adopt queue-based message processing with PTS synchronization for smoother rendering
-2. **EventHelper Class**: Implement type-safe event system for better maintainability
-3. **Message Deduplication**: Use the `sortWordsWithStatus` algorithm to prevent duplicate words
+1. **CovSubRenderController Pattern**: Adopt queue-based message processing with
+   PTS synchronization for smoother rendering
+2. **EventHelper Class**: Implement type-safe event system for better
+   maintainability
+3. **Message Deduplication**: Use the `sortWordsWithStatus` algorithm to prevent
+   duplicate words
 4. **Multi-Mode Rendering**: Support TEXT and WORD modes for different use cases
-5. **Singleton Pattern**: Use singleton pattern for core services (RTC, RTM, API)
+5. **Singleton Pattern**: Use singleton pattern for core services (RTC, RTM,
+   API)
 6. **State Management**: Consider Zustand for cleaner state architecture
 7. **Audio Denoising**: Integrate AI denoiser for better audio quality
 
@@ -718,32 +742,32 @@ const clearAndExit = async () => {
 // In react-voice-client, you could create a similar controller:
 
 class MessageController {
-  private queue: QueueItem[] = [];
-  private pts: number = 0;
-  private intervalRef: NodeJS.Timeout | null = null;
+  private queue: QueueItem[] = []
+  private pts: number = 0
+  private intervalRef: NodeJS.Timeout | null = null
 
   constructor(private onUpdate: (history: Message[]) => void) {}
 
   setPts(pts: number) {
-    this.pts = pts;
+    this.pts = pts
   }
 
   handleMessage(message: AgentMessage) {
-    this.pushToQueue(message);
+    this.pushToQueue(message)
   }
 
   private startInterval() {
     this.intervalRef = setInterval(() => {
-      this.processQueue();
-    }, 200);
+      this.processQueue()
+    }, 200)
   }
 
   private processQueue() {
     // Implement similar logic to CovSubRenderController._handleQueue
     const visibleWords = this.queue[0]?.words.filter(
-      w => w.start_ms <= this.pts
-    );
-    this.onUpdate(this.buildHistory(visibleWords));
+      (w) => w.start_ms <= this.pts
+    )
+    this.onUpdate(this.buildHistory(visibleWords))
   }
 }
 ```
@@ -756,35 +780,35 @@ class MessageController {
 
 ```typescript
 enum EAgentState {
-  IDLE = 'idle',
-  LISTENING = 'listening',
-  THINKING = 'thinking',
-  SPEAKING = 'speaking',
-  SILENT = 'silent'
+  IDLE = "idle",
+  LISTENING = "listening",
+  THINKING = "thinking",
+  SPEAKING = "speaking",
+  SILENT = "silent",
 }
 
 enum ETranscriptHelperMode {
-  TEXT = 'text',
-  WORD = 'word',
-  CHUNK = 'chunk',
-  UNKNOWN = 'unknown'
+  TEXT = "text",
+  WORD = "word",
+  CHUNK = "chunk",
+  UNKNOWN = "unknown",
 }
 
 enum ETurnStatus {
   IN_PROGRESS = 0,
   END = 1,
-  INTERRUPTED = 2
+  INTERRUPTED = 2,
 }
 
 enum EMessageType {
-  USER_TRANSCRIPTION = 'user.transcription',
-  AGENT_TRANSCRIPTION = 'assistant.transcription',
-  MSG_INTERRUPTED = 'message.interrupt',
-  MSG_METRICS = 'message.metrics',
-  MSG_ERROR = 'message.error',
-  IMAGE_UPLOAD = 'image.upload',
-  MESSAGE_INFO = 'message.info',
-  MESSAGE_SAL_STATUS = 'message.sal_status'
+  USER_TRANSCRIPTION = "user.transcription",
+  AGENT_TRANSCRIPTION = "assistant.transcription",
+  MSG_INTERRUPTED = "message.interrupt",
+  MSG_METRICS = "message.metrics",
+  MSG_ERROR = "message.error",
+  IMAGE_UPLOAD = "image.upload",
+  MESSAGE_INFO = "message.info",
+  MESSAGE_SAL_STATUS = "message.sal_status",
 }
 ```
 
@@ -835,7 +859,8 @@ interface IUserTranscription {
 ## Performance Optimizations
 
 1. **Interval-Based Rendering**: 200ms interval prevents excessive re-renders
-2. **Deduplication**: `start_ms`-based deduplication reduces duplicate processing
+2. **Deduplication**: `start_ms`-based deduplication reduces duplicate
+   processing
 3. **Queue Management**: Max 2 items in queue prevents memory buildup
 4. **AI Denoiser**: Reduces background noise without heavy CPU load
 5. **Lazy Loading**: Dynamic imports for heavy components
@@ -861,24 +886,41 @@ interface IUserTranscription {
 
 ## Conclusion
 
-The Conversational-AI-Demo VoiceAgent demonstrates a **production-ready, enterprise-grade architecture** for building real-time voice AI applications. Its layered design, sophisticated message handling, and robust state management make it an excellent reference implementation.
+The Conversational-AI-Demo VoiceAgent demonstrates a **production-ready,
+enterprise-grade architecture** for building real-time voice AI applications.
+Its layered design, sophisticated message handling, and robust state management
+make it an excellent reference implementation.
 
 **Key Takeaways**:
-- **Abstraction is key**: The `ConversationalAIAPI` class provides a clean interface over complex RTC/RTM operations
-- **Synchronization matters**: PTS-based rendering ensures natural conversation flow
-- **Deduplication is essential**: Real-time messaging requires robust handling of duplicate/out-of-order messages
-- **State management**: Zustand provides a clean, performant state solution
-- **Event-driven design**: Custom event system enables loose coupling and extensibility
 
-For teams building similar applications, this codebase offers battle-tested patterns for handling the complexities of real-time voice AI interactions.
+- **Abstraction is key**: The `ConversationalAIAPI` class provides a clean
+  interface over complex RTC/RTM operations
+- **Synchronization matters**: PTS-based rendering ensures natural conversation
+  flow
+- **Deduplication is essential**: Real-time messaging requires robust handling
+  of duplicate/out-of-order messages
+- **State management**: Zustand provides a clean, performant state solution
+- **Event-driven design**: Custom event system enables loose coupling and
+  extensibility
+
+For teams building similar applications, this codebase offers battle-tested
+patterns for handling the complexities of real-time voice AI interactions.
 
 ---
 
 **File Paths Reference** (Absolute):
-- Main API: `/Users/benweekes/work/Conversational-AI-Demo/Web/Scenes/VoiceAgent/src/conversational-ai-api/index.ts`
-- Render Controller: `/Users/benweekes/work/Conversational-AI-Demo/Web/Scenes/VoiceAgent/src/conversational-ai-api/utils/sub-render.ts`
-- RTC Helper: `/Users/benweekes/work/Conversational-AI-Demo/Web/Scenes/VoiceAgent/src/conversational-ai-api/helper/rtc.ts`
-- RTM Helper: `/Users/benweekes/work/Conversational-AI-Demo/Web/Scenes/VoiceAgent/src/conversational-ai-api/helper/rtm.ts`
-- Agent Control: `/Users/benweekes/work/Conversational-AI-Demo/Web/Scenes/VoiceAgent/src/components/home/agent-control.tsx`
-- Subtitle Component: `/Users/benweekes/work/Conversational-AI-Demo/Web/Scenes/VoiceAgent/src/components/home/subtitle.tsx`
-- Chat Store: `/Users/benweekes/work/Conversational-AI-Demo/Web/Scenes/VoiceAgent/src/store/chat.ts`
+
+- Main API:
+  `/Users/benweekes/work/Conversational-AI-Demo/Web/Scenes/VoiceAgent/src/conversational-ai-api/index.ts`
+- Render Controller:
+  `/Users/benweekes/work/Conversational-AI-Demo/Web/Scenes/VoiceAgent/src/conversational-ai-api/utils/sub-render.ts`
+- RTC Helper:
+  `/Users/benweekes/work/Conversational-AI-Demo/Web/Scenes/VoiceAgent/src/conversational-ai-api/helper/rtc.ts`
+- RTM Helper:
+  `/Users/benweekes/work/Conversational-AI-Demo/Web/Scenes/VoiceAgent/src/conversational-ai-api/helper/rtm.ts`
+- Agent Control:
+  `/Users/benweekes/work/Conversational-AI-Demo/Web/Scenes/VoiceAgent/src/components/home/agent-control.tsx`
+- Subtitle Component:
+  `/Users/benweekes/work/Conversational-AI-Demo/Web/Scenes/VoiceAgent/src/components/home/subtitle.tsx`
+- Chat Store:
+  `/Users/benweekes/work/Conversational-AI-Demo/Web/Scenes/VoiceAgent/src/store/chat.ts`

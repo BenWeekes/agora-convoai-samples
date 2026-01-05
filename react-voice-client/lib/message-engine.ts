@@ -150,10 +150,7 @@ export type IAgoraRTCClient = {
 
 export type RTMClient = {
   addEventListener: (event: string, callback: (...args: any[]) => void) => void
-  removeEventListener?: (
-    event: string,
-    callback: (...args: any[]) => void
-  ) => void
+  removeEventListener?: (event: string, callback: (...args: any[]) => void) => void
 }
 
 export type UID = string | number
@@ -196,24 +193,17 @@ export class MessageEngine {
   private _channelName: string | null = null
 
   // Event listener references for cleanup
-  private _rtcStreamMessageHandler:
-    | ((uid: UID, payload: Uint8Array) => void)
-    | null = null
-  private _rtcAudioMetadataHandler: ((metadata: Uint8Array) => void) | null =
-    null
+  private _rtcStreamMessageHandler: ((uid: UID, payload: Uint8Array) => void) | null = null
+  private _rtcAudioMetadataHandler: ((metadata: Uint8Array) => void) | null = null
   private _rtmMessageHandler: ((event: any) => void) | null = null
 
-  public messageList: IMessageArrayItem<
-    Partial<IUserTranscription | IAgentTranscription>
-  >[] = []
+  public messageList: IMessageArrayItem<Partial<IUserTranscription | IAgentTranscription>>[] = []
   /**
    * Callback function that gets triggered whenever the message list is updated
    * Takes the updated message list as a parameter and returns void
    * Can be null if no callback is needed
    */
-  public onMessageListUpdate:
-    | ((messageList: IMessageListItem[]) => void)
-    | null = null
+  public onMessageListUpdate: ((messageList: IMessageListItem[]) => void) | null = null
 
   constructor(config: {
     rtcEngine?: IAgoraRTCClient
@@ -301,10 +291,7 @@ export class MessageEngine {
       clearInterval(this._intervalRef)
       this._intervalRef = null
     }
-    this._intervalRef = setInterval(
-      this._handleQueue.bind(this),
-      this._interval
-    )
+    this._intervalRef = setInterval(this._handleQueue.bind(this), this._interval)
   }
 
   public teardownInterval() {
@@ -330,9 +317,10 @@ export class MessageEngine {
       this.handleChunk(chunk, this.handleMessageLegacy.bind(this))
       return
     }
-    this.handleChunk<
-      IUserTranscription | IAgentTranscription | IMessageInterrupt
-    >(chunk, this.handleMessage.bind(this))
+    this.handleChunk<IUserTranscription | IAgentTranscription | IMessageInterrupt>(
+      chunk,
+      this.handleMessage.bind(this)
+    )
   }
 
   /** @deprecated */
@@ -348,13 +336,10 @@ export class MessageEngine {
       return
     }
     const lastEndedItem = this.messageList.findLast(
-      (item) =>
-        item.uid === message.stream_id && item.status === EMessageStatus.END
+      (item) => item.uid === message.stream_id && item.status === EMessageStatus.END
     )
     const lastInProgressItem = this.messageList.findLast(
-      (item) =>
-        item.uid === message.stream_id &&
-        item.status === EMessageStatus.IN_PROGRESS
+      (item) => item.uid === message.stream_id && item.status === EMessageStatus.IN_PROGRESS
     )
     if (lastEndedItem) {
       logger.debug(
@@ -364,64 +349,45 @@ export class MessageEngine {
         JSON.stringify(lastEndedItem)
       )
       if (lastEndedItem._time >= message.text_ts) {
-        logger.debug(
-          CONSOLE_LOG_PREFIX,
-          "[handleMessageLegacy] discard lastEndedItem"
-        )
+        logger.debug(CONSOLE_LOG_PREFIX, "[handleMessageLegacy] discard lastEndedItem")
         // discard
         return
       } else {
         if (lastInProgressItem) {
-          logger.debug(
-            CONSOLE_LOG_PREFIX,
-            "[handleMessageLegacy] update lastInProgressItem"
-          )
+          logger.debug(CONSOLE_LOG_PREFIX, "[handleMessageLegacy] update lastInProgressItem")
           lastInProgressItem._time = message.text_ts
           lastInProgressItem.text = message.text
           lastInProgressItem.status = message.is_final
             ? EMessageStatus.END
             : EMessageStatus.IN_PROGRESS
         } else {
-          logger.debug(
-            CONSOLE_LOG_PREFIX,
-            "[handleMessageLegacy] append new item"
-          )
+          logger.debug(CONSOLE_LOG_PREFIX, "[handleMessageLegacy] append new item")
           this._appendChatHistory({
             uid: message.stream_id,
             turn_id: message.text_ts,
             _time: message.text_ts,
             text: message.text,
-            status: message.is_final
-              ? EMessageStatus.END
-              : EMessageStatus.IN_PROGRESS,
+            status: message.is_final ? EMessageStatus.END : EMessageStatus.IN_PROGRESS,
             metadata: null,
           })
         }
       }
     } else {
       if (lastInProgressItem) {
-        logger.debug(
-          CONSOLE_LOG_PREFIX,
-          "[handleMessageLegacy] update lastInProgressItem"
-        )
+        logger.debug(CONSOLE_LOG_PREFIX, "[handleMessageLegacy] update lastInProgressItem")
         lastInProgressItem._time = message.text_ts
         lastInProgressItem.text = message.text
         lastInProgressItem.status = message.is_final
           ? EMessageStatus.END
           : EMessageStatus.IN_PROGRESS
       } else {
-        logger.debug(
-          CONSOLE_LOG_PREFIX,
-          "[handleMessageLegacy] append new item"
-        )
+        logger.debug(CONSOLE_LOG_PREFIX, "[handleMessageLegacy] append new item")
         this._appendChatHistory({
           uid: message.stream_id,
           turn_id: message.text_ts,
           _time: message.text_ts,
           text: message.text,
-          status: message.is_final
-            ? EMessageStatus.END
-            : EMessageStatus.IN_PROGRESS,
+          status: message.is_final ? EMessageStatus.END : EMessageStatus.IN_PROGRESS,
           metadata: null,
         })
       }
@@ -430,16 +396,11 @@ export class MessageEngine {
     this._mutateChatHistory()
   }
 
-  public handleMessage(
-    message: IUserTranscription | IAgentTranscription | IMessageInterrupt
-  ) {
+  public handleMessage(message: IUserTranscription | IAgentTranscription | IMessageInterrupt) {
     // check if message is transcription
-    const isAgentMessage =
-      message.object === ETranscriptionObjectType.AGENT_TRANSCRIPTION
-    const isUserMessage =
-      message.object === ETranscriptionObjectType.USER_TRANSCRIPTION
-    const isMessageInterrupt =
-      message.object === ETranscriptionObjectType.MSG_INTERRUPTED
+    const isAgentMessage = message.object === ETranscriptionObjectType.AGENT_TRANSCRIPTION
+    const isUserMessage = message.object === ETranscriptionObjectType.USER_TRANSCRIPTION
+    const isMessageInterrupt = message.object === ETranscriptionObjectType.MSG_INTERRUPTED
     if (!isAgentMessage && !isUserMessage && !isMessageInterrupt) {
       logger.debug(CONSOLE_LOG_PREFIX, "Unknown message type", message)
       return
@@ -486,16 +447,15 @@ export class MessageEngine {
     // 💬 [Issue 2 Fix] Determine UID
     // If user_id is present and non-empty, use it. Otherwise use stream_id.
     // stream_id: 0 = agent, non-zero = user
-    const uid = message.user_id && message.user_id.trim() !== ''
-      ? parseInt(message.user_id, 10)
-      : stream_id
+    const uid =
+      message.user_id && message.user_id.trim() !== "" ? parseInt(message.user_id, 10) : stream_id
 
     console.log("💬 [Issue 2] handleTextMessage:", {
       stream_id,
       user_id: message.user_id,
       uid,
       isAgent: stream_id === 0,
-      text: text.substring(0, 50)
+      text: text.substring(0, 50),
     })
 
     const targetChatHistoryItem = this.messageList.find(
@@ -534,19 +494,11 @@ export class MessageEngine {
   public handleWordAgentMessage(message: IAgentTranscription) {
     // drop message if turn_status is undefined
     if (typeof message.turn_status === "undefined") {
-      logger.debug(
-        CONSOLE_LOG_PREFIX,
-        "Drop message with undefined turn_status",
-        message
-      )
+      logger.debug(CONSOLE_LOG_PREFIX, "Drop message with undefined turn_status", message)
       return
     }
 
-    logger.debug(
-      CONSOLE_LOG_PREFIX,
-      "handleWordAgentMessage",
-      JSON.stringify(message)
-    )
+    logger.debug(CONSOLE_LOG_PREFIX, "handleWordAgentMessage", JSON.stringify(message))
 
     const turn_id = message.turn_id
     const text = message.text || ""
@@ -555,26 +507,21 @@ export class MessageEngine {
 
     // 💬 [Issue 2 Fix] Determine UID
     // If user_id is present and non-empty, use it. Otherwise use stream_id.
-    const uid = message.user_id && message.user_id.trim() !== ''
-      ? parseInt(message.user_id, 10)
-      : stream_id
+    const uid =
+      message.user_id && message.user_id.trim() !== "" ? parseInt(message.user_id, 10) : stream_id
 
     console.log("💬 [Issue 2] handleWordAgentMessage:", {
       stream_id,
       user_id: message.user_id,
       uid,
       isAgent: stream_id === 0,
-      text: text.substring(0, 50)
+      text: text.substring(0, 50),
     })
 
     const lastPoppedQueueItemTurnId = this._lastPoppedQueueItem?.turn_id
     // drop message if turn_id is less than last popped queue item
     // except for the first turn(greeting message, turn_id is 0)
-    if (
-      lastPoppedQueueItemTurnId &&
-      turn_id !== 0 &&
-      turn_id <= lastPoppedQueueItemTurnId
-    ) {
+    if (lastPoppedQueueItemTurnId && turn_id !== 0 && turn_id <= lastPoppedQueueItemTurnId) {
       logger.debug(
         CONSOLE_LOG_PREFIX,
         "Drop message with turn_id less than last popped queue item",
@@ -587,14 +534,11 @@ export class MessageEngine {
       words,
       text,
       status: message.turn_status,
-      stream_id: uid,  // Pass uid instead of stream_id
+      stream_id: uid, // Pass uid instead of stream_id
     })
   }
 
-  public sortWordsWithStatus(
-    words: TDataChunkMessageWord[],
-    turn_status: EMessageStatus
-  ) {
+  public sortWordsWithStatus(words: TDataChunkMessageWord[], turn_status: EMessageStatus) {
     if (words.length === 0) {
       return words
     }
@@ -694,11 +638,7 @@ export class MessageEngine {
    * part_data: string, base64 encoded content
    */
   public handleChunk<
-    T extends
-      | TDataChunkMessageV1
-      | IUserTranscription
-      | IAgentTranscription
-      | IMessageInterrupt,
+    T extends TDataChunkMessageV1 | IUserTranscription | IAgentTranscription | IMessageInterrupt,
   >(chunk: string, callback?: (message: T) => void): void {
     try {
       // split chunk by '|'
@@ -712,10 +652,7 @@ export class MessageEngine {
       }
       // check if total parts is known, skip if unknown
       if (input.part_sum === -1) {
-        logger.debug(
-          CONSOLE_LOG_PREFIX,
-          "total parts unknown, waiting for further parts."
-        )
+        logger.debug(CONSOLE_LOG_PREFIX, "total parts unknown, waiting for further parts.")
         return
       }
 
@@ -729,33 +666,21 @@ export class MessageEngine {
             this._messageCache[input.message_id] &&
             this._messageCache[input.message_id].length < input.part_sum
           ) {
-            logger.debug(
-              CONSOLE_LOG_PREFIX,
-              input.message_id,
-              "message cache timeout, drop it."
-            )
+            logger.debug(CONSOLE_LOG_PREFIX, input.message_id, "message cache timeout, drop it.")
             delete this._messageCache[input.message_id]
           }
         }, this._messageCacheTimeout)
       }
       // case 2: cached, add to cache(and sort by part_idx)
-      if (
-        !this._messageCache[input.message_id]?.find(
-          (item) => item.part_idx === input.part_idx
-        )
-      ) {
+      if (!this._messageCache[input.message_id]?.find((item) => item.part_idx === input.part_idx)) {
         // unique push
         this._messageCache[input.message_id].push(input)
       }
-      this._messageCache[input.message_id].sort(
-        (a, b) => a.part_idx - b.part_idx
-      )
+      this._messageCache[input.message_id].sort((a, b) => a.part_idx - b.part_idx)
 
       // check if complete
       if (this._messageCache[input.message_id].length === input.part_sum) {
-        const message = this._messageCache[input.message_id]
-          .map((chunk) => chunk.content)
-          .join("")
+        const message = this._messageCache[input.message_id].map((chunk) => chunk.content).join("")
 
         // decode message
         logger.debug(CONSOLE_LOG_PREFIX, "[message]", atob(message))
@@ -786,9 +711,7 @@ export class MessageEngine {
     status: EMessageStatus
     stream_id: number
   }) {
-    const targetQueueItem = this._queue.find(
-      (item) => item.turn_id === data.turn_id
-    )
+    const targetQueueItem = this._queue.find((item) => item.turn_id === data.turn_id)
     const latestTurnId = this._queue.reduce((max, item) => {
       return Math.max(max, item.turn_id)
     }, 0)
@@ -796,11 +719,7 @@ export class MessageEngine {
     if (!targetQueueItem) {
       // drop if turn_id is less than latestTurnId
       if (data.turn_id < latestTurnId) {
-        logger.debug(
-          CONSOLE_LOG_PREFIX,
-          "Drop message with turn_id less than latestTurnId",
-          data
-        )
+        logger.debug(CONSOLE_LOG_PREFIX, "Drop message with turn_id less than latestTurnId", data)
         return
       }
       const newQueueItem = {
@@ -810,12 +729,7 @@ export class MessageEngine {
         status: data.status,
         stream_id: data.stream_id,
       }
-      logger.debug(
-        CONSOLE_LOG_PREFIX,
-        "Push to queue",
-        newQueueItem,
-        JSON.stringify(newQueueItem)
-      )
+      logger.debug(CONSOLE_LOG_PREFIX, "Push to queue", newQueueItem, JSON.stringify(newQueueItem))
       // push to queue
       this._queue.push(newQueueItem)
       return
@@ -863,10 +777,7 @@ export class MessageEngine {
       return
     }
     if (queueLength > 2) {
-      console.error(
-        CONSOLE_LOG_PREFIX,
-        "Queue length is greater than 2, but it should not happen"
-      )
+      console.error(CONSOLE_LOG_PREFIX, "Queue length is greater than 2, but it should not happen")
     }
     // assume the queueLength is 2
     if (queueLength > 1) {
@@ -883,15 +794,10 @@ export class MessageEngine {
       }
       // if firstWordOfNextItem.start_ms <= curPTS, work on nextItem, assume lastItem is interrupted(and drop it)
       const lastItemCorrespondingChatHistoryItem = this.messageList.find(
-        (item) =>
-          item.turn_id === lastItem.turn_id && item.uid === lastItem.stream_id
+        (item) => item.turn_id === lastItem.turn_id && item.uid === lastItem.stream_id
       )
       if (!lastItemCorrespondingChatHistoryItem) {
-        logger.warn(
-          CONSOLE_LOG_PREFIX,
-          "No corresponding messageList item found",
-          lastItem
-        )
+        logger.warn(CONSOLE_LOG_PREFIX, "No corresponding messageList item found", lastItem)
         return
       }
       lastItemCorrespondingChatHistoryItem.status = EMessageStatus.INTERRUPTED
@@ -906,26 +812,16 @@ export class MessageEngine {
   private _interruptQueue(options: { turn_id: number; start_ms: number }) {
     const turn_id = options.turn_id
     const start_ms = options.start_ms
-    const correspondingQueueItem = this._queue.find(
-      (item) => item.turn_id === turn_id
-    )
+    const correspondingQueueItem = this._queue.find((item) => item.turn_id === turn_id)
     if (!correspondingQueueItem) {
-      logger.debug(
-        CONSOLE_LOG_PREFIX,
-        "No corresponding queue item found",
-        options
-      )
+      logger.debug(CONSOLE_LOG_PREFIX, "No corresponding queue item found", options)
       return
     }
     // if correspondingQueueItem exists, update its status to interrupted
     correspondingQueueItem.status = EMessageStatus.INTERRUPTED
     // split words into two parts, set left one word and all right words to interrupted
-    const leftWords = correspondingQueueItem.words.filter(
-      (word) => word.start_ms <= start_ms
-    )
-    const rightWords = correspondingQueueItem.words.filter(
-      (word) => word.start_ms > start_ms
-    )
+    const leftWords = correspondingQueueItem.words.filter((word) => word.start_ms <= start_ms)
+    const rightWords = correspondingQueueItem.words.filter((word) => word.start_ms > start_ms)
     // check if leftWords is empty
     const isLeftWordsEmpty = leftWords.length === 0
     if (isLeftWordsEmpty) {
@@ -947,8 +843,7 @@ export class MessageEngine {
 
   private _handleTurnObj(queueItem: TQueueItem, curPTS: number) {
     let correspondingChatHistoryItem = this.messageList.find(
-      (item) =>
-        item.turn_id === queueItem.turn_id && item.uid === queueItem.stream_id
+      (item) => item.turn_id === queueItem.turn_id && item.uid === queueItem.stream_id
     )
     logger.debug(
       CONSOLE_LOG_PREFIX,
@@ -997,8 +892,7 @@ export class MessageEngine {
     const isRestWordsEmpty = restWords.length === 0
     // check if validWords last word is final
     const isLastWordFinal =
-      validWords[validWords.length - 1]?.word_status !==
-      EMessageStatus.IN_PROGRESS
+      validWords[validWords.length - 1]?.word_status !== EMessageStatus.IN_PROGRESS
     // if restWords is empty and validWords last word is final, this turn is ended
     if (isRestWordsEmpty && isLastWordFinal) {
       // update messageList with queueItem
@@ -1016,8 +910,7 @@ export class MessageEngine {
     correspondingChatHistoryItem.text = validWordsText
     // if validWords last word is interrupted, this turn is ended
     const isLastWordInterrupted =
-      validWords[validWords.length - 1]?.word_status ===
-      EMessageStatus.INTERRUPTED
+      validWords[validWords.length - 1]?.word_status === EMessageStatus.INTERRUPTED
     if (isLastWordInterrupted) {
       // pop queueItem
       this._lastPoppedQueueItem = this._queue.shift()
@@ -1043,9 +936,7 @@ export class MessageEngine {
       CONSOLE_LOG_PREFIX,
       "Mutate messageList",
       this._pts,
-      this.messageList
-        .map((item) => `${item.text}[status: ${item.status}]`)
-        .join("\n")
+      this.messageList.map((item) => `${item.text}[status: ${item.status}]`).join("\n")
     )
     this.onMessageListUpdate?.(this.messageList as IMessageListItem[])
   }

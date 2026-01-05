@@ -2,7 +2,8 @@
 
 ## Overview
 
-Built with Agora App Builder for rapid prototyping with avatar and video capabilities. Leverage low-code tools for faster development.
+Built with Agora App Builder for rapid prototyping with avatar and video
+capabilities. Leverage low-code tools for faster development.
 
 ## Features
 
@@ -32,7 +33,8 @@ Sample code and implementation details will be added here.
 
 ## What is Agora App Builder?
 
-Agora App Builder is a low-code platform that allows you to create real-time communication applications quickly:
+Agora App Builder is a low-code platform that allows you to create real-time
+communication applications quickly:
 
 - Visual interface for building apps
 - Pre-built components and templates
@@ -43,18 +45,21 @@ Agora App Builder is a low-code platform that allows you to create real-time com
 ## Features in Detail
 
 ### Avatar Integration
+
 - Pre-configured avatar components
 - Easy avatar customization
 - Built-in lip-sync capabilities
 - Expression controls
 
 ### Video Features
+
 - HD video support
 - Screen sharing
 - Virtual backgrounds
 - Beauty filters
 
 ### Customization
+
 - Brand colors and logos
 - Custom UI layouts
 - Feature toggles
@@ -87,5 +92,6 @@ Agora App Builder is a low-code platform that allows you to create real-time com
 ## Support
 
 For questions and support, please visit:
+
 - [Agora App Builder Community](https://www.appbuilder.agora.io/)
 - [Agora Developer Community](https://www.agora.io/en/community/)

@@ -2,18 +2,23 @@
 
 ## Overview
 
-This document compares the **agora-ai-uikit** (package branch) with **Conversational-AI-Demo/Web** to understand their messaging capabilities and UI components.
+This document compares the **agora-ai-uikit** (package branch) with
+**Conversational-AI-Demo/Web** to understand their messaging capabilities and UI
+components.
 
 ## Architecture Comparison
 
 ### agora-ai-uikit (package branch)
-**Type**: UI Component Library + Message Rendering Engine
-**Location**: `/Users/benweekes/work/agora-ai-uikit` (package branch)
-**Package**: `@agora/ai-agent-uikit`
 
-**Purpose**: Provides reusable React components and a message engine for building AI voice agent applications.
+**Type**: UI Component Library + Message Rendering Engine **Location**:
+`/Users/benweekes/work/agora-ai-uikit` (package branch) **Package**:
+`@agora/ai-agent-uikit`
+
+**Purpose**: Provides reusable React components and a message engine for
+building AI voice agent applications.
 
 **Key Components**:
+
 - `MessageEngine` - Core message processing and transcript rendering
 - `ConvoTextStream` - Chat UI component with auto-scroll and message display
 - `AgentVisualizer` - Lottie-based agent state visualization
@@ -23,13 +28,16 @@ This document compares the **agora-ai-uikit** (package branch) with **Conversati
 - `Conversation` - Scrollable conversation container
 
 ### Conversational-AI-Demo/Web
-**Type**: Full Production Application
-**Location**: `/Users/benweekes/work/Conversational-AI-Demo/Web`
-**Package**: Not published (application code)
 
-**Purpose**: Complete reference implementation of a voice AI client with comprehensive API layer.
+**Type**: Full Production Application **Location**:
+`/Users/benweekes/work/Conversational-AI-Demo/Web` **Package**: Not published
+(application code)
+
+**Purpose**: Complete reference implementation of a voice AI client with
+comprehensive API layer.
 
 **Key Components**:
+
 - `ConversationalAIAPI` - Complete API layer for agent communication
 - Custom subtitle/transcript display components
 - Zustand state management
@@ -44,6 +52,7 @@ This document compares the **agora-ai-uikit** (package branch) with **Conversati
 **File**: `packages/uikit/src/lib/message-engine.ts`
 
 **Responsibilities**:
+
 - Processes incoming RTC and RTM messages
 - Handles transcription rendering (word-level and text-level)
 - Maintains message queue with PTS (presentation timestamp) synchronization
@@ -51,6 +60,7 @@ This document compares the **agora-ai-uikit** (package branch) with **Conversati
 - Provides callback-based updates to UI
 
 **Key Features**:
+
 ```typescript
 export class MessageEngine {
   constructor(config: {
@@ -87,11 +97,13 @@ export class MessageEngine {
 ```
 
 **Rendering Modes**:
+
 - `AUTO` - Automatically determines best mode
 - `TEXT` - Renders complete text messages
 - `WORD` - Word-by-word rendering with timing
 
 **Data Flow**:
+
 1. Receives RTC stream-message or RTM message events
 2. Decodes and chunks messages
 3. Processes chunks into transcription objects
@@ -106,6 +118,7 @@ export class MessageEngine {
 **File**: `Web/Scenes/VoiceAgent/src/conversational-ai-api/index.ts`
 
 **Responsibilities**:
+
 - Complete API layer for agent communication
 - Manages RTC and RTM engines
 - Handles user interactions (chat, interrupt)
@@ -113,6 +126,7 @@ export class MessageEngine {
 - Comprehensive state management
 
 **Key Features**:
+
 ```typescript
 export class ConversationalAIAPI extends EventHelper<IConversationalAIAPIEventHandlers> {
   // Send messages to agent
@@ -137,6 +151,7 @@ export class ConversationalAIAPI extends EventHelper<IConversationalAIAPIEventHa
 ```
 
 **Message Types**:
+
 ```typescript
 export interface IChatMessageText {
   messageType: EChatMessageType.TEXT
@@ -147,11 +162,12 @@ export interface IChatMessageText {
 
 export enum EChatMessagePriority {
   NORMAL = "normal",
-  INTERRUPTED = "interrupted"
+  INTERRUPTED = "interrupted",
 }
 ```
 
 **Data Flow**:
+
 1. User calls API methods (chat, sendText, interrupt)
 2. API publishes RTM messages to agent
 3. Receives responses via RTC/RTM
@@ -167,6 +183,7 @@ export enum EChatMessagePriority {
 **File**: `packages/uikit/src/components/convo-text-stream.tsx`
 
 **Features**:
+
 - Fixed position chat box (bottom-right)
 - Auto-open on first message
 - Collapsible/expandable
@@ -177,6 +194,7 @@ export enum EChatMessagePriority {
 - Pulse animation for new messages
 
 **Props**:
+
 ```typescript
 export interface ConvoTextStreamProps {
   messageList: IMessageListItem[]
@@ -188,6 +206,7 @@ export interface ConvoTextStreamProps {
 ```
 
 **Integration**:
+
 ```typescript
 const [messageList, setMessageList] = useState<IMessageListItem[]>([])
 const messageEngine = new MessageEngine({
@@ -210,12 +229,14 @@ const messageEngine = new MessageEngine({
 **File**: `Web/Scenes/VoiceAgent/src/components/ui/subtitle.tsx`
 
 **Features**:
+
 - Fixed position subtitle display
 - Separate user and agent transcript views
 - Custom styling and positioning
 - Integrated with ConversationalAIAPI events
 
 **Integration**:
+
 ```typescript
 const api = ConversationalAIAPI.getInstance()
 
@@ -239,7 +260,7 @@ api.on("agentTranscript", (transcript) => {
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
     "agora-rtc-react": ">=2.0.0",
-    "agora-rtm-sdk": ">=2.0.0"  // optional
+    "agora-rtm-sdk": ">=2.0.0" // optional
   },
   "dependencies": {
     "@lottiefiles/dotlottie-react": "^0.17.6",
@@ -256,9 +277,9 @@ api.on("agentTranscript", (transcript) => {
 {
   "dependencies": {
     "agora-rtc-sdk-ng": "^4.24.0",
-    "agora-rtm": "^2.2.3",  // Full RTM support
+    "agora-rtm": "^2.2.3", // Full RTM support
     "agora-conversational-ai-denoiser": "^1.0.0-beta2",
-    "zustand": "^5.0.8",  // State management
+    "zustand": "^5.0.8", // State management
     "@radix-ui/react-*": "...",
     "lucide-react": "..."
   }
@@ -269,26 +290,27 @@ api.on("agentTranscript", (transcript) => {
 
 ## Key Differences
 
-| Feature | agora-ai-uikit | Conversational-AI-Demo |
-|---------|----------------|------------------------|
-| **Type** | Component Library | Full Application |
-| **Message Engine** | MessageEngine (rendering focus) | ConversationalAIAPI (full API) |
-| **RTM Support** | Optional peer dependency | Required dependency |
-| **Message Sending** | ❌ Not included | ✅ chat(), sendText(), interrupt() |
-| **Message Receiving** | ✅ Via MessageEngine | ✅ Via event system |
-| **State Management** | Component-level (useState) | Zustand (global) |
-| **Word-level Rendering** | ✅ Supported | ❌ Not used |
-| **UI Components** | ✅ Full library | Custom components |
-| **Package Distribution** | ✅ NPM package | ❌ Application code |
-| **Event System** | Callback-based | EventHelper (observer pattern) |
-| **Image Support** | ❌ Not included | ✅ sendImage() |
-| **Agent Control** | ❌ Not included | ✅ interrupt() |
+| Feature                  | agora-ai-uikit                  | Conversational-AI-Demo             |
+| ------------------------ | ------------------------------- | ---------------------------------- |
+| **Type**                 | Component Library               | Full Application                   |
+| **Message Engine**       | MessageEngine (rendering focus) | ConversationalAIAPI (full API)     |
+| **RTM Support**          | Optional peer dependency        | Required dependency                |
+| **Message Sending**      | ❌ Not included                 | ✅ chat(), sendText(), interrupt() |
+| **Message Receiving**    | ✅ Via MessageEngine            | ✅ Via event system                |
+| **State Management**     | Component-level (useState)      | Zustand (global)                   |
+| **Word-level Rendering** | ✅ Supported                    | ❌ Not used                        |
+| **UI Components**        | ✅ Full library                 | Custom components                  |
+| **Package Distribution** | ✅ NPM package                  | ❌ Application code                |
+| **Event System**         | Callback-based                  | EventHelper (observer pattern)     |
+| **Image Support**        | ❌ Not included                 | ✅ sendImage()                     |
+| **Agent Control**        | ❌ Not included                 | ✅ interrupt()                     |
 
 ---
 
 ## When to Use Each
 
 ### Use agora-ai-uikit (package branch) when:
+
 - Building a new voice AI application
 - Need pre-built UI components
 - Want message rendering (transcription display)
@@ -297,6 +319,7 @@ api.on("agentTranscript", (transcript) => {
 - Want word-level transcript rendering
 
 ### Use Conversational-AI-Demo as reference when:
+
 - Need complete API layer for sending messages
 - Require agent control (interrupt, priority messages)
 - Need image message support
@@ -311,23 +334,30 @@ api.on("agentTranscript", (transcript) => {
 **Use agora-ai-uikit package branch** with the following additions:
 
 1. **Install the package locally or via workspace**:
+
    ```bash
    npm install @agora/ai-agent-uikit
    # OR link locally for development
    ```
 
 2. **Use MessageEngine for transcript handling**:
+
    ```typescript
-   import { MessageEngine, EMessageEngineMode, IMessageListItem } from '@agora/ai-agent-uikit'
+   import {
+     MessageEngine,
+     EMessageEngineMode,
+     IMessageListItem,
+   } from "@agora/ai-agent-uikit"
 
    const messageEngine = new MessageEngine({
      rtcEngine: client,
      renderMode: EMessageEngineMode.AUTO,
-     callback: (messages) => setMessageList(messages)
+     callback: (messages) => setMessageList(messages),
    })
    ```
 
 3. **Use ConvoTextStream for chat UI**:
+
    ```typescript
    import { ConvoTextStream } from '@agora/ai-agent-uikit'
 
@@ -338,7 +368,8 @@ api.on("agentTranscript", (transcript) => {
    />
    ```
 
-4. **For sending messages to agent**, implement a simple API layer inspired by ConversationalAIAPI:
+4. **For sending messages to agent**, implement a simple API layer inspired by
+   ConversationalAIAPI:
    ```typescript
    // This functionality is NOT in agora-ai-uikit
    // Copy from ConversationalAIAPI if needed
@@ -359,15 +390,19 @@ api.on("agentTranscript", (transcript) => {
 ## Conclusion
 
 **agora-ai-uikit (package branch)** provides:
+
 - ✅ UI components
 - ✅ Message rendering engine
 - ✅ Transcript display
 - ❌ Message sending API
 
 **Conversational-AI-Demo** provides:
+
 - ✅ Complete API layer
 - ✅ Message sending/receiving
 - ✅ Agent control
 - ❌ Reusable component library
 
-**Best approach**: Use agora-ai-uikit components + MessageEngine for UI and transcript display, and optionally copy ConversationalAIAPI patterns if you need to send messages to the agent.
+**Best approach**: Use agora-ai-uikit components + MessageEngine for UI and
+transcript display, and optionally copy ConversationalAIAPI patterns if you need
+to send messages to the agent.

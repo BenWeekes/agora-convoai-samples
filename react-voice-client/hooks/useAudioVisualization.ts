@@ -42,7 +42,7 @@ export function useAudioVisualization(
     amplification = 4.0,
     volumeDecay = 0.95,
     attackRate = 0.3,
-    updateInterval = 33
+    updateInterval = 33,
   } = options
   // Initialize with empty bars (all 0s) to show gray bars immediately
   const [frequencyData, setFrequencyData] = useState<number[]>(Array(barCount).fill(0))
@@ -132,9 +132,10 @@ export function useAudioVisualization(
 
           // Smooth the volume with attack/decay
           const previousSmoothedVolume = smoothedVolumeRef.current
-          const smoothedVolume = rawVolume > previousSmoothedVolume
-            ? rawVolume // Instant attack
-            : previousSmoothedVolume * volumeDecay // Slow decay
+          const smoothedVolume =
+            rawVolume > previousSmoothedVolume
+              ? rawVolume // Instant attack
+              : previousSmoothedVolume * volumeDecay // Slow decay
           smoothedVolumeRef.current = smoothedVolume
 
           // Determine how many dots should be lit based on smoothed volume
