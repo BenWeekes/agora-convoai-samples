@@ -176,10 +176,19 @@ components accept documented props and export correct types.
 
 ```
 components/
+├── chat/
+│   └── __tests__/
+│       ├── conversation.test.tsx  # Conversation component tests
+│       ├── message.test.tsx       # Message component tests
+│       └── response.test.tsx      # Response component tests
 └── voice/
     └── __tests__/
-        └── mic-button.test.tsx  # MicButton component tests
+        ├── agent-visualizer.test.tsx  # AgentVisualizer tests
+        ├── audio-visualizer.test.tsx  # AudioVisualizer tests
+        └── mic-button.test.tsx        # MicButton tests
 ```
+
+**Test Coverage:** 29 tests covering all major chat and voice components.
 
 ---
 

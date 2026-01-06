@@ -5,6 +5,7 @@ import { ChevronDown } from "lucide-react"
 
 import { cn } from "../../lib/utils"
 import { Button } from "../primitives/button"
+import { ConversationContext, useConversation } from "./conversation-context"
 
 export interface ConversationProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
@@ -12,22 +13,22 @@ export interface ConversationProps extends React.HTMLAttributes<HTMLDivElement> 
    * @default "h-[400px]"
    */
   height?: string
-}
 
-const ConversationContext = React.createContext<{
-  scrollRef: React.RefObject<HTMLDivElement | null>
-} | null>(null)
+  /**
+   * Name to display for agent messages
+   * @default "Agent"
+   */
+  agentName?: string
 
-const useConversation = () => {
-  const context = React.useContext(ConversationContext)
-  if (!context) {
-    throw new Error("useConversation must be used within Conversation")
-  }
-  return context
+  /**
+   * Name to display for user messages
+   * @default "User"
+   */
+  userName?: string
 }
 
 export const Conversation = React.forwardRef<HTMLDivElement, ConversationProps>(
-  ({ className, height = "h-[400px]", ...props }, _ref) => {
+  ({ className, height = "h-[400px]", agentName = "Agent", userName = "User", ...props }, _ref) => {
     const scrollRef = React.useRef<HTMLDivElement>(null)
     const [showScrollButton, setShowScrollButton] = React.useState(false)
 
@@ -66,7 +67,7 @@ export const Conversation = React.forwardRef<HTMLDivElement, ConversationProps>(
     }, [])
 
     return (
-      <ConversationContext.Provider value={{ scrollRef }}>
+      <ConversationContext.Provider value={{ scrollRef, agentName, userName }}>
         <div
           ref={scrollRef}
           className={cn("relative flex flex-col overflow-scroll", height, className)}

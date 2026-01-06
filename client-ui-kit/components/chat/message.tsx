@@ -3,6 +3,7 @@
 import * as React from "react"
 
 import { cn } from "../../lib/utils"
+import { useConversationNames } from "./conversation-context"
 
 export interface MessageProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
@@ -11,14 +12,18 @@ export interface MessageProps extends React.HTMLAttributes<HTMLDivElement> {
   from: "user" | "assistant"
 
   /**
-   * Name to display above the message (e.g., "Avatar" or "User")
+   * Optional: Override the name to display above the message
+   * If not provided, uses agentName/userName from parent Conversation
    */
   name?: string
 }
 
 export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
   ({ className, from, name, children, ...props }, ref) => {
+    const { agentName, userName } = useConversationNames()
     const isUser = from === "user"
+    const displayName = name ?? (isUser ? userName : agentName)
+
     return (
       <div
         ref={ref}
@@ -30,7 +35,9 @@ export const Message = React.forwardRef<HTMLDivElement, MessageProps>(
           className="flex flex-col gap-0.5"
           style={{ alignItems: isUser ? "flex-end" : "flex-start" }}
         >
-          {name && <div className="text-sm font-medium text-muted-foreground">{name}</div>}
+          {displayName && (
+            <div className="text-sm font-medium text-muted-foreground">{displayName}</div>
+          )}
           {children}
         </div>
       </div>
