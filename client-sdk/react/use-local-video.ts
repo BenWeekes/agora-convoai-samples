@@ -131,20 +131,24 @@ export function useLocalVideo(config?: UseLocalVideoConfig): UseLocalVideoReturn
   const enableVideo = useCallback(async () => {
     try {
       setError(null)
+      console.log("[useLocalVideo] enableVideo called", { hasExistingTrack: !!videoTrack, currentDeviceId })
 
       // If track already exists, just enable it
       if (videoTrack) {
+        console.log("[useLocalVideo] Enabling existing video track")
         await videoTrack.setEnabled(true)
         setIsVideoEnabled(true)
         return
       }
 
       // Create new video track
+      console.log("[useLocalVideo] Creating new camera video track")
       const track = await AgoraRTC.createCameraVideoTrack({
         cameraId: currentDeviceId,
         encoderConfig: (config?.encoderConfig as any) || "720p_2",
       })
 
+      console.log("[useLocalVideo] Video track created successfully:", track)
       setVideoTrack(track)
       setIsVideoEnabled(true)
       if (track._deviceName) {

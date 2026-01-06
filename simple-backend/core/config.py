@@ -118,6 +118,14 @@ def initialize_constants(profile=None):
         "HEYGEN_QUALITY": get_env_var('HEYGEN_QUALITY', profile, "high"),
         "HEYGEN_ACTIVITY_IDLE_TIMEOUT": get_env_var('HEYGEN_ACTIVITY_IDLE_TIMEOUT', profile, "120"),
 
+        # Anam Avatar BETA settings
+        "ANAM_API_KEY": get_env_var('ANAM_API_KEY', profile),
+        "ANAM_AVATAR_ID": get_env_var('ANAM_AVATAR_ID', profile),
+        "ANAM_BASE_URL": get_env_var('ANAM_BASE_URL', profile, "https://api.anam.ai/v1"),
+        "ANAM_BETA_APP_ID": get_env_var('ANAM_BETA_APP_ID', profile),
+        "ANAM_BETA_CREDENTIALS": get_env_var('ANAM_BETA_CREDENTIALS', profile),
+        "ANAM_BETA_ENDPOINT": get_env_var('ANAM_BETA_ENDPOINT', profile, "https://api-test.agora.io/api/conversational-ai-agent/v2/projects"),
+
         # Default prompt and messages
         "DEFAULT_PROMPT": get_env_var('DEFAULT_PROMPT', profile,
             "You are a virtual companion. The user can both talk and type to you and you will be sent text. "

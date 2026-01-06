@@ -1,10 +1,10 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Mic, MicOff, Video, VideoOff } from "lucide-react"
 import { useAgoraVoiceClient } from "@/hooks/useAgoraVoiceClient"
 import { useAudioVisualization } from "@/hooks/useAudioVisualization"
-import { useIsMobile } from "@/hooks/use-is-mobile"
+import { useLocalVideo, useRemoteVideo } from "@agora/conversational-ai-react"
 import { MicButton } from "@agora/ui-kit"
 import { Conversation, ConversationContent } from "@agora/ui-kit"
 import { Message, MessageContent } from "@agora/ui-kit"
@@ -22,10 +22,8 @@ export function VideoAvatarClient() {
   const [chatMessage, setChatMessage] = useState("")
   const [enableLocalVideo, setEnableLocalVideo] = useState(true)
   const [enableAvatar, setEnableAvatar] = useState(true)
-  const [isVideoEnabled, setIsVideoEnabled] = useState(false)
   const [activeTab, setActiveTab] = useState("video")
   const _conversationRef = useRef<HTMLDivElement>(null)
-  const _isMobile = useIsMobile()
 
   const {
     isConnected,
@@ -39,10 +37,53 @@ export function VideoAvatarClient() {
     leaveChannel,
     toggleMute,
     sendMessage,
+    rtcHelperRef,
   } = useAgoraVoiceClient()
 
   // Get audio visualization data (restart on mute/unmute to fix Web Audio API connection)
   const frequencyData = useAudioVisualization(localAudioTrack, isConnected && !isMuted)
+
+  // Video hooks
+  const {
+    videoTrack: localVideoTrack,
+    isVideoEnabled: isLocalVideoActive,
+    enableVideo,
+    disableVideo,
+  } = useLocalVideo()
+
+  const { remoteVideoUsersArray } = useRemoteVideo({
+    client: rtcHelperRef.current?.client,
+  })
+
+  // Get avatar video track (first remote user with video)
+  const avatarVideoTrack = remoteVideoUsersArray.length > 0 ? remoteVideoUsersArray[0].videoTrack : null
+
+  // Publish local video track to channel when it becomes available
+  useEffect(() => {
+    const publishVideo = async () => {
+      const client = rtcHelperRef.current?.client
+      if (!client || !localVideoTrack || !isConnected) return
+
+      try {
+        await client.publish(localVideoTrack)
+        console.log("[VideoAvatarClient] Published local video track")
+      } catch (error) {
+        console.error("[VideoAvatarClient] Failed to publish video:", error)
+      }
+    }
+
+    publishVideo()
+
+    // Unpublish on cleanup
+    return () => {
+      const client = rtcHelperRef.current?.client
+      if (client && localVideoTrack) {
+        client.unpublish(localVideoTrack).catch((err) => {
+          console.error("[VideoAvatarClient] Failed to unpublish video:", err)
+        })
+      }
+    }
+  }, [localVideoTrack, isConnected])
 
   const handleStart = async () => {
     setIsLoading(true)
@@ -78,10 +119,12 @@ export function VideoAvatarClient() {
         uid: parseInt(data.uid),
       })
 
-      // TODO: Enable local video if requested
-      // if (enableLocalVideo) {
-      //   await enableVideo()
-      // }
+      // Auto-enable local video if checkbox was checked
+      if (enableLocalVideo) {
+        console.log("[VideoAvatarClient] Auto-enabling local video after channel join")
+        await enableVideo()
+        console.log("[VideoAvatarClient] enableVideo() completed")
+      }
     } catch (error) {
       console.error("Failed to start:", error)
       alert(`Failed to start: ${error instanceof Error ? error.message : "Unknown error"}`)
@@ -91,7 +134,9 @@ export function VideoAvatarClient() {
   }
 
   const handleStop = async () => {
-    // TODO: Disable video if enabled
+    if (isLocalVideoActive) {
+      await disableVideo()
+    }
     await leaveChannel()
   }
 
@@ -112,8 +157,11 @@ export function VideoAvatarClient() {
   }
 
   const toggleVideo = async () => {
-    // TODO: Implement video toggle using useLocalVideo hook
-    setIsVideoEnabled(!isVideoEnabled)
+    if (isLocalVideoActive) {
+      await disableVideo()
+    } else {
+      await enableVideo()
+    }
   }
 
   // Helper to determine if message is from agent
@@ -135,7 +183,7 @@ export function VideoAvatarClient() {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto flex flex-1 px-4 py-6 min-h-0 overflow-hidden">
+      <main className="container mx-auto flex flex-1 px-4 py-1 md:py-6 min-h-0 overflow-hidden">
         {!isConnected ? (
           /* Connection Form - Centered */
           <div className="flex flex-1 items-center justify-center">
@@ -191,13 +239,13 @@ export function VideoAvatarClient() {
         ) : (
           /* Responsive Layout: Desktop (VideoGrid) / Mobile (Tabs) */
           <>
-            {/* Desktop Layout */}
+            {/* Desktop Layout - Hidden on mobile */}
             <VideoGrid
               className="hidden md:grid flex-1"
               chat={
                 <div className="flex flex-col h-full">
                   {/* Conversation Header */}
-                  <div className="border-b p-4 flex-shrink-0">
+                  <div className="border-b p-4 flex-shrink-0 flex items-center justify-between">
                     <h2 className="font-semibold">Conversation</h2>
                     <p className="text-sm text-muted-foreground">
                       {messageList.length} message{messageList.length !== 1 ? "s" : ""}
@@ -266,11 +314,12 @@ export function VideoAvatarClient() {
               avatar={
                 <div className="flex flex-col h-full">
                   {/* Avatar Video */}
-                  <div className="flex-1 flex items-center justify-center bg-muted/20">
+                  <div className="flex-1 flex items-center justify-center bg-muted/20 p-2">
                     <AvatarVideoDisplay
-                      videoTrack={null}
-                      state="disconnected"
+                      videoTrack={avatarVideoTrack}
+                      state={avatarVideoTrack ? "connected" : "disconnected"}
                       className="h-full w-full"
+                      useMediaStream={true}
                     />
                   </div>
 
@@ -290,12 +339,12 @@ export function VideoAvatarClient() {
                         onClick={toggleVideo}
                         className={cn(
                           "flex-1 rounded-lg border px-4 py-2 text-sm font-medium transition-colors",
-                          isVideoEnabled
+                          isLocalVideoActive
                             ? "border-primary bg-primary text-primary-foreground hover:bg-primary/90"
                             : "border-input bg-background hover:bg-accent hover:text-accent-foreground"
                         )}
                       >
-                        {isVideoEnabled ? (
+                        {isLocalVideoActive ? (
                           <Video className="h-4 w-4 inline mr-2" />
                         ) : (
                           <VideoOff className="h-4 w-4 inline mr-2" />
@@ -313,13 +362,17 @@ export function VideoAvatarClient() {
                 </div>
               }
               localVideo={
-                <div className="h-full flex items-center justify-center">
-                  <LocalVideoPreview videoTrack={null} className="h-full w-full" />
+                <div className="h-full flex items-center justify-center p-2">
+                  <LocalVideoPreview
+                    videoTrack={localVideoTrack}
+                    className="h-full w-full"
+                    useMediaStream={true}
+                  />
                 </div>
               }
             />
 
-            {/* Mobile Layout */}
+            {/* Mobile Layout - Hidden on desktop */}
             <div className="flex md:hidden flex-1 flex-col min-h-0 overflow-hidden">
               <MobileTabs
                 activeTab={activeTab}
@@ -329,19 +382,24 @@ export function VideoAvatarClient() {
                     id: "video",
                     label: "Video",
                     content: (
-                      <div className="flex flex-col h-full gap-3 p-3">
-                        {/* Avatar - 70% */}
-                        <div className="flex-[7] rounded-lg border bg-card shadow-lg overflow-hidden">
+                      <div className="flex flex-col h-full gap-2 p-2">
+                        {/* Avatar - 50% */}
+                        <div className="flex-1 rounded-lg border bg-card shadow-lg overflow-hidden">
                           <AvatarVideoDisplay
-                            videoTrack={null}
-                            state="disconnected"
+                            videoTrack={avatarVideoTrack}
+                            state={avatarVideoTrack ? "connected" : "disconnected"}
                             className="h-full w-full"
+                            useMediaStream={true}
                           />
                         </div>
 
-                        {/* Local Video - 30% */}
-                        <div className="flex-[3] rounded-lg border bg-card shadow-lg overflow-hidden">
-                          <LocalVideoPreview videoTrack={null} className="h-full w-full" />
+                        {/* Local Video - 50% */}
+                        <div className="flex-1 rounded-lg border bg-card shadow-lg overflow-hidden">
+                          <LocalVideoPreview
+                            videoTrack={localVideoTrack}
+                            className="h-full w-full"
+                            useMediaStream={true}
+                          />
                         </div>
                       </div>
                     ),
@@ -350,20 +408,21 @@ export function VideoAvatarClient() {
                     id: "chat",
                     label: "Chat",
                     content: (
-                      <div className="flex flex-col h-full gap-3 p-3">
-                        {/* Avatar - 40% */}
-                        <div className="flex-[4] rounded-lg border bg-card shadow-lg overflow-hidden">
+                      <div className="flex flex-col h-full gap-2 p-2">
+                        {/* Avatar - 35% */}
+                        <div className="flex-[35] rounded-lg border bg-card shadow-lg overflow-hidden">
                           <AvatarVideoDisplay
-                            videoTrack={null}
-                            state="disconnected"
+                            videoTrack={avatarVideoTrack}
+                            state={avatarVideoTrack ? "connected" : "disconnected"}
                             className="h-full w-full"
+                            useMediaStream={true}
                           />
                         </div>
 
-                        {/* Chat - 60% */}
-                        <div className="flex-[6] rounded-lg border bg-card shadow-lg overflow-hidden flex flex-col">
+                        {/* Chat - 65% */}
+                        <div className="flex-[65] rounded-lg border bg-card shadow-lg overflow-hidden flex flex-col">
                           {/* Conversation Header */}
-                          <div className="border-b p-3 flex-shrink-0">
+                          <div className="border-b p-3 flex-shrink-0 flex items-center justify-between">
                             <h2 className="font-semibold text-sm">Conversation</h2>
                             <p className="text-xs text-muted-foreground">
                               {messageList.length} message{messageList.length !== 1 ? "s" : ""}
@@ -439,24 +498,24 @@ export function VideoAvatarClient() {
               />
 
               {/* Mobile: Fixed Bottom Controls */}
-              <div className="flex gap-3 p-4 border-t bg-card flex-shrink-0">
+              <div className="flex gap-2 p-2 border-t bg-card flex-shrink-0">
                 <MicButton
                   state={micState}
                   icon={isMuted ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
                   audioData={frequencyData}
                   onClick={toggleMute}
-                  className="flex-1 min-h-[48px]"
+                  className="flex-1 min-h-[44px]"
                 />
                 <button
                   onClick={toggleVideo}
                   className={cn(
-                    "flex-1 rounded-lg border px-4 py-3 text-sm font-medium transition-colors min-h-[48px]",
-                    isVideoEnabled
+                    "flex-1 rounded-lg border px-3 py-2 text-sm font-medium transition-colors min-h-[44px]",
+                    isLocalVideoActive
                       ? "border-primary bg-primary text-primary-foreground"
                       : "border-input bg-background"
                   )}
                 >
-                  {isVideoEnabled ? (
+                  {isLocalVideoActive ? (
                     <Video className="h-4 w-4 inline mr-2" />
                   ) : (
                     <VideoOff className="h-4 w-4 inline mr-2" />
@@ -465,7 +524,7 @@ export function VideoAvatarClient() {
                 </button>
                 <button
                   onClick={handleStop}
-                  className="flex-1 rounded-lg border border-destructive bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive hover:bg-destructive/20 min-h-[48px]"
+                  className="flex-1 rounded-lg border border-destructive bg-destructive/10 px-3 py-2 text-sm font-medium text-destructive hover:bg-destructive/20 min-h-[44px]"
                 >
                   End Call
                 </button>

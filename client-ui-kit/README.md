@@ -24,6 +24,8 @@ React component library for building voice AI user interfaces with Agora.
   - [Response](#response)
   - [ConvoTextStream](#convotextstream)
 - [Video Components](#video-components)
+  - [LocalVideoPreview](#localvideopreview)
+  - [AvatarVideoDisplay](#avatarvideodisplay)
   - [Avatar](#avatar)
 - [UI Primitives](#ui-primitives)
   - [Button](#button)
@@ -629,6 +631,116 @@ import { ConvoTextStream } from '@agora/ui-kit'
 
 ## Video Components
 
+### LocalVideoPreview
+
+Display local camera video with mirror effect and optional label.
+
+**Props:**
+
+```typescript
+interface LocalVideoPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
+  videoTrack?: ICameraVideoTrack | null
+  isMirrored?: boolean       // Default: true
+  showLabel?: boolean         // Default: false
+  label?: string             // Default: "You"
+  placeholder?: React.ReactNode
+  useMediaStream?: boolean    // Default: false
+}
+```
+
+**Usage:**
+
+```typescript
+import { LocalVideoPreview } from '@agora/ui-kit'
+import { useLocalVideo } from '@agora/conversational-ai-react'
+
+const { videoTrack } = useLocalVideo()
+
+{/* Basic usage */}
+<LocalVideoPreview videoTrack={videoTrack} />
+
+{/* With label */}
+<LocalVideoPreview
+  videoTrack={videoTrack}
+  showLabel={true}
+  label="You"
+/>
+
+{/* Multiple instances (responsive layouts) */}
+<LocalVideoPreview
+  videoTrack={videoTrack}
+  useMediaStream={true}  // Enables MediaStream rendering
+/>
+```
+
+**Rendering Modes:**
+
+- `useMediaStream={false}` (default) - Uses Agora's `play()` method. Use for single instance.
+- `useMediaStream={true}` - Uses MediaStream API. Use when displaying the same track in multiple locations (e.g., responsive layouts with desktop and mobile views).
+
+---
+
+### AvatarVideoDisplay
+
+Display remote avatar video with connection status and placeholder.
+
+**Props:**
+
+```typescript
+type AvatarVideoState = "connected" | "loading" | "disconnected"
+
+interface AvatarVideoDisplayProps extends React.HTMLAttributes<HTMLDivElement> {
+  videoTrack?: IRemoteVideoTrack | null
+  state?: AvatarVideoState   // Default: "disconnected"
+  showStatus?: boolean        // Default: false
+  placeholder?: React.ReactNode
+  useMediaStream?: boolean    // Default: false
+}
+```
+
+**Usage:**
+
+```typescript
+import { AvatarVideoDisplay } from '@agora/ui-kit'
+import { useRemoteVideo } from '@agora/conversational-ai-react'
+
+const { remoteVideoUsersArray } = useRemoteVideo({ client })
+const avatarVideoTrack = remoteVideoUsersArray[0]?.videoTrack
+
+{/* Basic usage */}
+<AvatarVideoDisplay
+  videoTrack={avatarVideoTrack}
+  state={avatarVideoTrack ? "connected" : "disconnected"}
+/>
+
+{/* With status indicator */}
+<AvatarVideoDisplay
+  videoTrack={avatarVideoTrack}
+  state="connected"
+  showStatus={true}
+/>
+
+{/* Multiple instances (responsive layouts) */}
+<AvatarVideoDisplay
+  videoTrack={avatarVideoTrack}
+  state="connected"
+  useMediaStream={true}
+/>
+```
+
+**States:**
+
+- `connected` - Video is playing
+- `loading` - Connecting to video
+- `disconnected` - No video (shows placeholder)
+
+**Rendering Modes:**
+
+- `useMediaStream={false}` (default) - Uses Agora's `play()` method. Use for single instance.
+- `useMediaStream={true}` - Uses MediaStream API. Use when displaying the same track in multiple locations (e.g., responsive layouts with desktop and mobile views).
+
+---
+
 ### Avatar
 
 User/agent avatar with customizable size and colors.
@@ -663,9 +775,6 @@ import { Avatar } from '@agora/ui-kit'
 - `sm` - 32px
 - `md` - 40px
 - `lg` - 48px
-
-**Note:** Future video components will include LocalVideoDisplay and
-RemoteVideoDisplay for rendering video streams from Agora RTC.
 
 ---
 

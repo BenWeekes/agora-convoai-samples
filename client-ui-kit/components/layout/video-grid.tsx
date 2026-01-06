@@ -43,11 +43,11 @@ export const VideoGrid = React.forwardRef<HTMLDivElement, VideoGridProps>(
     return (
       <div
         ref={ref}
-        className={cn("grid h-full w-full gap-4", className)}
+        className={cn("grid h-full w-full", className)}
         style={{
-          display: "grid",
           gridTemplateColumns: "40% 60%",
           gridTemplateRows: "1fr 1fr",
+          gap: "1rem",
         }}
         {...props}
       >

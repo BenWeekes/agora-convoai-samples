@@ -21,9 +21,11 @@ describe("AvatarVideoDisplay Component", () => {
       state: "connected",
       showStatus: true,
       placeholder: <div>Loading...</div>,
+      useMediaStream: true,
     }
     expect(props.state).toBe("connected")
     expect(props.showStatus).toBe(true)
+    expect(props.useMediaStream).toBe(true)
   })
 
   it("exports AvatarVideoState type", () => {
@@ -46,5 +48,15 @@ describe("AvatarVideoDisplay Component", () => {
     const { container } = render(<AvatarVideoDisplay />)
     // Default state should be 'disconnected'
     expect(container.querySelector("div")).toBeInTheDocument()
+  })
+
+  it("renders with MediaStream mode enabled", () => {
+    const { container } = render(<AvatarVideoDisplay useMediaStream={true} />)
+    expect(container).toBeInTheDocument()
+  })
+
+  it("renders with MediaStream mode disabled (default)", () => {
+    const { container } = render(<AvatarVideoDisplay useMediaStream={false} />)
+    expect(container).toBeInTheDocument()
   })
 })

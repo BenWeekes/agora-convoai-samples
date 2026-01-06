@@ -58,21 +58,25 @@ export const MobileTabs = React.forwardRef<HTMLDivElement, MobileTabsProps>(
     }
 
     const tabButtons = (
-      <div className="flex gap-1 border-b bg-muted/30 p-1">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => handleTabChange(tab.id)}
-            className={cn(
-              "flex flex-1 items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors",
-              activeTab === tab.id
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
+      <div className="flex border-b bg-muted/30">
+        {tabs.map((tab, index) => (
+          <React.Fragment key={tab.id}>
+            <button
+              onClick={() => handleTabChange(tab.id)}
+              className={cn(
+                "flex flex-1 items-center justify-center gap-2 px-3 py-2 text-sm font-medium transition-colors",
+                activeTab === tab.id
+                  ? "bg-background text-foreground border-b-2 border-primary"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {tab.icon && <span className="h-4 w-4">{tab.icon}</span>}
+              <span>{tab.label}</span>
+            </button>
+            {index < tabs.length - 1 && (
+              <div className="w-px bg-border" />
             )}
-          >
-            {tab.icon && <span className="h-4 w-4">{tab.icon}</span>}
-            <span>{tab.label}</span>
-          </button>
+          </React.Fragment>
         ))}
       </div>
     )

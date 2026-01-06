@@ -145,12 +145,16 @@ def build_avatar_config(avatar_enabled, avatar_vendor, constants, channel, agent
             }
         }
     elif avatar_vendor == "anam":
+        # For Anam BETA with no APP_CERTIFICATE, agora_token is the APP_ID
+        # If there's a real token (agent_video_token), use that instead
+        agora_token_value = agent_video_token if agent_video_token else constants["APP_ID"]
+
         return {
             "vendor": "anam",
             "enable": True,
             "params": {
-                "agora_token": agent_video_token,
-                "agora_uid": constants["AGENT_VIDEO_UID"],
+                "agora_token": agora_token_value,
+                "agora_uid": query_params.get('anam_uid', constants.get("AGENT_VIDEO_UID", "49345")),
                 "anam_api_key": query_params.get('anam_api_key', constants.get("ANAM_API_KEY", "")),
                 "anam_base_url": query_params.get('anam_base_url', constants.get("ANAM_BASE_URL", "https://api.anam.ai/v1")),
                 "anam_avatar_id": query_params.get('anam_avatar_id', constants.get("ANAM_AVATAR_ID", ""))
@@ -223,13 +227,20 @@ def create_agent_payload(channel, constants, query_params=None, agent_video_toke
         }
     }
 
+    # Get avatar settings early to determine remote_rtc_uids
+    avatar_enabled = query_params.get('avatar_enabled', constants["AVATAR_ENABLED"]).lower() == "true"
+
+    # When avatar is enabled, can't use wildcard "*" for remote_rtc_uids
+    # Must specify exact user UID
+    remote_rtc_uids = [constants["USER_UID"]] if avatar_enabled else ["*"]
+
     # Build properties
     properties = OrderedDict([
         ("channel", channel),
         ("token", constants["APP_ID"]),  # ConvoAI uses APP_ID as token
         ("agent_rtc_uid", constants["AGENT_UID"]),
         ("agent_rtm_uid", f"{constants['AGENT_UID']}-{channel}"),
-        ("remote_rtc_uids", ["*"]),
+        ("remote_rtc_uids", remote_rtc_uids),
         ("advanced_features", {
             "enable_bhvs": True,
             "enable_rtm": True,
@@ -246,16 +257,17 @@ def create_agent_payload(channel, constants, query_params=None, agent_video_toke
     ])
 
     # Add avatar configuration if enabled
-    avatar_enabled = query_params.get('avatar_enabled', constants["AVATAR_ENABLED"]).lower() == "true"
     avatar_vendor = query_params.get('avatar_vendor', constants["AVATAR_VENDOR"])
 
-    if avatar_enabled and agent_video_token:
+    if avatar_enabled:
+        # For Anam BETA, we don't need a real token (it uses app_id instead)
+        # So pass agent_video_token even if it's empty string
         avatar_config = build_avatar_config(
             avatar_enabled,
             avatar_vendor,
             constants,
             channel,
-            agent_video_token,
+            agent_video_token if agent_video_token else "",
             query_params
         )
         if avatar_config:
@@ -282,7 +294,27 @@ def send_agent_to_channel(channel, agent_payload, constants):
     Returns:
         Dictionary with the status code, response body, and success flag
     """
-    agent_api_url = f"{constants['AGENT_API_BASE_URL']}/{constants['APP_ID']}/join"
+    # Check if using Anam BETA avatar
+    is_anam_beta = (
+        agent_payload.get("properties", {}).get("avatar", {}).get("vendor") == "anam"
+    )
+
+    if is_anam_beta:
+        # Use BETA endpoint for Anam avatar
+        app_id = constants.get("ANAM_BETA_APP_ID")
+        beta_endpoint = constants.get("ANAM_BETA_ENDPOINT")
+        agent_api_url = f"{beta_endpoint}/{app_id}/join"
+
+        # Use BETA credentials
+        beta_creds = constants.get("ANAM_BETA_CREDENTIALS")
+        import base64
+        auth_header = "Basic " + base64.b64encode(beta_creds.encode()).decode()
+
+        print(f"🎭 Using Anam BETA endpoint: {agent_api_url}")
+    else:
+        # Use regular endpoint
+        agent_api_url = f"{constants['AGENT_API_BASE_URL']}/{constants['APP_ID']}/join"
+        auth_header = constants["AGENT_AUTH_HEADER"]
 
     url_parts = urllib.parse.urlparse(agent_api_url)
     host = url_parts.netloc
@@ -292,7 +324,7 @@ def send_agent_to_channel(channel, agent_payload, constants):
 
     headers = {
         "Content-Type": "application/json",
-        "Authorization": constants["AGENT_AUTH_HEADER"]
+        "Authorization": auth_header
     }
 
     payload_json = json.dumps(agent_payload, indent=2)

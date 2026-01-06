@@ -22,10 +22,12 @@ describe("LocalVideoPreview Component", () => {
       showLabel: true,
       label: "You",
       placeholder: <div>Camera off</div>,
+      useMediaStream: true,
     }
     expect(props.isMirrored).toBe(true)
     expect(props.showLabel).toBe(true)
     expect(props.label).toBe("You")
+    expect(props.useMediaStream).toBe(true)
   })
 
   it("renders with mirror enabled by default", () => {
@@ -35,6 +37,16 @@ describe("LocalVideoPreview Component", () => {
 
   it("renders with custom label", () => {
     const { container } = render(<LocalVideoPreview label="Custom Label" />)
+    expect(container).toBeInTheDocument()
+  })
+
+  it("renders with MediaStream mode enabled", () => {
+    const { container } = render(<LocalVideoPreview useMediaStream={true} />)
+    expect(container).toBeInTheDocument()
+  })
+
+  it("renders with MediaStream mode disabled (default)", () => {
+    const { container } = render(<LocalVideoPreview useMediaStream={false} />)
     expect(container).toBeInTheDocument()
   })
 })
