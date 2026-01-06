@@ -5,7 +5,9 @@
   "description": "Agora Conversational AI samples and packages",
   "scripts": {
     "dev": "pnpm --filter react-voice-client dev",
+    "dev:video": "pnpm --filter react-video-client-avatar dev",
     "build": "pnpm --filter react-voice-client build",
+    "build:video": "pnpm --filter react-video-client-avatar build",
     "clean": "pnpm -r exec rm -rf node_modules && rm -rf node_modules",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

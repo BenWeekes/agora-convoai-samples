@@ -12,6 +12,9 @@
     "hooks",
     "conversational-ai"
   ],
+  "dependencies": {
+    "agora-rtc-sdk-ng": "^4.24.2"
+  },
   "peerDependencies": {
     "react": ">=18.0.0",
     "@agora/conversational-ai": "1.0.0"

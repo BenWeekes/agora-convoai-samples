@@ -41,6 +41,25 @@ export type { ConvoTextStreamProps } from "./components/chat/convo-text-stream"
 export { Avatar } from "./components/video/avatar"
 export type { AvatarProps, AvatarSize } from "./components/video/avatar"
 
+export { AvatarVideoDisplay } from "./components/video/avatar-video-display"
+export type {
+  AvatarVideoDisplayProps,
+  AvatarVideoState,
+} from "./components/video/avatar-video-display"
+
+export { LocalVideoPreview } from "./components/video/local-video-preview"
+export type { LocalVideoPreviewProps } from "./components/video/local-video-preview"
+
+export { CameraSelector } from "./components/video/camera-selector"
+export type { CameraSelectorProps, CameraDevice } from "./components/video/camera-selector"
+
+// Layout Components
+export { VideoGrid, VideoGridWithControls } from "./components/layout/video-grid"
+export type { VideoGridProps } from "./components/layout/video-grid"
+
+export { MobileTabs } from "./components/layout/mobile-tabs"
+export type { MobileTabsProps, Tab } from "./components/layout/mobile-tabs"
+
 // UI Primitives
 export { Button } from "./components/primitives/button"
 export type { ButtonProps } from "./components/primitives/button"

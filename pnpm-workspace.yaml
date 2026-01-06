@@ -3,3 +3,4 @@ packages:
   - 'client-sdk/react'
   - 'client-ui-kit'
   - 'react-voice-client'
+  - 'react-video-client-avatar'

@@ -96,7 +96,7 @@ export function ConvoTextStream({
   }
 
   // Effect for auto-opening chat when first streaming message arrives
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     // Check if this is the first message and chat should be opened
     const hasNewMessage = messageList.length > 0
@@ -104,14 +104,14 @@ export function ConvoTextStream({
 
     // Auto-open on first message (both desktop and mobile)
     if ((hasNewMessage || hasInProgressMessage) && !hasSeenFirstMessageRef.current) {
-      if (!isOpen) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
+      // Schedule state updates to avoid synchronous setState in effect
+      Promise.resolve().then(() => {
         setIsOpen(true)
-      }
-      setHasNewMessages(true)
+        setHasNewMessages(true)
+      })
       hasSeenFirstMessageRef.current = true
     }
-  }, [messageList, currentInProgressMessage, isMobile, isOpen, shouldShowStreamingMessage])
+  }, [messageList, currentInProgressMessage, isMobile, shouldShowStreamingMessage])
 
   useEffect(() => {
     // Auto-scroll in these cases:

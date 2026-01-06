@@ -144,6 +144,18 @@ def build_avatar_config(avatar_enabled, avatar_vendor, constants, channel, agent
                 "activity_idle_timeout": int(query_params.get('heygen_idle_timeout', constants["HEYGEN_ACTIVITY_IDLE_TIMEOUT"]))
             }
         }
+    elif avatar_vendor == "anam":
+        return {
+            "vendor": "anam",
+            "enable": True,
+            "params": {
+                "agora_token": agent_video_token,
+                "agora_uid": constants["AGENT_VIDEO_UID"],
+                "anam_api_key": query_params.get('anam_api_key', constants.get("ANAM_API_KEY", "")),
+                "anam_base_url": query_params.get('anam_base_url', constants.get("ANAM_BASE_URL", "https://api.anam.ai/v1")),
+                "anam_avatar_id": query_params.get('anam_avatar_id', constants.get("ANAM_AVATAR_ID", ""))
+            }
+        }
     else:
         # Placeholder for future avatar vendors
         return None
