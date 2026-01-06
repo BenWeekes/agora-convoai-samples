@@ -7,8 +7,9 @@ React component library for building voice AI user interfaces with Agora.
 ## Table of Contents
 
 - [Features](#features)
-- [Installation](#installation)
 - [Architecture](#architecture)
+- [Installation](#installation)
+- [Running Tests](#running-tests)
 - [Voice Components](#voice-components)
   - [MicButton](#micbutton)
   - [AgentVisualizer](#agentvisualizer)

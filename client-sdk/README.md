@@ -10,6 +10,7 @@ applications with Agora RTC/RTM.
 - [Features](#features)
 - [Architecture](#architecture)
 - [Installation](#installation)
+- [Running Tests](#running-tests)
 - [Quick Start](#quick-start)
   - [Vanilla TypeScript](#vanilla-typescript)
   - [React](#react)
