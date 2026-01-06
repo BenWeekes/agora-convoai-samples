@@ -75,10 +75,8 @@ get RTC credentials, then joins the channel to talk with the agent.
 
 **[React JS Voice AI Client](./react-voice-client/)** React/Next.js
 implementation using Agora AI UIKit components. Features TypeScript, shadcn/ui,
-custom hooks, agent visualizer, and conversation history display.
-
-**[Voice AI Client with Chat](./voice-client-chat/)** Voice client with
-integrated text chat alongside real-time audio conversation.
+custom hooks, agent visualizer, and conversation history display with integrated
+text chat.
 
 **[Voice AI Client with Avatar & Video](./voice-client-avatar/)** Full-featured
 client with AI avatar rendering and local video capture.
