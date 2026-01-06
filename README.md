@@ -1,12 +1,17 @@
 # <img src="./assets/agora-logo.svg" alt="Agora" width="24" height="24" style="vertical-align: middle; margin-right: 8px;" /> Agora Conversational AI
 
-A quick-start guide to understanding how the components connect
+A guide to understanding and implementing Agora voice and video AI agents
 
 ## System Architecture
 
 ![System Architecture Diagram](./svg/system.svg)
 
-## System Components
+Your backend serves the client app, generates tokens and credentials, then calls
+the Agora Agent REST API to start the AI agent. Both client and agent join the
+same channel via SD-RTN where audio, video, and transcription data flow
+bidirectionally in real-time.
+
+## Component Overview
 
 ### Voice AI Client
 
@@ -30,21 +35,6 @@ routes audio, video, and data streams between participants in real-time.
 
 A managed AI agent that joins the channel as a participant. It listens to user
 audio, processes it through STT → LLM → TTS, and streams the response back.
-
-## How It Works
-
-**① User loads the client app** Your backend serves the Voice AI Client to the
-user's device.
-
-**② Client requests to join a session** Your backend generates a token, uid, and
-channel name, then returns these credentials to the client.
-
-**③ Backend starts the AI agent** Your backend calls the Agora Agent REST API
-with the same token, uid, channel, plus any agent configuration (system prompt,
-voice settings, etc.).
-
-**④ Real-time conversation begins** Both the client and AI agent join the same
-channel via SD-RTN. Audio, video, and data flow bidirectionally in real-time.
 
 ## Examples
 
