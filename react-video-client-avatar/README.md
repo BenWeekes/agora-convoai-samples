@@ -1,18 +1,17 @@
-# React Voice AI Client
+# React Video Avatar AI Client
 
-React/Next.js implementation demonstrating the Agora Conversational AI SDK and
-UI Kit integration.
+React/Next.js implementation demonstrating video avatar integration with the
+Agora Conversational AI SDK and UI Kit.
 
 ## Features
 
+- **Video Avatar Display** - Real-time avatar video from Anam BETA
+- **Local Camera Preview** - User's camera with mirror effect
+- **Responsive Layouts** - Adaptive desktop grid and mobile tab layouts
 - **Workspace Architecture** - Uses pnpm workspace packages for SDK and UI Kit
-- **Real-time Transcription** - Live transcription rendering with word-level and
-  text-level modes
-- **UI Components** - Pre-built components for chat, audio visualization, and
-  agent state
-- **MicButton** - Microphone control with visual feedback
-- **RTC Audio** - High-quality stereo audio with echo cancellation, noise
-  suppression, and auto gain control
+- **Voice Interaction** - Full voice AI conversation with transcription
+- **MediaStream Rendering** - Multi-instance video display for responsive
+  layouts
 - **TypeScript** - Full type safety with Agora SDK and UIKit types
 - **React 19 & Next.js 16** - Latest React features and patterns
 
@@ -29,26 +28,28 @@ This sample application uses pnpm workspace packages for the SDK and UI Kit:
 
 **Key Components:**
 
-1. **ConversationalAIAPI** - Main SDK for managing voice AI connections
-2. **RTCHelper** - Handles Agora RTC audio connections
-3. **SubRenderController** - Manages real-time transcription rendering
-4. **UI Components** - Pre-built components for chat, audio visualization,
-   buttons, and agent state
+1. **LocalVideoPreview** - Displays local camera with mirror effect
+2. **AvatarVideoDisplay** - Shows remote avatar video stream
+3. **VideoGrid** - Desktop 2x2 grid layout (40/60 split)
+4. **MobileTabs** - Mobile tab switcher for Video and Chat views
+5. **ConversationalAIAPI** - Main SDK for managing voice AI connections
+6. **RTCHelper** - Handles Agora RTC audio and video connections
 
 ## Prerequisites
 
 - Node.js 18+
 - Python backend running on port 8082 (see `../simple-backend/`)
 - Agora account with App ID
+- Anam BETA credentials (for avatar support)
+- Camera and microphone permissions
 
 ## Port Allocation
 
 The agora-convoai-samples repository uses the following port sequence:
 
 - **8082** - Python Backend (simple-backend)
-- **8083** - React Voice Client (this project)
-- Port 3000 is intentionally avoided as it's commonly used by other development
-  servers
+- **8083** - React Voice Client (react-voice-client)
+- **8084** - React Video Avatar Client (this project)
 
 ## Quick Start
 
@@ -61,22 +62,34 @@ pnpm install
 **Run development server:**
 
 ```bash
-pnpm dev
+pnpm dev:video
 ```
 
 **Open browser:**
 
 ```
-http://localhost:8083
+http://localhost:8084
 ```
 
 ## Backend Setup
 
-This client requires a running backend. Start the backend first:
+This client requires a running backend with Anam BETA configuration. Start the
+backend first:
 
 ```bash
 cd ../simple-backend
 PORT=8082 python3 local_server.py
+```
+
+Ensure your backend `.env` file includes Anam BETA credentials:
+
+```bash
+ANAM_API_KEY=your_api_key
+ANAM_AVATAR_ID=your_avatar_id
+ANAM_BASE_URL=https://api.anam.ai/v1
+ANAM_BETA_APP_ID=your_beta_app_id
+ANAM_BETA_CREDENTIALS=your_beta_credentials
+ANAM_BETA_ENDPOINT=https://api-test.agora.io/api/conversational-ai-agent/v2/projects
 ```
 
 ## Usage
@@ -88,147 +101,131 @@ PORT=8082 python3 local_server.py
    PORT=8082 python3 local_server.py
    ```
 
-2. **Start the React Client**:
+2. **Start the React Video Client**:
 
    ```bash
-   npm run dev
+   pnpm dev:video
    ```
 
 3. **Connect to Agent**:
-   - Enter a channel name (e.g., "test-channel")
    - Backend URL should be `http://localhost:8082` (default)
-   - Agent UID should be "0" (default - must match agent's UID)
+   - Enable "Enable Local Video" checkbox to show your camera
+   - Enable "Enable Avatar" checkbox to show avatar video
    - Click "Start Conversation"
 
 4. **Interact with Agent**:
    - Speak into your microphone
-   - See real-time transcriptions in the fixed-position chat window
-     (bottom-right)
+   - See your local video in bottom-left (desktop) or Video tab (mobile)
+   - See avatar video in right column (desktop) or Video/Chat tabs (mobile)
+   - View conversation transcriptions in the Chat section
+   - Toggle camera with the Camera button
    - Toggle mute with the microphone button
    - End the call with the "End Call" button
+
+## Layouts
+
+### Desktop Layout (≥768px)
+
+2x2 Grid layout with 40/60 column split:
+
+```
+┌─────────────┬─────────────┐
+│ Chat        │ Avatar      │
+│ (40%)       │ Video       │
+│             │ (60%)       │
+├─────────────┤             │
+│ Local Video │ + Controls  │
+│ (40%)       │             │
+└─────────────┴─────────────┘
+```
+
+### Mobile Layout (<768px)
+
+Tab-based layout with two tabs:
+
+**Video Tab:**
+
+- Avatar video (50%)
+- Local video (50%)
+
+**Chat Tab:**
+
+- Avatar video (35%)
+- Conversation (65%)
+
+Fixed bottom controls for microphone, camera, and end call.
 
 ## Project Structure
 
 ```
-react-voice-client/
+react-video-client-avatar/
 ├── app/
 │   ├── layout.tsx               # Root layout
-│   ├── page.tsx                 # Main page with dynamic import
-│   └── globals.css              # Tailwind CSS
+│   ├── page.tsx                 # Main page
+│   └── globals.css              # Tailwind CSS with workspace scanning
 ├── components/
-│   └── VoiceClient.tsx          # Main voice client component
+│   └── VideoAvatarClient.tsx    # Main video client component
 ├── hooks/
 │   ├── use-audio-devices.ts
 │   ├── use-is-mobile.ts
 │   └── useAgoraVoiceClient.ts   # Custom hook for Agora integration
 ├── lib/
-│   ├── utils.ts                 # Utility functions (cn, markdown renderer)
-│   └── theme/                   # Theme utilities
-├── icons/
-│   └── PhoneReceiver.tsx        # Custom icons
-├── COMPARISON.md                # Comparison with other implementations
+│   └── utils.ts                 # Utility functions (cn)
+├── next.config.ts               # Transpile workspace packages
 ├── package.json                 # Dependencies
 └── README.md                    # This file
 ```
 
 ## Key Implementation Details
 
-### MessageEngine Integration
+### Video Components
 
-The MessageEngine handles real-time transcription messages from the Agora RTC
-stream:
-
-```typescript
-import {
-  MessageEngine,
-  EMessageEngineMode,
-  IMessageListItem,
-} from "@/lib/message-engine"
-
-const engine = new MessageEngine({
-  rtcEngine: client, // Agora RTC client
-  renderMode: EMessageEngineMode.AUTO, // AUTO, TEXT, or WORD
-  callback: (messages) => {
-    // Filter completed messages vs in-progress
-    const completedMessages = messages.filter((msg) => msg.status !== 0)
-    const inProgress = messages.find((msg) => msg.status === 0)
-
-    setMessageList(completedMessages)
-    setCurrentInProgressMessage(inProgress || null)
-  },
-})
-```
-
-**Rendering Modes:**
-
-- `AUTO` - Automatically determines best mode based on message content
-- `TEXT` - Processes messages as complete text blocks
-- `WORD` - Word-by-word rendering with timing information
-
-### ConvoTextStream Component
-
-Displays transcriptions in a fixed-position chat window (bottom-right):
+Uses MediaStream mode for responsive layouts:
 
 ```typescript
-<ConvoTextStream
-  messageList={messageList}
-  currentInProgressMessage={currentInProgressMessage}
-  agentUID="0"
-  messageSource="rtc"
+import { LocalVideoPreview, AvatarVideoDisplay } from '@agora/ui-kit'
+import { useLocalVideo, useRemoteVideo } from '@agora/conversational-ai-react'
+
+// Local camera
+const { videoTrack } = useLocalVideo()
+<LocalVideoPreview
+  videoTrack={videoTrack}
+  useMediaStream={true}  // Enables multi-instance rendering
+/>
+
+// Avatar video
+const { remoteVideoUsersArray } = useRemoteVideo({ client })
+const avatarVideoTrack = remoteVideoUsersArray[0]?.videoTrack
+<AvatarVideoDisplay
+  videoTrack={avatarVideoTrack}
+  state={avatarVideoTrack ? "connected" : "disconnected"}
+  useMediaStream={true}  // Enables multi-instance rendering
 />
 ```
 
-**Features:**
+**MediaStream Mode** allows the same video track to be displayed in multiple
+locations simultaneously (desktop and mobile layouts).
 
-- Auto-opens on first message
-- Auto-scroll with manual override detection
-- Supports streaming (in-progress) messages with pulse animation
-- Markdown rendering
-- Collapsible/expandable with message count indicator
-- Avatar display (AI vs User)
+### Responsive Layout Strategy
 
-### Agent Visualizer
-
-Shows Lottie animations for different agent states:
+Uses CSS-based conditional visibility instead of conditional rendering:
 
 ```typescript
-<AgentVisualizer
-  state={isAgentSpeaking ? "talking" : "listening"}
-  size="lg"
-/>
+{/* Desktop - Hidden on mobile */}
+<VideoGrid className="hidden md:grid flex-1" ... />
+
+{/* Mobile - Hidden on desktop */}
+<div className="flex md:hidden flex-1 flex-col" ... >
+  <MobileTabs ... />
+</div>
 ```
 
-**Available States:**
+This approach ensures video tracks don't need to be moved in the DOM when
+switching viewports.
 
-- `not-joined` - Not connected
-- `joining` - Connecting to channel
-- `ambient` - Connected but idle
-- `listening` - Listening to user
-- `analyzing` - Processing user input
-- `talking` - Agent is speaking
-- `disconnected` - Disconnected from channel
+### Voice Interaction
 
-### Microphone Button
-
-Controls microphone with live waveform visualization:
-
-```typescript
-<MicButton
-  state={micState}  // "idle" | "listening" | "processing" | "error"
-  onClick={toggleMute}
-/>
-```
-
-**States:**
-
-- `idle` - Not active
-- `listening` - Active and listening (shows waveform)
-- `processing` - Processing audio
-- `error` - Microphone error
-
-### Custom Hook: useAgoraVoiceClient
-
-Encapsulates all Agora RTC logic:
+Full voice AI capabilities using the same `useAgoraVoiceClient` hook:
 
 ```typescript
 const {
@@ -238,88 +235,39 @@ const {
   messageList,
   currentInProgressMessage,
   isAgentSpeaking,
+  localAudioTrack,
   joinChannel,
   leaveChannel,
   toggleMute,
+  sendMessage,
+  rtcHelperRef,
 } = useAgoraVoiceClient()
 ```
 
-**Responsibilities:**
+### Anam BETA Integration
 
-- Agora client lifecycle management
-- MessageEngine initialization and cleanup
-- Microphone track creation with AEC/ANS/AGC
-- Remote user (agent) audio subscription and playback
-- Agent speaking state detection
-- Mute/unmute functionality
+The backend automatically detects Anam avatar and switches to BETA endpoint:
 
-## Message Types
-
-The MessageEngine processes these message types from RTC stream-message events:
-
-### User Transcription
-
-```typescript
-{
-  object: "user.transcription",
-  text: "Hello, how are you?",
-  final: true,
-  turn_id: 123,
-  stream_id: 1234,
-  user_id: "1234",
-  language: "en-US",
-  start_ms: 0,
-  duration_ms: 1500,
-  words: [
-    { word: "Hello", start_ms: 0, duration_ms: 200, stable: true },
-    { word: "how", start_ms: 200, duration_ms: 150, stable: true },
-    ...
-  ]
-}
-```
-
-### Agent Transcription
-
-```typescript
-{
-  object: "assistant.transcription",
-  text: "I'm doing well, thank you!",
-  quiet: false,
-  turn_seq_id: 1,
-  turn_status: 1,  // 0=IN_PROGRESS, 1=END, 2=INTERRUPTED
-  turn_id: 124,
-  stream_id: 0,
-  user_id: "0",
-  language: "en-US",
-  start_ms: 0,
-  duration_ms: 2000,
-  words: [...]
-}
-```
-
-### Message Interrupt
-
-```typescript
-{
-  object: "message.interrupt",
-  message_id: "msg_123",
-  data_type: "message",
-  turn_id: 124,
-  start_ms: 1500,
-  send_ts: 1234567890
-}
+```python
+# Backend handles:
+- BETA endpoint URL
+- Basic authentication with BETA credentials
+- Specific UID for remote_rtc_uids (avatar mode doesn't support wildcard)
+- Token handling when APP_CERTIFICATE is empty
 ```
 
 ## Building for Production
 
 ```bash
-npm run build
+pnpm build
+cd react-video-client-avatar
 npm start
 ```
 
 The build creates an optimized production bundle with:
 
-- Server-side rendering disabled for browser-only components (Agora SDK)
+- Transpiled workspace packages
+- Server-side rendering disabled for browser-only components
 - TypeScript type checking
 - Optimized static pages
 
@@ -329,19 +277,38 @@ The build creates an optimized production bundle with:
 - **Language**: TypeScript 5
 - **Runtime**: React 19
 - **Styling**: Tailwind CSS v4
-- **UI Components**: Agora AI UIKit (package branch)
+- **UI Components**: Agora AI UIKit (workspace package)
 - **RTC SDK**: agora-rtc-sdk-ng v4.24+
 - **Icons**: lucide-react
-- **Animations**: @lottiefiles/dotlottie-react
+- **State Management**: React hooks
+
+## Troubleshooting
+
+**Video not showing:**
+
+- Check camera permissions in browser
+- Ensure "Enable Local Video" is checked before connecting
+- Check browser console for Agora SDK errors
+
+**Avatar video not appearing:**
+
+- Verify backend has Anam BETA credentials configured
+- Check "Enable Avatar" is checked before connecting
+- Verify backend is using BETA endpoint in logs
+
+**Layout issues:**
+
+- Refresh page if switching between desktop/mobile viewports
+- Check browser width (768px is the breakpoint)
 
 ## Contributing
 
 When adding new features:
 
-1. Use existing agora-ai-uikit components when possible
-2. Keep imports using `@/` alias for consistency
-3. Update TypeScript types appropriately
-4. Test build with `npm run build` before committing
+1. Use existing UI Kit components when possible
+2. Update TypeScript types appropriately
+3. Test both desktop and mobile layouts
+4. Test build with `pnpm build` before committing
 5. Update this README if adding new major features
 
 ## License
