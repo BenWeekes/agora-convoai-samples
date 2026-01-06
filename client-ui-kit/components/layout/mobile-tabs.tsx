@@ -73,9 +73,7 @@ export const MobileTabs = React.forwardRef<HTMLDivElement, MobileTabsProps>(
               {tab.icon && <span className="h-4 w-4">{tab.icon}</span>}
               <span>{tab.label}</span>
             </button>
-            {index < tabs.length - 1 && (
-              <div className="w-px bg-border" />
-            )}
+            {index < tabs.length - 1 && <div className="w-px bg-border" />}
           </React.Fragment>
         ))}
       </div>

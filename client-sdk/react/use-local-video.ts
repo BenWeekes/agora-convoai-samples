@@ -131,7 +131,10 @@ export function useLocalVideo(config?: UseLocalVideoConfig): UseLocalVideoReturn
   const enableVideo = useCallback(async () => {
     try {
       setError(null)
-      console.log("[useLocalVideo] enableVideo called", { hasExistingTrack: !!videoTrack, currentDeviceId })
+      console.log("[useLocalVideo] enableVideo called", {
+        hasExistingTrack: !!videoTrack,
+        currentDeviceId,
+      })
 
       // If track already exists, just enable it
       if (videoTrack) {

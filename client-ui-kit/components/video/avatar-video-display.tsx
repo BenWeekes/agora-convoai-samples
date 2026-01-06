@@ -40,7 +40,15 @@ export interface AvatarVideoDisplayProps extends React.HTMLAttributes<HTMLDivEle
 
 export const AvatarVideoDisplay = React.forwardRef<HTMLDivElement, AvatarVideoDisplayProps>(
   (
-    { className, videoTrack, state = "disconnected", showStatus = false, placeholder, useMediaStream = false, ...props },
+    {
+      className,
+      videoTrack,
+      state = "disconnected",
+      showStatus = false,
+      placeholder,
+      useMediaStream = false,
+      ...props
+    },
     ref
   ) => {
     const videoContainerRef = React.useRef<HTMLDivElement>(null)
@@ -116,7 +124,10 @@ export const AvatarVideoDisplay = React.forwardRef<HTMLDivElement, AvatarVideoDi
         {!useMediaStream && (
           <div
             ref={videoContainerRef}
-            className={cn("absolute inset-2 rounded-lg overflow-hidden", showPlaceholder && "hidden")}
+            className={cn(
+              "absolute inset-2 rounded-lg overflow-hidden",
+              showPlaceholder && "hidden"
+            )}
           />
         )}
 

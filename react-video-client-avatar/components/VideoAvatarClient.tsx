@@ -56,7 +56,8 @@ export function VideoAvatarClient() {
   })
 
   // Get avatar video track (first remote user with video)
-  const avatarVideoTrack = remoteVideoUsersArray.length > 0 ? remoteVideoUsersArray[0].videoTrack : null
+  const avatarVideoTrack =
+    remoteVideoUsersArray.length > 0 ? remoteVideoUsersArray[0].videoTrack : null
 
   // Publish local video track to channel when it becomes available
   useEffect(() => {

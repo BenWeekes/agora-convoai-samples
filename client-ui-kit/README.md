@@ -640,11 +640,11 @@ Display local camera video with mirror effect and optional label.
 ```typescript
 interface LocalVideoPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
   videoTrack?: ICameraVideoTrack | null
-  isMirrored?: boolean       // Default: true
-  showLabel?: boolean         // Default: false
-  label?: string             // Default: "You"
+  isMirrored?: boolean // Default: true
+  showLabel?: boolean // Default: false
+  label?: string // Default: "You"
   placeholder?: React.ReactNode
-  useMediaStream?: boolean    // Default: false
+  useMediaStream?: boolean // Default: false
 }
 ```
 
@@ -675,8 +675,11 @@ const { videoTrack } = useLocalVideo()
 
 **Rendering Modes:**
 
-- `useMediaStream={false}` (default) - Uses Agora's `play()` method. Use for single instance.
-- `useMediaStream={true}` - Uses MediaStream API. Use when displaying the same track in multiple locations (e.g., responsive layouts with desktop and mobile views).
+- `useMediaStream={false}` (default) - Uses Agora's `play()` method. Use for
+  single instance.
+- `useMediaStream={true}` - Uses MediaStream API. Use when displaying the same
+  track in multiple locations (e.g., responsive layouts with desktop and mobile
+  views).
 
 ---
 
@@ -691,10 +694,10 @@ type AvatarVideoState = "connected" | "loading" | "disconnected"
 
 interface AvatarVideoDisplayProps extends React.HTMLAttributes<HTMLDivElement> {
   videoTrack?: IRemoteVideoTrack | null
-  state?: AvatarVideoState   // Default: "disconnected"
-  showStatus?: boolean        // Default: false
+  state?: AvatarVideoState // Default: "disconnected"
+  showStatus?: boolean // Default: false
   placeholder?: React.ReactNode
-  useMediaStream?: boolean    // Default: false
+  useMediaStream?: boolean // Default: false
 }
 ```
 
@@ -736,8 +739,11 @@ const avatarVideoTrack = remoteVideoUsersArray[0]?.videoTrack
 
 **Rendering Modes:**
 
-- `useMediaStream={false}` (default) - Uses Agora's `play()` method. Use for single instance.
-- `useMediaStream={true}` - Uses MediaStream API. Use when displaying the same track in multiple locations (e.g., responsive layouts with desktop and mobile views).
+- `useMediaStream={false}` (default) - Uses Agora's `play()` method. Use for
+  single instance.
+- `useMediaStream={true}` - Uses MediaStream API. Use when displaying the same
+  track in multiple locations (e.g., responsive layouts with desktop and mobile
+  views).
 
 ---
 
