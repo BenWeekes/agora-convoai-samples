@@ -11,7 +11,7 @@ the Agora Agent REST API to start the AI agent. Both client and agent join the
 same channel via SD-RTN where audio, video, and transcription data flow
 bidirectionally in real-time.
 
-## Component Overview
+## Architecture Overview
 
 ### Voice AI Client
 
@@ -36,7 +36,16 @@ routes audio, video, and data streams between participants in real-time.
 A managed AI agent that joins the channel as a participant. It listens to user
 audio, processes it through STT → LLM → TTS, and streams the response back.
 
-## Examples
+## SDK & UI Kit
+
+Core packages for building voice and video AI applications:
+
+- **[client-sdk](./client-sdk/)** - Core SDK with RTC/RTM helpers and React
+  hooks
+- **[client-ui-kit](./client-ui-kit/)** - React UI components for voice, chat,
+  and video
+
+## Sample Applications
 
 Below are a series of examples which progress in complexity and cover both the
 client and server components you will need.
@@ -68,8 +77,9 @@ implementation using Agora AI UIKit components. Features TypeScript, shadcn/ui,
 custom hooks, agent visualizer, and conversation history display with integrated
 text chat.
 
-**[Voice AI Client with Avatar & Video](./voice-client-avatar/)** Full-featured
-client with AI avatar rendering and local video capture.
+**[React JS Voice & Video Client With Avatar](./react-video-client-avatar/)**
+React/Next.js implementation with video avatar support and local camera.
+Features responsive layouts, MediaStream rendering, and Anam BETA integration.
 
 **[App Builder Client with Avatar & Video](./appbuilder-avatar/)** Built with
 Agora App Builder for rapid prototyping with avatar and video capabilities.
