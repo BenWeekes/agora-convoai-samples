@@ -1,4 +1,5 @@
-# React Voice AI Client
+<img src="../assets/agora-logo.svg" alt="Agora" width="24" height="24" style="vertical-align: middle; margin-right: 8px;" />
+React Voice AI Client
 
 React/Next.js implementation demonstrating the Agora Conversational AI SDK and
 UI Kit integration.

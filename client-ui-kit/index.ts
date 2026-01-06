@@ -80,6 +80,10 @@ export { DropdownMenu } from "./components/primitives/dropdown-menu"
 export { Command } from "./components/primitives/command"
 export { Popover } from "./components/primitives/popover"
 
+// Branding
+export { AgoraLogo } from "./components/branding/agora-logo"
+export type { AgoraLogoProps } from "./components/branding/agora-logo"
+
 // Demo
 export { HelloWorld } from "./components/primitives/hello-world"
 export type { HelloWorldProps } from "./components/primitives/hello-world"
