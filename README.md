@@ -1,5 +1,4 @@
-<img src="./assets/agora-logo.svg" alt="Agora" width="24" height="24" style="vertical-align: middle; margin-right: 8px;" />
-Agora Conversational AI
+# <img src="./assets/agora-logo.svg" alt="Agora" width="24" height="24" style="vertical-align: middle; margin-right: 8px;" /> Agora Conversational AI
 
 A quick-start guide to understanding how the components connect
 

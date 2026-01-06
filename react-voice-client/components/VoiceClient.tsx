@@ -9,6 +9,7 @@ import { AgentVisualizer, AgentVisualizerState } from "@agora/ui-kit"
 import { Conversation, ConversationContent } from "@agora/ui-kit"
 import { Message, MessageContent } from "@agora/ui-kit"
 import { Response } from "@agora/ui-kit"
+import { AgoraLogo } from "@agora/ui-kit"
 import { cn } from "@/lib/utils"
 
 const DEFAULT_BACKEND_URL = "http://localhost:8082"
@@ -103,7 +104,10 @@ export function VoiceClient() {
       {/* Header - Responsive */}
       <header className="border-b bg-card/50 backdrop-blur-sm flex-shrink-0">
         <div className="container mx-auto px-4 py-3 md:py-4">
-          <h1 className="text-lg md:text-2xl font-bold">Voice AI Client</h1>
+          <h1 className="text-lg md:text-2xl font-bold flex items-center gap-2">
+            <AgoraLogo size={24} />
+            Voice AI Client
+          </h1>
           <p className="text-xs md:text-sm text-muted-foreground hidden md:block">
             React with Agora AI UIKit
           </p>
