@@ -34,9 +34,13 @@ routes audio, video, and data streams between participants in real-time.
 A managed AI agent that joins the channel as a participant. It listens to user
 audio, processes it through STT → LLM → TTS, and streams the response back.
 
-## AI Agent REST API
-RESTful API to manage AI Agents 
-[API Docs](https://docs.agora.io/en/conversational-ai/rest-api/agent/join)
+## AI Agent RESTful API
+
+RESTful APIs to manage AI Agents 
+
+- **[start agent](https://docs.agora.io/en/conversational-ai/rest-api/agent/join)** - API to start an AI Agent
+- **[stop agent](https://docs.agora.io/en/conversational-ai/rest-api/agent/join)** -  API to stop an AI Agent   
+  
 
 ## Client SDK & UI Kit
 
