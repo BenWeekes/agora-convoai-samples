@@ -37,13 +37,16 @@ audio, processes it through STT → LLM → TTS, and streams the response back.
 
 ## AI Agent RESTful API
 
-RESTful APIs to manage AI Agents 
+RESTful APIs to manage AI Agents
 
-- **[Enable Conversational AI](https://docs.agora.io/en/conversational-ai/get-started/manage-agora-account)** - Create an AppID and enable Agora Conversational AI
-- **[RESTful authentication](https://docs.agora.io/en/conversational-ai/rest-api/restful-authentication)** - Create a RESTful API Authentication Token
-- **[start agent](https://docs.agora.io/en/conversational-ai/rest-api/agent/join)** - API to start an AI Agent
-- **[stop agent](https://docs.agora.io/en/conversational-ai/rest-api/agent/leave)** -  API to stop an AI Agent   
-  
+- **[Enable Conversational AI](https://docs.agora.io/en/conversational-ai/get-started/manage-agora-account)** -
+  Create an AppID and enable Agora Conversational AI
+- **[RESTful authentication](https://docs.agora.io/en/conversational-ai/rest-api/restful-authentication)** -
+  Create a RESTful API Authentication Token
+- **[start agent](https://docs.agora.io/en/conversational-ai/rest-api/agent/join)** -
+  API to start an AI Agent
+- **[stop agent](https://docs.agora.io/en/conversational-ai/rest-api/agent/leave)** -
+  API to stop an AI Agent
 
 ## Client SDK & UI Kit
 
@@ -54,19 +57,17 @@ Core packages for building voice and video AI applications:
 - **[client-ui-kit](./client-ui-kit/)** - React UI components for voice, chat,
   and video
 
+## Vibe Coders
+
+**Share this link with your AI and simply ask it for the client or backend you
+desire.** → [View Quickstart Repository](./convo-ai-quickstart/)
+
 ## Sample Applications
 
 Below are a series of examples which progress in complexity and cover both the
 client and server components you will need.
 
----
-
-### Vibe Coders
-
-**Share this link with your AI and simply ask it for the client or backend you
-desire.** → [View Quickstart Repository](./convo-ai-quickstart/)
-
----
+![Avatar Client Screenshot](./assets/client-avatar-screenshot.png)
 
 **[Simple Voice AI Client](./simple-voice-client/)** Simple HTML/Javascript
 client for connecting to an Agora RTC Channel with 2-way audio. Agora AI voice
@@ -89,8 +90,6 @@ text chat.
 **[React JS Voice & Video Client With Avatar](./react-video-client-avatar/)**
 React/Next.js implementation with video avatar support and local camera.
 Features responsive layouts, MediaStream rendering, and Anam BETA integration.
-
-![Avatar Client Screenshot](./assets/client-avatar-screenshot.png)
 
 **[App Builder Client with Avatar & Video](./appbuilder-avatar/)** Built with
 Agora App Builder for rapid prototyping with avatar and video capabilities.
