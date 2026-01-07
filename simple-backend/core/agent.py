@@ -145,9 +145,9 @@ def build_avatar_config(avatar_enabled, avatar_vendor, constants, channel, agent
             }
         }
     elif avatar_vendor == "anam":
-        # For Anam BETA with no APP_CERTIFICATE, agora_token is the APP_ID
+        # For Anam BETA with no APP_CERTIFICATE, agora_token is the BETA APP_ID
         # If there's a real token (agent_video_token), use that instead
-        agora_token_value = agent_video_token if agent_video_token else constants["APP_ID"]
+        agora_token_value = agent_video_token if agent_video_token else constants["ANAM_BETA_APP_ID"]
 
         return {
             "vendor": "anam",
@@ -224,11 +224,19 @@ def create_agent_payload(channel, constants, query_params=None, agent_video_toke
         "max_history": max_history,
         "params": {
             "model": llm_model
-        }
+        },
+        "style": "openai"
     }
 
-    # Get avatar settings early to determine remote_rtc_uids
+    # Get avatar settings early to determine remote_rtc_uids and token
     avatar_enabled = query_params.get('avatar_enabled', constants["AVATAR_ENABLED"]).lower() == "true"
+    avatar_vendor = query_params.get('avatar_vendor', constants["AVATAR_VENDOR"])
+
+    # Determine token value
+    # Anam BETA uses empty string for token (per working curl from Agora developer)
+    # Regular mode uses APP_ID (since no certificate)
+    is_anam_avatar = avatar_enabled and avatar_vendor == "anam"
+    app_id_for_token = "" if is_anam_avatar else constants["APP_ID"]
 
     # When avatar is enabled, can't use wildcard "*" for remote_rtc_uids
     # Must specify exact user UID
@@ -237,14 +245,15 @@ def create_agent_payload(channel, constants, query_params=None, agent_video_toke
     # Build properties
     properties = OrderedDict([
         ("channel", channel),
-        ("token", constants["APP_ID"]),  # ConvoAI uses APP_ID as token
+        ("token", app_id_for_token),  # Empty string for Anam BETA, regular app_id otherwise
         ("agent_rtc_uid", constants["AGENT_UID"]),
         ("agent_rtm_uid", f"{constants['AGENT_UID']}-{channel}"),
         ("remote_rtc_uids", remote_rtc_uids),
         ("advanced_features", {
             "enable_bhvs": True,
             "enable_rtm": True,
-            "enable_aivad": enable_aivad
+            "enable_aivad": enable_aivad,
+            "enable_sal": False
         }),
         ("enable_string_uid", False),
         ("idle_timeout", idle_timeout),
@@ -253,12 +262,32 @@ def create_agent_payload(channel, constants, query_params=None, agent_video_toke
             "silence_duration_ms": vad_silence_duration
         }),
         ("asr", asr_config),
-        ("tts", tts_config)
+        ("tts", tts_config),
+        ("parameters", {
+            "enable_flexible": True,
+            "enable_metrics": True,
+            "enable_error_message": True,
+            "enable_dump": True,
+            "dump_params": {
+                "enable_downstream_3a": True,
+                "enable_upstream_3a": True,
+                "enable_tts": True
+            },
+            "aivad": {
+                "max_history": 2,
+                "force_threshold": 3000
+            },
+            "output_audio_codec": "OPUSFB",
+            "audio_scenario": "default",
+            "transcript": {
+                "enable": True,
+                "protocol_version": "v2",
+                "enable_words": False
+            }
+        })
     ])
 
     # Add avatar configuration if enabled
-    avatar_vendor = query_params.get('avatar_vendor', constants["AVATAR_VENDOR"])
-
     if avatar_enabled:
         # For Anam BETA, we don't need a real token (it uses app_id instead)
         # So pass agent_video_token even if it's empty string
@@ -333,6 +362,35 @@ def send_agent_to_channel(channel, agent_payload, constants):
     print(f"URL: {agent_api_url}")
     print(f"🔧 enable_rtm: {agent_payload['properties']['advanced_features']['enable_rtm']}")
     print(f"🔧 enable_bhvs: {agent_payload['properties']['advanced_features']['enable_bhvs']}")
+
+    # Print equivalent curl command for debugging
+    payload_compact = json.dumps(agent_payload)
+    curl_cmd = f"curl -X POST '{agent_api_url}' \\\n  -H 'Authorization: {auth_header}' \\\n  -H 'Content-Type: application/json' \\\n  -d '{payload_compact}'"
+    print(f"\n📋 Equivalent curl command:\n{curl_cmd}\n")
+
+    # Write curl command to file with timestamp
+    from datetime import datetime
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    curl_file_path = f"/tmp/agora_curl_{timestamp}.sh"
+
+    # Write prettified version to file
+    payload_pretty = json.dumps(agent_payload, indent=2)
+    curl_file_content = f"""#!/bin/bash
+# Agora ConvoAI Request
+# Timestamp: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+# Channel: {channel}
+
+curl -X POST '{agent_api_url}' \\
+  -H 'Authorization: {auth_header}' \\
+  -H 'Content-Type: application/json' \\
+  -d '{payload_pretty}'
+"""
+
+    with open(curl_file_path, 'w') as f:
+        f.write(curl_file_content)
+
+    print(f"📝 Curl command saved to: {curl_file_path}")
+
     print(f"Payload: {payload_json}")
 
     conn.request("POST", path, payload_json, headers)

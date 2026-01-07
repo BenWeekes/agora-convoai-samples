@@ -4,10 +4,11 @@ A guide to understanding and implementing Agora voice and video AI agents
 
 ## System Architecture
 
-![System Architecture Diagram](./svg/system.svg) Your backend serves the client
-app, generates tokens and credentials, then calls the Agora Agent REST API to
-start the AI agent. Both client and agent join the same channel via SD-RTN where
-audio, video, and transcription data flow bidirectionally in real-time.
+![System Architecture Diagram](./assets/system.svg) Your backend serves the
+client app, generates tokens and credentials, then calls the Agora Agent REST
+API to start the AI agent. Both client and agent join the same channel via
+SD-RTN where audio, video, and transcription data flow bidirectionally in
+real-time.
 
 ## Architecture Overview
 
@@ -88,6 +89,8 @@ text chat.
 **[React JS Voice & Video Client With Avatar](./react-video-client-avatar/)**
 React/Next.js implementation with video avatar support and local camera.
 Features responsive layouts, MediaStream rendering, and Anam BETA integration.
+
+![Avatar Client Screenshot](./assets/client-avatar-screenshot.png)
 
 **[App Builder Client with Avatar & Video](./appbuilder-avatar/)** Built with
 Agora App Builder for rapid prototyping with avatar and video capabilities.

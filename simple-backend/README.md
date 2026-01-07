@@ -208,19 +208,54 @@ tests/
 
 ## Profile Support
 
-Override config per use case:
+Override config per use case using profile-specific environment variables:
 
 ```bash
-# Set profile-specific env vars
-TTS_VOICE_ID_sales=voice123
-DEFAULT_PROMPT_sales=You are a sales assistant...
+# Set profile-specific env vars (PREFIX_VAR_NAME format)
+AVATAR_TTS_VENDOR=elevenlabs
+AVATAR_TTS_KEY=sk_your_elevenlabs_key
+AVATAR_TTS_VOICE_ID=cgSgspJ2msm6clMCkdW9
+AVATAR_DEFAULT_PROMPT=You are a helpful avatar assistant...
+AVATAR_APP_ID=your_beta_app_id
+AVATAR_AGENT_AUTH_HEADER=Basic your_beta_credentials
 
-# Use profile
-curl "http://localhost:8081/start-agent?channel=test&profile=sales"
+# Use profile parameter
+curl "http://localhost:8081/start-agent?channel=test&profile=avatar"
 ```
 
 Variables checked in order:
 
-1. `VAR_NAME_profile` (if profile specified)
-2. `VAR_NAME` (base variable)
+1. `PROFILE_VAR_NAME` (e.g., `AVATAR_TTS_VENDOR` for profile=avatar)
+2. `VAR_NAME` (base variable, e.g., `TTS_VENDOR`)
 3. Default value (hardcoded)
+
+**Common use cases:**
+
+- **Avatar clients**: Separate APP_ID, TTS vendor, voice settings
+- **A/B testing**: Different prompts, voices, or models per profile
+- **Multi-tenant**: Isolate credentials per customer
+
+**Important:** Profile names are automatically uppercased. `profile=avatar`
+looks for `AVATAR_*` variables.
+
+## Curl Request Dumps
+
+The backend automatically saves every agent request as an executable curl script
+to `/tmp/`:
+
+```bash
+# Find latest curl dump
+ls -t /tmp/agora_curl_*.sh | head -1
+
+# Execute the curl directly
+bash /tmp/agora_curl_20260107_151440.sh
+```
+
+Each file includes:
+
+- Timestamp and channel name in header
+- Complete curl command with headers
+- Full JSON payload (prettified)
+
+**Note:** `.env` changes require server restart. Flask auto-reload only watches
+Python files.

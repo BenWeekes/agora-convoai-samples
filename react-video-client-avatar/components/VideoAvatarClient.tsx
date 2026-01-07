@@ -64,7 +64,7 @@ export function VideoAvatarClient() {
   useEffect(() => {
     const publishVideo = async () => {
       const client = rtcHelperRef.current?.client
-      if (!client || !localVideoTrack || !isConnected) return
+      if (!client || !localVideoTrack || !isConnected || !isLocalVideoActive) return
 
       try {
         await client.publish(localVideoTrack)
@@ -76,22 +76,28 @@ export function VideoAvatarClient() {
 
     publishVideo()
 
-    // Unpublish on cleanup
+    // Unpublish on cleanup (if still connected)
     return () => {
       const client = rtcHelperRef.current?.client
-      if (client && localVideoTrack) {
+      if (client && localVideoTrack && isConnected) {
         client.unpublish(localVideoTrack).catch((err) => {
-          console.error("[VideoAvatarClient] Failed to unpublish video:", err)
+          // Ignore error if already disconnected
+          if (!err.message?.includes("haven't joined")) {
+            console.error("[VideoAvatarClient] Failed to unpublish video:", err)
+          }
         })
       }
     }
-  }, [localVideoTrack, isConnected])
+  }, [localVideoTrack, isConnected, isLocalVideoActive])
 
   const handleStart = async () => {
     setIsLoading(true)
     try {
       // Build query params for backend
       const params = new URLSearchParams()
+
+      // Use avatar profile for separate avatar config
+      params.append("profile", "avatar")
 
       if (enableAvatar) {
         params.append("avatar_enabled", "true")

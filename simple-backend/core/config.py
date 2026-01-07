@@ -8,20 +8,20 @@ import os
 def get_env_var(var_name, profile=None, default_value=None):
     """
     Gets an environment variable with profile support.
-    If profile is provided, it first checks for VAR_NAME_PROFILE.
+    If profile is provided, it first checks for PROFILE_VAR_NAME.
     If that doesn't exist, it falls back to VAR_NAME.
     If that doesn't exist, it returns the default_value.
 
     Args:
         var_name: The environment variable name
-        profile: Optional profile suffix
+        profile: Optional profile prefix (uppercased automatically)
         default_value: Default value if neither variable exists
 
     Returns:
         The value of the environment variable or default_value
     """
     if profile:
-        profiled_var_name = f"{var_name}_{profile}"
+        profiled_var_name = f"{profile.upper()}_{var_name}"
         profiled_value = os.environ.get(profiled_var_name)
         if profiled_value is not None:
             return profiled_value
