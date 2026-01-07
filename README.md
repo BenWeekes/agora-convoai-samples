@@ -38,8 +38,10 @@ audio, processes it through STT → LLM → TTS, and streams the response back.
 
 RESTful APIs to manage AI Agents 
 
+- **[Enable Conversational AI](https://docs.agora.io/en/conversational-ai/get-started/manage-agora-account)** - Create an AppID and enable Agora Conversational AI
+- **[RESTful authentication](https://docs.agora.io/en/conversational-ai/rest-api/restful-authentication)** - Create a RESTful API Authentication Token
 - **[start agent](https://docs.agora.io/en/conversational-ai/rest-api/agent/join)** - API to start an AI Agent
-- **[stop agent](https://docs.agora.io/en/conversational-ai/rest-api/agent/join)** -  API to stop an AI Agent   
+- **[stop agent](https://docs.agora.io/en/conversational-ai/rest-api/agent/leave)** -  API to stop an AI Agent   
   
 
 ## Client SDK & UI Kit
