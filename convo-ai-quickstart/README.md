@@ -1,4 +1,4 @@
-# Agora Conversational AI - Quick Start Guide
+# AI Coding Assistant Notes
 
 Implementation guide for adding Agora voice and video AI agents to web
 applications.
@@ -396,6 +396,54 @@ payload = {
     }
 }
 ```
+
+## Profile-Based Configuration
+
+For avatar implementations or A/B testing, use profile-specific environment
+variables to override default configuration.
+
+**Usage:**
+
+```bash
+# Request with profile parameter
+curl "http://localhost:8081/start-agent?channel=test&profile=avatar"
+```
+
+**Backend Configuration Pattern:**
+
+Environment variables use `PROFILE_VAR_NAME` format. For example,
+`profile=avatar` looks for `AVATAR_*` prefixed variables:
+
+```bash
+# .env file
+AVATAR_APP_ID=your_beta_app_id
+AVATAR_TTS_VENDOR=elevenlabs
+AVATAR_TTS_KEY=sk_your_key
+AVATAR_TTS_VOICE_ID=cgSgspJ2msm6clMCkdW9
+AVATAR_AVATAR_ENABLED=true
+AVATAR_AVATAR_VENDOR=anam
+```
+
+**Variable Precedence:**
+
+1. `AVATAR_TTS_VENDOR` (profile-specific)
+2. `TTS_VENDOR` (base variable)
+3. Default value (hardcoded)
+
+**Common Use Cases:**
+
+- **Avatar clients:** Separate APP_ID for Anam BETA endpoint
+- **A/B testing:** Different prompts, voices, or LLM models
+- **Multi-tenant:** Isolate credentials per customer
+
+**Full Documentation:**
+
+- Profile configuration:
+  [simple-backend/README.md](../simple-backend/README.md#profile-support)
+- Environment variables:
+  [simple-backend/.env.example](../simple-backend/.env.example)
+- Debugging tools:
+  [simple-backend/README.md](../simple-backend/README.md#curl-request-dumps)
 
 ## Common Issues
 
