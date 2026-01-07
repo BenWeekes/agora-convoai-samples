@@ -240,8 +240,16 @@ looks for `AVATAR_*` variables.
 
 ## Curl Request Dumps
 
-The backend automatically saves every agent request as an executable curl script
-to `/tmp/`:
+Optional debugging feature that saves agent requests as executable curl scripts
+to `/tmp/`. **Disabled by default** to avoid exposing API keys in logs.
+
+**Enable in .env:**
+
+```bash
+ENABLE_CURL_DUMP=true
+```
+
+**Usage:**
 
 ```bash
 # Find latest curl dump
@@ -251,11 +259,8 @@ ls -t /tmp/agora_curl_*.sh | head -1
 bash /tmp/agora_curl_20260107_151440.sh
 ```
 
-Each file includes:
-
-- Timestamp and channel name in header
-- Complete curl command with headers
-- Full JSON payload (prettified)
+Each file includes timestamp, channel name, complete curl command with headers,
+and prettified JSON payload.
 
 **Note:** `.env` changes require server restart. Flask auto-reload only watches
 Python files.

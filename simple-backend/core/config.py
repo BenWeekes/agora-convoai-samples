@@ -108,6 +108,9 @@ def initialize_constants(profile=None):
         "IDLE_TIMEOUT": get_env_var('IDLE_TIMEOUT', profile, "120"),
         "MAX_HISTORY": get_env_var('MAX_HISTORY', profile, "32"),
 
+        # Debug settings
+        "ENABLE_CURL_DUMP": get_env_var('ENABLE_CURL_DUMP', profile, "false"),
+
         # Avatar settings (off by default)
         "AVATAR_ENABLED": get_env_var('AVATAR_ENABLED', profile, "false"),
         "AVATAR_VENDOR": get_env_var('AVATAR_VENDOR', profile, "heygen"),

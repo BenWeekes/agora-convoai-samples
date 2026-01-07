@@ -430,12 +430,6 @@ AVATAR_AVATAR_VENDOR=anam
 2. `TTS_VENDOR` (base variable)
 3. Default value (hardcoded)
 
-**Common Use Cases:**
-
-- **Avatar clients:** Separate APP_ID for Anam BETA endpoint
-- **A/B testing:** Different prompts, voices, or LLM models
-- **Multi-tenant:** Isolate credentials per customer
-
 **Full Documentation:**
 
 - Profile configuration:

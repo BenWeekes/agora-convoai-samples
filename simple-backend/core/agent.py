@@ -363,19 +363,23 @@ def send_agent_to_channel(channel, agent_payload, constants):
     print(f"🔧 enable_rtm: {agent_payload['properties']['advanced_features']['enable_rtm']}")
     print(f"🔧 enable_bhvs: {agent_payload['properties']['advanced_features']['enable_bhvs']}")
 
-    # Print equivalent curl command for debugging
-    payload_compact = json.dumps(agent_payload)
-    curl_cmd = f"curl -X POST '{agent_api_url}' \\\n  -H 'Authorization: {auth_header}' \\\n  -H 'Content-Type: application/json' \\\n  -d '{payload_compact}'"
-    print(f"\n📋 Equivalent curl command:\n{curl_cmd}\n")
+    # Optional curl dump (disabled by default to avoid exposing API keys)
+    enable_curl_dump = constants.get("ENABLE_CURL_DUMP", "false").lower() == "true"
 
-    # Write curl command to file with timestamp
-    from datetime import datetime
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    curl_file_path = f"/tmp/agora_curl_{timestamp}.sh"
+    if enable_curl_dump:
+        # Print equivalent curl command for debugging
+        payload_compact = json.dumps(agent_payload)
+        curl_cmd = f"curl -X POST '{agent_api_url}' \\\n  -H 'Authorization: {auth_header}' \\\n  -H 'Content-Type: application/json' \\\n  -d '{payload_compact}'"
+        print(f"\n📋 Equivalent curl command:\n{curl_cmd}\n")
 
-    # Write prettified version to file
-    payload_pretty = json.dumps(agent_payload, indent=2)
-    curl_file_content = f"""#!/bin/bash
+        # Write curl command to file with timestamp
+        from datetime import datetime
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        curl_file_path = f"/tmp/agora_curl_{timestamp}.sh"
+
+        # Write prettified version to file
+        payload_pretty = json.dumps(agent_payload, indent=2)
+        curl_file_content = f"""#!/bin/bash
 # Agora ConvoAI Request
 # Timestamp: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
 # Channel: {channel}
@@ -386,10 +390,10 @@ curl -X POST '{agent_api_url}' \\
   -d '{payload_pretty}'
 """
 
-    with open(curl_file_path, 'w') as f:
-        f.write(curl_file_content)
+        with open(curl_file_path, 'w') as f:
+            f.write(curl_file_content)
 
-    print(f"📝 Curl command saved to: {curl_file_path}")
+        print(f"📝 Curl command saved to: {curl_file_path}")
 
     print(f"Payload: {payload_json}")
 
