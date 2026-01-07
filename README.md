@@ -60,7 +60,7 @@ Core packages for building voice and video AI applications:
 ## Vibe Coders
 
 **Share this link with your AI and simply ask it for the client or backend you
-desire.** → [View Quickstart Repository](./convo-ai-quickstart/)
+desire.** → [AI Coding Assistant Notes](./convo-ai-quickstart/)
 
 ## Sample Applications
 
