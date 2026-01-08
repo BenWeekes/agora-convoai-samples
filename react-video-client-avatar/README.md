@@ -5,7 +5,7 @@ Agora Conversational AI SDK and UI Kit.
 
 ## Features
 
-- **Video Avatar Display** - Real-time avatar video from Anam BETA
+- **Video Avatar Display** - Real-time avatar video streaming
 - **Local Camera Preview** - User's camera with mirror effect
 - **Responsive Layouts** - Adaptive desktop grid and mobile tab layouts
 - **Workspace Architecture** - Uses pnpm workspace packages for SDK and UI Kit
@@ -39,17 +39,10 @@ This sample application uses pnpm workspace packages for the SDK and UI Kit:
 
 - Node.js 18+
 - Python backend running on port 8082 (see `../simple-backend/`)
-- Agora account with App ID
-- Anam BETA credentials (for avatar support)
-- Camera and microphone permissions
 
-## Port Allocation
+## Configuration
 
-The agora-convoai-samples repository uses the following port sequence:
-
-- **8082** - Python Backend (simple-backend)
-- **8083** - React Voice Client (react-voice-client)
-- **8084** - React Video Avatar Client (this project)
+This client runs on port **8084** and connects to the backend on port **8082**.
 
 ## Quick Start
 
@@ -71,28 +64,14 @@ pnpm dev:video
 http://localhost:8084
 ```
 
-## Backend Setup
-
-This client requires a running backend with Anam BETA configuration. Start the
-backend first:
-
-```bash
-cd ../simple-backend
-PORT=8082 python3 local_server.py
-```
-
-Ensure your backend `.env` file includes Anam BETA credentials:
-
-```bash
-ANAM_API_KEY=your_api_key
-ANAM_AVATAR_ID=your_avatar_id
-ANAM_BASE_URL=https://api.anam.ai/v1
-ANAM_BETA_APP_ID=your_beta_app_id
-ANAM_BETA_CREDENTIALS=your_beta_credentials
-ANAM_BETA_ENDPOINT=https://api-test.agora.io/api/conversational-ai-agent/v2/projects
-```
-
 ## Usage
+
+**Backend Configuration:**
+
+The backend must be configured with avatar provider credentials and settings.
+See `../simple-backend/README.md` for avatar agent configuration details.
+
+**Start Services:**
 
 1. **Start the Backend** (if not already running):
 
@@ -109,18 +88,19 @@ ANAM_BETA_ENDPOINT=https://api-test.agora.io/api/conversational-ai-agent/v2/proj
 
 3. **Connect to Agent**:
    - Backend URL should be `http://localhost:8082` (default)
-   - Enable "Enable Local Video" checkbox to show your camera
-   - Enable "Enable Avatar" checkbox to show avatar video
+   - Enable "Enable Local Video" to show your camera
+   - Enable "Enable Avatar" to show avatar video
    - Click "Start Conversation"
+   - Use `profile` parameter if backend is configured with profile-specific
+     avatar settings
 
 4. **Interact with Agent**:
    - Speak into your microphone
-   - See your local video in bottom-left (desktop) or Video tab (mobile)
+   - See local video in bottom-left (desktop) or Video tab (mobile)
    - See avatar video in right column (desktop) or Video/Chat tabs (mobile)
-   - View conversation transcriptions in the Chat section
-   - Toggle camera with the Camera button
-   - Toggle mute with the microphone button
-   - End the call with the "End Call" button
+   - View transcriptions in Chat section
+   - Toggle camera and mute with control buttons
+   - End call with "End Call" button
 
 ## Layouts
 
@@ -244,18 +224,6 @@ const {
 } = useAgoraVoiceClient()
 ```
 
-### Anam BETA Integration
-
-The backend automatically detects Anam avatar and switches to BETA endpoint:
-
-```python
-# Backend handles:
-- BETA endpoint URL
-- Basic authentication with BETA credentials
-- Specific UID for remote_rtc_uids (avatar mode doesn't support wildcard)
-- Token handling when APP_CERTIFICATE is empty
-```
-
 ## Building for Production
 
 ```bash
@@ -284,7 +252,7 @@ The build creates an optimized production bundle with:
 
 ## Troubleshooting
 
-**Video not showing:**
+**Local video not showing:**
 
 - Check camera permissions in browser
 - Ensure "Enable Local Video" is checked before connecting
@@ -292,9 +260,10 @@ The build creates an optimized production bundle with:
 
 **Avatar video not appearing:**
 
-- Verify backend has Anam BETA credentials configured
+- Verify backend has avatar provider credentials configured (see
+  `../simple-backend/README.md`)
 - Check "Enable Avatar" is checked before connecting
-- Verify backend is using BETA endpoint in logs
+- Verify backend logs for agent creation success
 
 **Layout issues:**
 
