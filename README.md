@@ -57,7 +57,7 @@ To run the server sample that your client will connect to, you will need:
 and generating RTC credentials. Supports local development, cloud instances, and
 AWS Lambda deployment.
 
-### Useful Links
+### Helpful Links
 
 - **[Enable Conversational AI](https://docs.agora.io/en/conversational-ai/get-started/manage-agora-account)** -
   Create an Agora APP_ID and APP_CERTIFICATE
