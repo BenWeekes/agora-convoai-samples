@@ -4,11 +4,16 @@ A guide to understanding and implementing Agora voice and video AI agents
 
 ## System Architecture
 
-![System Architecture Diagram](./assets/system.svg) Your backend serves the
-client app, generates tokens and credentials, then calls the Agora Agent REST
-API to start the AI agent. Both client and agent join the same channel via
-SD-RTN where audio, video, and transcription data flow bidirectionally in
-real-time.
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./assets/system-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="./assets/system.svg">
+  <img src="./assets/system.svg" alt="System Architecture Diagram">
+</picture>
+
+Your backend serves the client app, generates tokens and credentials, then calls
+the Agora Agent REST API to start the AI agent. Both client and agent join the
+same channel via SD-RTN where audio, video, and transcription data flow
+bidirectionally in real-time.
 
 ## Architecture Overview
 
