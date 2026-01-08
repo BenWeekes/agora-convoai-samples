@@ -36,6 +36,10 @@ routes audio, video, and data streams between participants in real-time.
 A managed AI agent that joins the channel as a participant. It listens to user
 audio, processes it through STT → LLM → TTS, and streams the response back.
 
+## AI Coding Assistant Guide
+
+**Comprehensive implementation guide for AI agents** → [AGENT.md](./AGENT.md)
+
 ## Server Side
 
 ### Useful Links
@@ -85,7 +89,3 @@ transcription display, voice controls, and integrated text chat.
 **[React Video Client with Avatar](./react-video-client-avatar/)** React/Next.js
 client with video avatar and local camera support. Includes responsive layouts
 and multi-stream video rendering.
-
-## Developer Guide
-
-**Comprehensive implementation guide for AI agents** → [AGENT.md](./AGENT.md)
