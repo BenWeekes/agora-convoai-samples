@@ -64,7 +64,7 @@ To run the server sample that your client will connect to, you will need:
 
 ### Sample
 
-**[Simple Backend](./simple-backend/)** Python backend for managing AI agents
+**[Simple Backend](./simple-backend/)** Python backend for creating AI agents
 and generating RTC credentials. Supports local development, cloud instances, and
 AWS Lambda deployment.
 
