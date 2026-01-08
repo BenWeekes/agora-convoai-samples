@@ -113,8 +113,8 @@ See `../simple-backend/README.md` for avatar agent configuration details.
    - Enable "Enable Local Video" to show your camera
    - Enable "Enable Avatar" to show avatar video
    - Click "Start Conversation"
-   - Use `profile` parameter if backend is configured with profile-specific
-     avatar settings
+   - Client automatically calls `/start-agent?profile=avatar` to use
+     avatar-specific backend configuration
 
 4. **Interact with Agent**:
    - Speak into your microphone

@@ -110,6 +110,7 @@ The backend must be configured with AI agent credentials and settings. See
 3. **Connect to Agent**:
    - Backend URL should be `http://localhost:8082` (default)
    - Click "Start Conversation"
+   - Client calls `/start-agent` endpoint on the backend
 
 4. **Interact with Agent**:
    - Speak into your microphone
