@@ -64,10 +64,6 @@ AWS Lambda deployment.
   Create an Agora APP_ID and APP_CERTIFICATE
 - **[RESTful authentication](https://docs.agora.io/en/conversational-ai/rest-api/restful-authentication)** -
   Create an AGENT_AUTH_HEADER
-- **[start agent](https://docs.agora.io/en/conversational-ai/rest-api/agent/join)** -
-  API docs to start an AI Agent
-- **[stop agent](https://docs.agora.io/en/conversational-ai/rest-api/agent/leave)** -
-  API docs to stop an AI Agent
 
 ## Client Side
 
