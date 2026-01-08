@@ -3,6 +3,28 @@
 React/Next.js implementation demonstrating video avatar integration with the
 Agora Conversational AI SDK and UI Kit.
 
+## Table of Contents
+
+- [Features](#features)
+- [Architecture](#architecture)
+- [Prerequisites](#prerequisites)
+- [Configuration](#configuration)
+- [Quick Start](#quick-start)
+- [Usage](#usage)
+- [Layouts](#layouts)
+  - [Desktop Layout](#desktop-layout-768px)
+  - [Mobile Layout](#mobile-layout-768px)
+- [Project Structure](#project-structure)
+- [Key Implementation Details](#key-implementation-details)
+  - [Video Components](#video-components)
+  - [Responsive Layout Strategy](#responsive-layout-strategy)
+  - [Voice Interaction](#voice-interaction)
+- [Building for Production](#building-for-production)
+- [Tech Stack](#tech-stack)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Features
 
 - **Video Avatar Display** - Real-time avatar video streaming
