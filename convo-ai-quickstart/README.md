@@ -21,8 +21,8 @@ Need video/avatar?
 
 **Quick links:**
 
-- **SDK API Reference:** [client-sdk/README.md](../client-sdk/README.md)
-- **UI Kit Components:** [client-ui-kit/README.md](../client-ui-kit/README.md)
+- **SDK API Reference:** [agent-toolkit/README.md](../agent-toolkit/README.md)
+- **UI Kit Components:** [agent-ui-kit/README.md](../agent-ui-kit/README.md)
 - **Backend Setup:** [simple-backend/README.md](../simple-backend/README.md)
 
 ## Architecture Overview
@@ -203,7 +203,8 @@ await rtmClient.login({ token, uid })
 
 ## SDK Packages Reference
 
-**Full API Documentation:** [client-sdk/README.md](../client-sdk/README.md)
+**Full API Documentation:**
+[agent-toolkit/README.md](../agent-toolkit/README.md)
 
 ### Core SDK (@agora/conversational-ai)
 
@@ -262,7 +263,7 @@ const { remoteVideoUsersArray } = useRemoteVideo({ client })
 ## UI Kit Components Reference
 
 **Full Component Documentation:**
-[client-ui-kit/README.md](../client-ui-kit/README.md)
+[agent-ui-kit/README.md](../agent-ui-kit/README.md)
 
 ### Voice Components
 
@@ -304,8 +305,8 @@ const { remoteVideoUsersArray } = useRemoteVideo({ client })
 | **react-video-client-avatar** | Video + avatar with responsive layouts | [react-video-client-avatar/](../react-video-client-avatar/) |
 | **simple-voice-client**       | Standalone HTML client for testing     | [simple-voice-client/](../simple-voice-client/)             |
 | **simple-backend**            | Python Flask backend + Lambda          | [simple-backend/](../simple-backend/)                       |
-| **client-sdk**                | Core SDK packages                      | [client-sdk/](../client-sdk/)                               |
-| **client-ui-kit**             | React component library                | [client-ui-kit/](../client-ui-kit/)                         |
+| **agent-toolkit**             | Core SDK packages                      | [agent-toolkit/](../agent-toolkit/)                         |
+| **agent-ui-kit**              | React component library                | [agent-ui-kit/](../agent-ui-kit/)                           |
 
 ## Backend Quick Reference
 

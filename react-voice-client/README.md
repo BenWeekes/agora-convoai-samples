@@ -23,9 +23,9 @@ This sample application uses pnpm workspace packages for the SDK and UI Kit:
 **Workspace Dependencies:**
 
 - `@agora/conversational-ai` - Core SDK from
-  `../client-sdk/conversational-ai-api`
-- `@agora/conversational-ai-react` - React hooks from `../client-sdk/react`
-- `@agora/ui-kit` - UI components from `../client-ui-kit`
+  `../agent-toolkit/conversational-ai-api`
+- `@agora/conversational-ai-react` - React hooks from `../agent-toolkit/react`
+- `@agora/agent-ui-kit` - UI components from `../agent-ui-kit`
 
 **Key Components:**
 

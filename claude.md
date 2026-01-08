@@ -29,7 +29,7 @@ proper packages consumed by sample applications.
 
 ```
 agora-convoai-samples/
-├── client-sdk/                    # Reference SDK Implementation
+├── agent-toolkit/                 # Reference SDK Implementation
 │   ├── conversational-ai-api/     # Core SDK
 │   │   ├── helper/
 │   │   │   ├── rtc.ts
@@ -41,7 +41,7 @@ agora-convoai-samples/
 │   └── react/                     # React hooks
 │       └── use-conversational-ai.ts
 │
-├── client-ui-kit/                 # Reference UI Components
+├── agent-ui-kit/                  # Reference UI Components
 │   ├── components/                # All UI components
 │   │   ├── mic-button.tsx
 │   │   ├── agent-visualizer.tsx
@@ -52,11 +52,11 @@ agora-convoai-samples/
 │   └── index.ts
 │
 └── react-voice-client/            # Sample Application
-    ├── conversational-ai-api/     # Copied from ../client-sdk
-    ├── react/                     # Copied from ../client-sdk
+    ├── conversational-ai-api/     # Copied from ../agent-toolkit
+    ├── react/                     # Copied from ../agent-toolkit
     ├── components/
     │   ├── VoiceClient.tsx
-    │   └── agora-ui/              # Copied from ../client-ui-kit
+    │   └── agora-ui/              # Copied from ../agent-ui-kit
     ├── hooks/
     ├── lib/
     └── package.json               # npm dependencies only
@@ -97,9 +97,9 @@ Benefits:
   - Fixed all import paths from `@/` to relative paths in convo-text-stream.tsx
     and mic-selector.tsx
 - **Files changed:**
-  - `/client-ui-kit/components/chat/convo-text-stream.tsx` - Added max-height,
+  - `/agent-ui-kit/components/chat/convo-text-stream.tsx` - Added max-height,
     fixed imports
-  - `/client-ui-kit/components/voice/mic-selector.tsx` - Fixed imports to use
+  - `/agent-ui-kit/components/voice/mic-selector.tsx` - Fixed imports to use
     relative paths
 - **Commits:** a60ac60, 5abfe12, c85edbf
 
@@ -149,7 +149,7 @@ Benefits:
 - **Root cause:** Tailwind CSS v4 wasn't scanning workspace packages for class
   names
 - **Solutions applied:**
-  - Added `@source "../client-ui-kit/**/*.{ts,tsx}"` to
+  - Added `@source "../agent-ui-kit/**/*.{ts,tsx}"` to
     `react-voice-client/app/globals.css:4`
   - Switched SimpleVisualizer to inline styles (backgroundColor) instead of
     Tailwind classes
@@ -158,8 +158,8 @@ Benefits:
   - Centered visualizer content with `justify-center` in mic-button.tsx:74
 - **Files changed:**
   - `/react-voice-client/app/globals.css` - Added @source directive
-  - `/client-ui-kit/components/simple-visualizer.tsx` - Inline styles for bars
-  - `/client-ui-kit/components/mic-button.tsx` - Center content
+  - `/agent-ui-kit/components/simple-visualizer.tsx` - Inline styles for bars
+  - `/agent-ui-kit/components/mic-button.tsx` - Center content
   - `/react-voice-client/components/VoiceClient.tsx` - Fix mute/unmute restart
 
 ### 5. Copy-based Architecture (2025-12-22) - SUPERSEDED
@@ -252,16 +252,16 @@ Benefits:
 
 ### SDK Package
 
-- `/client-sdk/conversational-ai-api/package.json` - SDK package config
-- `/client-sdk/conversational-ai-api/index.ts` - Main SDK exports
-- `/client-sdk/react/package.json` - React hooks package config
-- `/client-sdk/react/index.ts` - React hooks exports
+- `/agent-toolkit/conversational-ai-api/package.json` - SDK package config
+- `/agent-toolkit/conversational-ai-api/index.ts` - Main SDK exports
+- `/agent-toolkit/react/package.json` - React hooks package config
+- `/agent-toolkit/react/index.ts` - React hooks exports
 
 ### UI Kit Package
 
-- `/client-ui-kit/package.json` - UI kit package config
-- `/client-ui-kit/index.ts` - Component exports
-- `/client-ui-kit/lib/utils.ts` - Shared utilities (cn function)
+- `/agent-ui-kit/package.json` - UI kit package config
+- `/agent-ui-kit/index.ts` - Component exports
+- `/agent-ui-kit/lib/utils.ts` - Shared utilities (cn function)
 
 ### Example App
 

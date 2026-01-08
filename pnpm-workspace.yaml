@@ -1,6 +1,6 @@
 packages:
-  - 'client-sdk/conversational-ai-api'
-  - 'client-sdk/react'
-  - 'client-ui-kit'
+  - 'agent-toolkit/conversational-ai-api'
+  - 'agent-toolkit/react'
+  - 'agent-ui-kit'
   - 'react-voice-client'
   - 'react-video-client-avatar'

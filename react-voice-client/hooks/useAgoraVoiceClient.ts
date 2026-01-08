@@ -7,7 +7,7 @@ import { SubRenderController } from "@agora/conversational-ai/utils/sub-render"
 import { ConversationalAIAPI } from "@agora/conversational-ai"
 import type { TranscriptItem, TranscriptHelperMode } from "@agora/conversational-ai/type"
 import { TurnStatus, RTCHelperEvents } from "@agora/conversational-ai/type"
-import { MicButtonState } from "@agora/ui-kit"
+import { MicButtonState } from "@agora/agent-ui-kit"
 
 export type VoiceClientConfig = {
   appId: string

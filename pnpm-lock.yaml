@@ -36,7 +36,7 @@ importers:
         specifier: ^8.51.0
         version: 8.51.0(eslint@9.39.2)(typescript@5.9.3)
 
-  client-sdk/conversational-ai-api:
+  agent-toolkit/conversational-ai-api:
     dependencies:
       agora-rtc-sdk-ng:
         specifier: '>=4.23.4'
@@ -58,7 +58,7 @@ importers:
         specifier: ^1.0.0
         version: 1.6.1(@vitest/ui@1.6.1)(jsdom@23.2.0)
 
-  client-sdk/react:
+  agent-toolkit/react:
     dependencies:
       '@agora/conversational-ai':
         specifier: 1.0.0
@@ -68,9 +68,9 @@ importers:
         version: 4.24.2
       react:
         specifier: '>=18.0.0'
-        version: 19.2.1
+        version: 18.3.1
 
-  client-ui-kit:
+  agent-ui-kit:
     dependencies:
       '@lottiefiles/dotlottie-react':
         specifier: '>=0.17.0'
@@ -124,15 +124,15 @@ importers:
 
   react-video-client-avatar:
     dependencies:
+      '@agora/agent-ui-kit':
+        specifier: workspace:*
+        version: link:../agent-ui-kit
       '@agora/conversational-ai':
         specifier: workspace:*
-        version: link:../client-sdk/conversational-ai-api
+        version: link:../agent-toolkit/conversational-ai-api
       '@agora/conversational-ai-react':
         specifier: workspace:*
-        version: link:../client-sdk/react
-      '@agora/ui-kit':
-        specifier: workspace:*
-        version: link:../client-ui-kit
+        version: link:../agent-toolkit/react
       '@lottiefiles/dotlottie-react':
         specifier: ^0.17.10
         version: 0.17.10(react@19.2.1)
@@ -209,15 +209,15 @@ importers:
 
   react-voice-client:
     dependencies:
+      '@agora/agent-ui-kit':
+        specifier: workspace:*
+        version: link:../agent-ui-kit
       '@agora/conversational-ai':
         specifier: workspace:*
-        version: link:../client-sdk/conversational-ai-api
+        version: link:../agent-toolkit/conversational-ai-api
       '@agora/conversational-ai-react':
         specifier: workspace:*
-        version: link:../client-sdk/react
-      '@agora/ui-kit':
-        specifier: workspace:*
-        version: link:../client-ui-kit
+        version: link:../agent-toolkit/react
       '@lottiefiles/dotlottie-react':
         specifier: ^0.17.10
         version: 0.17.10(react@19.2.1)

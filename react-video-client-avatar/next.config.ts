@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   transpilePackages: [
     "@agora/conversational-ai",
     "@agora/conversational-ai-react",
-    "@agora/ui-kit",
+    "@agora/agent-ui-kit",
   ],
 }
 

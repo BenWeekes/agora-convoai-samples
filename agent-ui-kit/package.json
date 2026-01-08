@@ -1,5 +1,5 @@
 {
-  "name": "@agora/ui-kit",
+  "name": "@agora/agent-ui-kit",
   "version": "1.0.0",
   "description": "React component library for building voice AI user interfaces with Agora",
   "main": "index.ts",

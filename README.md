@@ -17,7 +17,7 @@ bidirectionally in real-time.
 
 Your front-end application (web, mobile, or desktop) that captures user inputs
 and plays out the AI agent's responses. Built with the Agora RTC SDK and
-optionally components from the Agora Conversational AI client-ui-kit used in the
+optionally components from the Agora Conversational AI agent-ui-kit used in the
 samples.
 
 ### Your Backend Services
@@ -53,10 +53,10 @@ RESTful APIs to manage AI Agents
 
 Core packages for building voice and video AI applications:
 
-- **[client-sdk](./client-sdk/)** - Core SDK with RTC/RTM helpers and React
-  hooks
-- **[client-ui-kit](./client-ui-kit/)** - React UI components for voice, chat,
-  and video
+- **[agent-toolkit](./agent-toolkit/)** - Core SDK with RTC/RTM helpers and
+  React hooks
+- **[agent-ui-kit](./agent-ui-kit/)** - React UI components for voice, chat, and
+  video
 
 ## Vibe Coders
 

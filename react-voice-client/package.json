@@ -11,7 +11,7 @@
   "dependencies": {
     "@agora/conversational-ai": "workspace:*",
     "@agora/conversational-ai-react": "workspace:*",
-    "@agora/ui-kit": "workspace:*",
+    "@agora/agent-ui-kit": "workspace:*",
     "@lottiefiles/dotlottie-react": "^0.17.10",
     "@radix-ui/react-dropdown-menu": "^2.1.16",
     "@radix-ui/react-popover": "^1.1.15",
