@@ -1,29 +1,121 @@
-# Agora Conversational AI - Developer Guide
+# Agora Conversational AI - AI Coding Assistant Guide
 
-Implementation guide for integrating voice and video AI agents into
-applications.
+Guide for AI coding assistants to help developers integrate Agora Conversational
+AI voice and video agents.
 
-## Quick Start
+## Purpose
 
-**Choose your implementation path:**
+This guide helps AI coding assistants help developers:
 
-```
-Need video/avatar?
-├─ Yes → react-video-client-avatar sample + SDK packages
-└─ No (voice only)
-   ├─ Using React?
-   │  ├─ Yes → react-voice-client sample + UI Kit
-   │  └─ No → simple-voice-client or bare RTC/RTM
-   └─ Starting from scratch?
-      ├─ Yes → SDK packages (@agora/conversational-ai)
-      └─ No → Add RTC/RTM directly
-```
+1. **Run the sample applications** (backend + React client)
+2. **Understand the reference implementations** to replicate functionality
+3. **Integrate Agora Conversational AI** into their own applications
 
-**Documentation:**
+**Key Principle:** The samples are production-quality reference implementations.
+Use them as templates for implementing similar functionality in any client or
+server technology.
 
-- **SDK API:** [agent-toolkit/README.md](./agent-toolkit/README.md)
-- **UI Kit:** [agent-ui-kit/README.md](./agent-ui-kit/README.md)
-- **Backend:** [simple-backend/README.md](./simple-backend/README.md)
+## Table of Contents
+
+- [Getting Started](#getting-started---first-steps)
+- [Required API Keys](#required-api-keys--credentials)
+- [Quick Start](#quick-start---running-samples)
+- [Using Samples as Reference](#using-the-samples-as-reference)
+- [Architecture Overview](#architecture)
+- [Implementation Approaches](#implementation-approaches)
+- [SDK API Reference](#sdk-api-reference)
+- [UI Kit Components](#ui-kit-components)
+- [Backend Setup](#backend-setup)
+- [Common Issues](#common-issues)
+- [Common Implementation Tasks](#common-implementation-tasks)
+- [Documentation Index](#documentation-index)
+
+## Getting Started - First Steps
+
+**For helping users get started from scratch:**
+
+1. **Recommended Path:** Run backend + React sample first
+   - Provides working reference implementation
+   - Users can modify working code or build their own using same patterns
+
+2. **Read these READMEs in order:**
+   - [README.md](./README.md) - Overview and architecture
+   - [simple-backend/README.md](./simple-backend/README.md) - Backend setup and
+     API keys
+   - [react-voice-client/README.md](./react-voice-client/README.md) OR
+   - [react-video-client-avatar/README.md](./react-video-client-avatar/README.md)
+
+3. **For building custom implementations:**
+   - Study sample code for patterns
+   - [agent-toolkit/README.md](./agent-toolkit/README.md) - If using our SDK
+   - [agent-ui-kit/README.md](./agent-ui-kit/README.md) - If using our UI
+     components
+   - Replicate patterns in user's preferred technology
+
+## Required API Keys & Credentials
+
+Users need these credentials to run the backend:
+
+- **APP_ID** - [Agora Console](https://console.agora.io/)
+- **APP_CERTIFICATE** - [Agora Console](https://console.agora.io/)
+- **AGENT_AUTH_HEADER** - [Agora Console](https://console.agora.io/)
+- **RIME_API_KEY** - [Rime AI](https://www.rime.ai/)
+- **LLM_API_KEY** -
+  [OpenAI](https://platform.openai.com/settings/organization/api-keys)
+
+**Guide users to:**
+
+1. [Enable Conversational AI](https://docs.agora.io/en/conversational-ai/get-started/manage-agora-account)
+   for APP_ID/APP_CERTIFICATE
+2. [RESTful authentication](https://docs.agora.io/en/conversational-ai/rest-api/restful-authentication)
+   for AGENT_AUTH_HEADER
+
+See [simple-backend/README.md](./simple-backend/README.md) for detailed
+configuration.
+
+## Quick Start - Running Samples
+
+**Fastest path to working demo:**
+
+1. Install dependencies: `pnpm install`
+2. Configure backend: See [simple-backend/README.md](./simple-backend/README.md)
+3. Start backend: `cd simple-backend && PORT=8082 python3 local_server.py`
+4. Start client: `pnpm dev` (voice) or `pnpm dev:video` (avatar)
+
+**Choose sample based on user needs:**
+
+- Voice only → [react-voice-client](./react-voice-client/)
+- Video/avatar → [react-video-client-avatar](./react-video-client-avatar/)
+
+## Using the Samples as Reference
+
+**The samples demonstrate production patterns you can replicate:**
+
+**Backend Reference ([simple-backend/](./simple-backend/)):**
+
+- Token generation (v007 with RTC+RTM)
+- Agent REST API calls (start/stop agents)
+- Profile-based configuration
+- Environment variable management
+- Can be replicated in Node.js, Go, Java, PHP, etc.
+
+**Client Reference ([react-voice-client/](./react-voice-client/),
+[react-video-client-avatar/](./react-video-client-avatar/)):**
+
+- RTC/RTM connection management
+- Agent communication patterns
+- Real-time transcription handling
+- UI state management
+- Can be replicated in Vue, Angular, vanilla JS, mobile apps, etc.
+
+**When helping users build their own implementations:**
+
+1. **Read the relevant sample code** to understand the pattern
+2. **Adapt the pattern** to user's technology stack
+3. **Reference specific files** (e.g., "See simple-backend/core/agent.py:45 for
+   agent creation")
+4. **Maintain the same architecture** (backend generates tokens, calls Agent
+   API; client joins channel via RTC/RTM)
 
 ## Architecture
 
@@ -547,49 +639,86 @@ packages:
 }
 ```
 
-## Sample Applications
+## Common Implementation Tasks
 
-| Sample                        | Description                            | Location                                                   |
-| ----------------------------- | -------------------------------------- | ---------------------------------------------------------- |
-| **react-voice-client**        | React/Next.js voice client with UI Kit | [react-voice-client/](./react-voice-client/)               |
-| **react-video-client-avatar** | Video + avatar with responsive layouts | [react-video-client-avatar/](./react-video-client-avatar/) |
-| **simple-voice-client**       | Standalone HTML client for testing     | [simple-voice-client/](./simple-voice-client/)             |
-| **simple-backend**            | Python Flask backend + Lambda          | [simple-backend/](./simple-backend/)                       |
-| **agent-toolkit**             | Core SDK packages                      | [agent-toolkit/](./agent-toolkit/)                         |
-| **agent-ui-kit**              | React component library                | [agent-ui-kit/](./agent-ui-kit/)                           |
+**Task: Help user build Node.js backend**
 
-## Testing
+1. Read [simple-backend/README.md](./simple-backend/README.md)
+2. Reference `simple-backend/core/tokens.py` for token generation pattern
+3. Reference `simple-backend/core/agent.py` for Agent REST API pattern
+4. Adapt Python patterns to Node.js (Express, environment variables, etc.)
 
-**Run all tests:**
+**Task: Help user build Vue.js client**
 
-```bash
-# SDK tests
-cd agent-toolkit/conversational-ai-api && pnpm test
+1. Read [react-voice-client/README.md](./react-voice-client/README.md)
+2. Reference `react-voice-client/hooks/useAgoraVoiceClient.ts` for connection
+   patterns
+3. Study RTC/RTM setup in "Approach C: Bare RTC/RTM" section above
+4. Adapt React patterns to Vue composition API
 
-# UI Kit tests
-cd agent-ui-kit && pnpm test
+**Task: Help user add avatar to existing app**
 
-# Backend tests
-cd simple-backend && pytest
-```
+1. Read
+   [react-video-client-avatar/README.md](./react-video-client-avatar/README.md)
+2. Reference `react-video-client-avatar/components/VideoAvatarClient.tsx`
+3. Note: Client passes `profile=avatar` to backend
+4. Backend uses profile-specific config (see Backend README Profile Support
+   section)
 
-## Key Files
+**Task: Help user understand transcription messages**
 
-### SDK Package
+1. See "Message Types" section above
+2. Reference `agent-toolkit/conversational-ai-api/helper/rtm.ts` for RTM message
+   handling
+3. Study how react-voice-client displays transcriptions
 
-- `agent-toolkit/conversational-ai-api/package.json` - SDK package config
-- `agent-toolkit/conversational-ai-api/index.ts` - Main SDK exports
-- `agent-toolkit/react/package.json` - React hooks package config
-- `agent-toolkit/react/index.ts` - React hooks exports
+## Documentation Index
 
-### UI Kit Package
+**Core Documentation (Read these first):**
 
-- `agent-ui-kit/package.json` - UI kit package config
-- `agent-ui-kit/index.ts` - Component exports
-- `agent-ui-kit/lib/utils.ts` - Shared utilities
+- [README.md](./README.md) - Repository overview, system architecture
+- [simple-backend/README.md](./simple-backend/README.md) - Backend reference
+  implementation
+- [react-voice-client/README.md](./react-voice-client/README.md) - Voice client
+  reference
+- [react-video-client-avatar/README.md](./react-video-client-avatar/README.md) -
+  Video client reference
 
-### Example App
+**SDK & Components (For using our packages):**
 
-- `react-voice-client/package.json` - App dependencies with workspace references
-- `react-voice-client/components/VoiceClient.tsx` - Main voice client component
-- `react-voice-client/hooks/useAgoraVoiceClient.ts` - Custom hook using SDK
+- [agent-toolkit/README.md](./agent-toolkit/README.md) - Core SDK and React
+  hooks API
+- [agent-ui-kit/README.md](./agent-ui-kit/README.md) - React UI component
+  library
+
+**When to read each:**
+
+| User Need                           | Read This                | Use Pattern From            |
+| ----------------------------------- | ------------------------ | --------------------------- |
+| Run samples quickly                 | Backend + Client README  | N/A - just run it           |
+| Build backend in Python             | Backend README           | simple-backend/ code        |
+| Build backend in Node/Go/etc        | Backend README           | simple-backend/ patterns    |
+| Build React client                  | Client + agent-toolkit   | react-voice-client/ code    |
+| Build Vue/Angular/vanilla JS client | Client + RTC/RTM section | react-voice-client/patterns |
+| Use our React SDK                   | agent-toolkit README     | Import from packages        |
+| Use our UI components               | agent-ui-kit README      | Import from packages        |
+| Build custom UI                     | agent-ui-kit README      | See patterns, build own     |
+
+**Key File References:**
+
+**Backend Implementation:**
+
+- `simple-backend/core/agent.py` - Agent REST API calls
+- `simple-backend/core/tokens.py` - Token generation (v007)
+- `simple-backend/core/config.py` - Environment variable handling
+- `simple-backend/local_server.py` - Flask server example
+
+**Client Implementation:**
+
+- `react-voice-client/hooks/useAgoraVoiceClient.ts` - RTC/RTM connection
+  management
+- `react-voice-client/components/VoiceClient.tsx` - Complete voice client
+- `react-video-client-avatar/components/VideoAvatarClient.tsx` - Complete video
+  client
+- `agent-toolkit/conversational-ai-api/helper/rtc.ts` - RTC helper patterns
+- `agent-toolkit/conversational-ai-api/helper/rtm.ts` - RTM helper patterns
