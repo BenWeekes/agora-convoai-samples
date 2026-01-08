@@ -55,7 +55,7 @@ audio, processes it through STT → LLM → TTS, and streams the response back.
 and generating RTC credentials. Supports local development, cloud instances, and
 AWS Lambda deployment.
 
-## Client SDK & UI Kit
+## Client Side
 
 Core packages for building voice and video AI applications:
 
