@@ -83,12 +83,8 @@ agent initialization and voice interaction.
 
 **[React Voice Client](./react-voice-client/)** Production-ready React/Next.js
 voice client built with SDK packages and UI Kit. Features TypeScript, real-time
-transcription display, and voice controls.
+transcription display, voice controls, and integrated text chat.
 
 **[React Video Client with Avatar](./react-video-client-avatar/)** React/Next.js
 client with video avatar and local camera support. Includes responsive layouts
 and multi-stream video rendering.
-
-**[App Builder Avatar Client](./appbuilder-avatar/)** Low-code implementation
-using Agora App Builder for rapid prototyping with avatar and video
-capabilities.
