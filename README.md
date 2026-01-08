@@ -57,6 +57,8 @@ AWS Lambda deployment.
 
 ## Client Side
 
+### Core Packages
+
 Core packages for building voice and video AI applications:
 
 - **[agent-toolkit](./agent-toolkit/)** - Core SDK with RTC/RTM helpers and
@@ -64,14 +66,7 @@ Core packages for building voice and video AI applications:
 - **[agent-ui-kit](./agent-ui-kit/)** - React UI components for voice, chat, and
   video
 
-## Developer Guide
-
-**Comprehensive implementation guide for AI agents** → [AGENT.md](./AGENT.md)
-
-## Sample Applications
-
-Below are a series of examples which progress in complexity and cover both the
-client and server components you will need.
+### Samples
 
 ![Avatar Client Screenshot](./assets/client-avatar-screenshot.png)
 
@@ -90,3 +85,7 @@ transcription display, voice controls, and integrated text chat.
 **[React Video Client with Avatar](./react-video-client-avatar/)** React/Next.js
 client with video avatar and local camera support. Includes responsive layouts
 and multi-stream video rendering.
+
+## Developer Guide
+
+**Comprehensive implementation guide for AI agents** → [AGENT.md](./AGENT.md)
