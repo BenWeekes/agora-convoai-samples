@@ -36,9 +36,9 @@ routes audio, video, and data streams between participants in real-time.
 A managed AI agent that joins the channel as a participant. It listens to user
 audio, processes it through STT → LLM → TTS, and streams the response back.
 
-## AI Agent RESTful API
+## Server Side
 
-RESTful APIs to manage AI Agents
+### Useful Links
 
 - **[Enable Conversational AI](https://docs.agora.io/en/conversational-ai/get-started/manage-agora-account)** -
   Create an AppID and enable Agora Conversational AI
@@ -48,6 +48,12 @@ RESTful APIs to manage AI Agents
   API to start an AI Agent
 - **[stop agent](https://docs.agora.io/en/conversational-ai/rest-api/agent/leave)** -
   API to stop an AI Agent
+
+### Sample
+
+**[Simple Backend](./simple-backend/)** Python backend for managing AI agents
+and generating RTC credentials. Supports local development, cloud instances, and
+AWS Lambda deployment.
 
 ## Client SDK & UI Kit
 
@@ -72,10 +78,6 @@ client and server components you will need.
 **[Simple Voice AI Client](./simple-voice-client/)** Standalone HTML/JavaScript
 client for testing voice agents. Maintains persistent RTC connection allowing
 agents to join and leave without client reconnection.
-
-**[Simple Backend](./simple-backend/)** Python backend for managing AI agents
-and generating RTC credentials. Supports local development, cloud instances, and
-AWS Lambda deployment.
 
 **[HTML/JS Voice AI Client](./complete-voice-client/)** Full-featured vanilla
 JavaScript client demonstrating end-to-end integration with backend for agent
