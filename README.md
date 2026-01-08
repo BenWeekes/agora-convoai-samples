@@ -51,6 +51,12 @@ To run the server sample that your client will connect to, you will need:
 - **LLM_API_KEY** -
   [OpenAI API Keys](https://platform.openai.com/settings/organization/api-keys)
 
+### Sample
+
+**[Simple Backend](./simple-backend/)** Python backend for creating AI agents
+and generating RTC credentials. Supports local development, cloud instances, and
+AWS Lambda deployment.
+
 ### Useful Links
 
 - **[Enable Conversational AI](https://docs.agora.io/en/conversational-ai/get-started/manage-agora-account)** -
@@ -61,12 +67,6 @@ To run the server sample that your client will connect to, you will need:
   API docs to start an AI Agent
 - **[stop agent](https://docs.agora.io/en/conversational-ai/rest-api/agent/leave)** -
   API docs to stop an AI Agent
-
-### Sample
-
-**[Simple Backend](./simple-backend/)** Python backend for creating AI agents
-and generating RTC credentials. Supports local development, cloud instances, and
-AWS Lambda deployment.
 
 ## Client Side
 
