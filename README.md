@@ -1,6 +1,7 @@
 # <img src="./assets/agora-logo.svg" alt="Agora" width="24" height="24" style="vertical-align: middle; margin-right: 8px;" /> Agora Conversational AI
 
-A guide to understanding and implementing Agora voice and video AI agents
+A guide to understanding and implementing Agora voice and video AI agents. Spin
+up the sample backend and one of the sample clients or ask AI to do it for you.
 
 ## System Architecture
 
