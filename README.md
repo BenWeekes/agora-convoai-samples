@@ -70,7 +70,19 @@ AWS Lambda deployment.
 
 ### Samples
 
+**[React Voice Client](./react-voice-client/)** Responsive React/Next.js voice
+client built with SDK packages and UI Kit. Features TypeScript, real-time
+transcription display, voice controls, and integrated text chat.
+
+![Voice Client Screenshot](./assets/client-voice-screenshot.png)
+
+**[React Video Client with Avatar](./react-video-client-avatar/)** React/Next.js
+client with video avatar and local camera support. Includes responsive layouts
+and multi-stream video rendering.
+
 ![Avatar Client Screenshot](./assets/client-avatar-screenshot.png)
+
+### Basic Samples
 
 **[Simple Voice AI Client](./simple-voice-client/)** Standalone HTML/JavaScript
 client for testing voice agents. Maintains persistent RTC connection allowing
@@ -79,11 +91,3 @@ agents to join and leave without client reconnection.
 **[HTML/JS Voice AI Client](./complete-voice-client/)** Full-featured vanilla
 JavaScript client demonstrating end-to-end integration with backend for agent
 initialization and voice interaction.
-
-**[React Voice Client](./react-voice-client/)** Responsive React/Next.js voice
-client built with SDK packages and UI Kit. Features TypeScript, real-time
-transcription display, voice controls, and integrated text chat.
-
-**[React Video Client with Avatar](./react-video-client-avatar/)** React/Next.js
-client with video avatar and local camera support. Includes responsive layouts
-and multi-stream video rendering.
