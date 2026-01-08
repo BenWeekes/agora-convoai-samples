@@ -3,6 +3,17 @@
 Python backend for managing AI agents and generating RTC credentials. Supports
 local development, cloud instances, and AWS Lambda deployment.
 
+## Table of Contents
+
+- [Usage](#usage)
+  - [Local Development](#local-development)
+  - [AWS Lambda Deployment](#aws-lambda-deployment)
+- [Configuration](#configuration)
+- [Architecture](#architecture)
+- [Running Tests](#running-tests)
+- [Profile Support](#profile-support)
+- [Curl Request Dumps](#curl-request-dumps)
+
 ## Usage
 
 ### Local Development
