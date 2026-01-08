@@ -45,9 +45,9 @@ audio, processes it through STT → LLM → TTS, and streams the response back.
 - **[RESTful authentication](https://docs.agora.io/en/conversational-ai/rest-api/restful-authentication)** -
   Create a RESTful API Authentication Token
 - **[start agent](https://docs.agora.io/en/conversational-ai/rest-api/agent/join)** -
-  API to start an AI Agent
+  API docs to start an AI Agent
 - **[stop agent](https://docs.agora.io/en/conversational-ai/rest-api/agent/leave)** -
-  API to stop an AI Agent
+  API docs to stop an AI Agent
 
 ### Sample
 
