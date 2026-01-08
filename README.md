@@ -56,7 +56,7 @@ To run the server sample that your client will connect to, you will need:
 - **[Enable Conversational AI](https://docs.agora.io/en/conversational-ai/get-started/manage-agora-account)** -
   Create an Agora APP_ID and APP_CERTIFICATE
 - **[RESTful authentication](https://docs.agora.io/en/conversational-ai/rest-api/restful-authentication)** -
-  Create a RESTful API Authentication Token
+  Create an AGENT_AUTH_HEADER
 - **[start agent](https://docs.agora.io/en/conversational-ai/rest-api/agent/join)** -
   API docs to start an AI Agent
 - **[stop agent](https://docs.agora.io/en/conversational-ai/rest-api/agent/leave)** -
