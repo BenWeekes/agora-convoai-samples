@@ -3,6 +3,27 @@
 React/Next.js implementation demonstrating the Agora Conversational AI SDK and
 UI Kit integration.
 
+## Table of Contents
+
+- [Features](#features)
+- [Architecture](#architecture)
+- [Prerequisites](#prerequisites)
+- [Configuration](#configuration)
+- [Quick Start](#quick-start)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [Key Implementation Details](#key-implementation-details)
+  - [MessageEngine Integration](#messageengine-integration)
+  - [ConvoTextStream Component](#convotextstream-component)
+  - [Agent Visualizer](#agent-visualizer)
+  - [Microphone Button](#microphone-button)
+  - [Custom Hook: useAgoraVoiceClient](#custom-hook-useagoravoiceclient)
+- [Message Types](#message-types)
+- [Building for Production](#building-for-production)
+- [Tech Stack](#tech-stack)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Features
 
 - **Workspace Architecture** - Uses pnpm workspace packages for SDK and UI Kit
@@ -39,16 +60,10 @@ This sample application uses pnpm workspace packages for the SDK and UI Kit:
 
 - Node.js 18+
 - Python backend running on port 8082 (see `../simple-backend/`)
-- Agora account with App ID
 
-## Port Allocation
+## Configuration
 
-The agora-convoai-samples repository uses the following port sequence:
-
-- **8082** - Python Backend (simple-backend)
-- **8083** - React Voice Client (this project)
-- Port 3000 is intentionally avoided as it's commonly used by other development
-  servers
+This client runs on port **8083** and connects to the backend on port **8082**.
 
 ## Quick Start
 
@@ -70,16 +85,14 @@ pnpm dev
 http://localhost:8083
 ```
 
-## Backend Setup
-
-This client requires a running backend. Start the backend first:
-
-```bash
-cd ../simple-backend
-PORT=8082 python3 local_server.py
-```
-
 ## Usage
+
+**Backend Configuration:**
+
+The backend must be configured with AI agent credentials and settings. See
+`../simple-backend/README.md` for configuration details.
+
+**Start Services:**
 
 1. **Start the Backend** (if not already running):
 
@@ -91,21 +104,18 @@ PORT=8082 python3 local_server.py
 2. **Start the React Client**:
 
    ```bash
-   npm run dev
+   pnpm dev
    ```
 
 3. **Connect to Agent**:
-   - Enter a channel name (e.g., "test-channel")
    - Backend URL should be `http://localhost:8082` (default)
-   - Agent UID should be "0" (default - must match agent's UID)
    - Click "Start Conversation"
 
 4. **Interact with Agent**:
    - Speak into your microphone
-   - See real-time transcriptions in the fixed-position chat window
-     (bottom-right)
+   - View real-time transcriptions in the chat window (bottom-right)
    - Toggle mute with the microphone button
-   - End the call with the "End Call" button
+   - End call with "End Call" button
 
 ## Project Structure
 
