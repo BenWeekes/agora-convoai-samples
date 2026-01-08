@@ -58,10 +58,9 @@ Core packages for building voice and video AI applications:
 - **[agent-ui-kit](./agent-ui-kit/)** - React UI components for voice, chat, and
   video
 
-## Vibe Coders
+## Developer Guide
 
-**Share this link with your AI and simply ask it for the client or backend you
-desire.** → [AI Coding Assistant Notes](./convo-ai-quickstart/)
+**Comprehensive implementation guide for AI agents** → [AGENT.md](./AGENT.md)
 
 ## Sample Applications
 
