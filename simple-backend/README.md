@@ -99,6 +99,13 @@ curl "http://localhost:8081/start-agent?channel=test&profile=sales"
 curl "http://localhost:8081/health"
 ```
 
+**API Documentation:**
+
+- **[start agent](https://docs.agora.io/en/conversational-ai/rest-api/agent/join)** -
+  API docs to start an AI Agent
+- **[stop agent](https://docs.agora.io/en/conversational-ai/rest-api/agent/leave)** -
+  API docs to stop an AI Agent
+
 ### AWS Lambda Deployment
 
 **1. Package for Lambda:**
