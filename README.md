@@ -70,6 +70,8 @@ AWS Lambda deployment.
 
 ### Samples
 
+Recommended and complete React JS client samples which look great on any device.
+
 **[React Voice Client](./react-voice-client/)** Responsive React/Next.js voice
 client built with SDK packages and UI Kit. Features TypeScript, real-time
 transcription display, voice controls, and integrated text chat.
