@@ -159,6 +159,57 @@ list.
 - `ENABLE_AIVAD` - AI voice activity detection (default: true)
 - Profile overrides: Suffix any var with `_profilename`
 
+### TTS Vendor Options
+
+The backend supports multiple TTS vendors. Choose based on your needs:
+
+**Rime (Default):**
+
+```bash
+TTS_VENDOR=rime
+RIME_API_KEY=your_rime_key
+```
+
+**ElevenLabs:**
+
+```bash
+TTS_VENDOR=elevenlabs
+TTS_KEY=your_elevenlabs_key
+TTS_VOICE_ID=your_voice_id
+```
+
+**OpenAI:**
+
+```bash
+TTS_VENDOR=openai
+TTS_KEY=your_openai_key
+```
+
+**Cartesia:**
+
+```bash
+TTS_VENDOR=cartesia
+TTS_KEY=your_cartesia_key
+```
+
+See `.env.example` for all vendor-specific configuration options.
+
+**Profile-specific TTS:**
+
+You can use different TTS vendors for different profiles (e.g., avatar vs
+voice):
+
+```bash
+# Base TTS (for voice client)
+TTS_VENDOR=rime
+RIME_API_KEY=your_rime_key
+
+# Avatar TTS (for video client with profile=avatar)
+AVATAR_TTS_VENDOR=elevenlabs
+AVATAR_TTS_KEY=your_elevenlabs_key
+AVATAR_TTS_VOICE_ID=your_voice_id
+```
+
 ## Architecture
 
 ```
