@@ -42,6 +42,14 @@ audio, processes it through STT → LLM → TTS, and streams the response back.
 
 ## Server Side
 
+To run the server sample which your client sample will connect to you will need:
+
+- **APP_ID** - [Agora Console](https://console.agora.io/)
+- **APP_CERTIFICATE** - [Agora Console](https://console.agora.io/)
+- **RIME_API_KEY** - [Rime AI](https://www.rime.ai/)
+- **LLM_API_KEY** -
+  [OpenAI API Keys](https://platform.openai.com/settings/organization/api-keys)
+
 ### Useful Links
 
 - **[Enable Conversational AI](https://docs.agora.io/en/conversational-ai/get-started/manage-agora-account)** -
