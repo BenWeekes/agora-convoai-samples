@@ -77,9 +77,9 @@ agents to join and leave without client reconnection.
 and generating RTC credentials. Supports local development, cloud instances, and
 AWS Lambda deployment.
 
-**[Complete Voice AI Client](./complete-voice-client/)** Full-featured
-HTML/JavaScript client demonstrating end-to-end integration with backend for
-agent initialization and voice interaction.
+**[HTML/JS Voice AI Client](./complete-voice-client/)** Full-featured vanilla
+JavaScript client demonstrating end-to-end integration with backend for agent
+initialization and voice interaction.
 
 **[React Voice Client](./react-voice-client/)** Production-ready React/Next.js
 voice client built with SDK packages and UI Kit. Features TypeScript, real-time
