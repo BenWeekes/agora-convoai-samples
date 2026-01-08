@@ -72,8 +72,8 @@ AWS Lambda deployment.
 
 ### Core Packages
 
-- **[agent-toolkit](./agent-toolkit/)** - Core SDK with RTC/RTM helpers and
-  React hooks
+- **[agent-toolkit](./agent-toolkit/)** - Core SDK toolkit with RTC/RTM helpers
+  and React hooks
 - **[agent-ui-kit](./agent-ui-kit/)** - React UI components for voice, chat, and
   video
 
