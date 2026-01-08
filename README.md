@@ -41,7 +41,7 @@ audio, processes it through STT → LLM → TTS, and streams the response back.
 ### Useful Links
 
 - **[Enable Conversational AI](https://docs.agora.io/en/conversational-ai/get-started/manage-agora-account)** -
-  Create an AppID and enable Agora Conversational AI
+  Create an Agora AppID and enable Conversational AI
 - **[RESTful authentication](https://docs.agora.io/en/conversational-ai/rest-api/restful-authentication)** -
   Create a RESTful API Authentication Token
 - **[start agent](https://docs.agora.io/en/conversational-ai/rest-api/agent/join)** -
