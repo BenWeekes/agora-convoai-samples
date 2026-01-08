@@ -69,27 +69,26 @@ client and server components you will need.
 
 ![Avatar Client Screenshot](./assets/client-avatar-screenshot.png)
 
-**[Simple Voice AI Client](./simple-voice-client/)** Simple HTML/Javascript
-client for connecting to an Agora RTC Channel with 2-way audio. Agora AI voice
-agents can come and go. Useful for testing agents without needing to refresh or
-reconnect client.
+**[Simple Voice AI Client](./simple-voice-client/)** Standalone HTML/JavaScript
+client for testing voice agents. Maintains persistent RTC connection allowing
+agents to join and leave without client reconnection.
 
-**[Simple Backend](./simple-backend/)** AWS Lambda (Python) function that
-receives params via HTTPS, generates token, uid, and channel, then calls the
-Agent REST API.
+**[Simple Backend](./simple-backend/)** Python backend for managing AI agents
+and generating RTC credentials. Supports local development, cloud instances, and
+AWS Lambda deployment.
 
-**[Complete Voice AI Client](./complete-voice-client/)** Complete
-HTML/Javascript client that calls a backend to start an Agora AI voice agent and
-get RTC credentials, then joins the channel to talk with the agent.
+**[Complete Voice AI Client](./complete-voice-client/)** Full-featured
+HTML/JavaScript client demonstrating end-to-end integration with backend for
+agent initialization and voice interaction.
 
-**[React JS Voice AI Client](./react-voice-client/)** React/Next.js
-implementation using Agora AI UIKit components. Features TypeScript, shadcn/ui,
-custom hooks, agent visualizer, and conversation history display with integrated
-text chat.
+**[React Voice Client](./react-voice-client/)** Production-ready React/Next.js
+voice client built with SDK packages and UI Kit. Features TypeScript, real-time
+transcription display, and voice controls.
 
-**[React JS Voice & Video Client With Avatar](./react-video-client-avatar/)**
-React/Next.js implementation with video avatar support and local camera.
-Features responsive layouts, MediaStream rendering, and Anam BETA integration.
+**[React Video Client with Avatar](./react-video-client-avatar/)** React/Next.js
+client with video avatar and local camera support. Includes responsive layouts
+and multi-stream video rendering.
 
-**[App Builder Client with Avatar & Video](./appbuilder-avatar/)** Built with
-Agora App Builder for rapid prototyping with avatar and video capabilities.
+**[App Builder Avatar Client](./appbuilder-avatar/)** Low-code implementation
+using Agora App Builder for rapid prototyping with avatar and video
+capabilities.
