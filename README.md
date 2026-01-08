@@ -63,8 +63,6 @@ AWS Lambda deployment.
 
 ### Core Packages
 
-Core packages for building voice and video AI applications:
-
 - **[agent-toolkit](./agent-toolkit/)** - Core SDK with RTC/RTM helpers and
   React hooks
 - **[agent-ui-kit](./agent-ui-kit/)** - React UI components for voice, chat, and
