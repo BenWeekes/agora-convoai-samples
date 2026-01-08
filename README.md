@@ -81,8 +81,8 @@ AWS Lambda deployment.
 JavaScript client demonstrating end-to-end integration with backend for agent
 initialization and voice interaction.
 
-**[React Voice Client](./react-voice-client/)** Production-ready React/Next.js
-voice client built with SDK packages and UI Kit. Features TypeScript, real-time
+**[React Voice Client](./react-voice-client/)** Responsive React/Next.js voice
+client built with SDK packages and UI Kit. Features TypeScript, real-time
 transcription display, voice controls, and integrated text chat.
 
 **[React Video Client with Avatar](./react-video-client-avatar/)** React/Next.js
